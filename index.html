@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>昌荣的作品集</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #faf7f2; color: #2b2620; line-height: 1.7;
+    min-height: 100vh; display: flex; flex-direction: column;
+  }
+  header {
+    padding: 72px 24px 40px; text-align: center;
+  }
+  header h1 { font-size: 2.2rem; letter-spacing: .12em; margin-bottom: 12px; }
+  header p { color: #8a7f70; font-size: 1rem; }
+  main {
+    width: min(960px, 92vw); margin: 0 auto; flex: 1;
+    padding-bottom: 64px;
+  }
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px; margin-top: 32px;
+  }
+  .card {
+    background: #fff; border: 1px solid #ece4d6; border-radius: 16px;
+    overflow: hidden; text-decoration: none; color: inherit;
+    transition: transform .18s ease, box-shadow .18s ease;
+    display: flex; flex-direction: column;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(120, 90, 40, .12); }
+  .card .cover {
+    height: 150px; display: flex; align-items: center; justify-content: center;
+    font-size: 3.4rem; background: linear-gradient(135deg, #e8f4ee, #d7ecf5);
+  }
+  .card .body { padding: 20px 22px 24px; }
+  .card h2 { font-size: 1.15rem; margin-bottom: 6px; }
+  .card .tag {
+    display: inline-block; font-size: .75rem; color: #a08c5b;
+    border: 1px solid #e3d5b8; border-radius: 999px;
+    padding: 2px 10px; margin-bottom: 10px;
+  }
+  .card p { font-size: .9rem; color: #7c7264; }
+  .card.soon { opacity: .55; cursor: default; }
+  .card.soon:hover { transform: none; box-shadow: none; }
+  footer {
+    text-align: center; padding: 28px; color: #b3a893; font-size: .85rem;
+    border-top: 1px solid #ece4d6;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>昌荣的作品集</h1>
+    <p>好玩的东西，都在这里安家</p>
+  </header>
+  <main>
+    <div class="grid">
+      <a class="card" href="works/pelican-bike/">
+        <div class="cover">🚲</div>
+        <div class="body">
+          <span class="tag">SVG 小游戏</span>
+          <h2>鹈鹕骑单车</h2>
+          <p>一只鹈鹕的骑行大冒险。空格 / 点击跳跃，躲开石头、水坑和路锥，看看你能骑多远。</p>
+        </div>
+      </a>
+      <div class="card soon">
+        <div class="cover">✨</div>
+        <div class="body">
+          <span class="tag">敬请期待</span>
+          <h2>更多作品，陆续上架</h2>
+          <p>新的小游戏、实验和灵感，随时会被丢进来。</p>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>changrong996-droid.github.io · 用 GitHub Pages 托管</footer>
+</body>
+</html>

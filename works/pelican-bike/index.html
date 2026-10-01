@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>鹈鹕骑单车</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#eaf8f4;color:#244d54;font-family:system-ui,-apple-system,"Microsoft YaHei",sans-serif;overflow:hidden}main{height:100dvh;min-height:300px;display:flex;flex-direction:column;padding:clamp(12px,3vw,32px);max-width:1500px;margin:auto}header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}h1{font-size:clamp(22px,4vw,38px);margin:0;letter-spacing:2px}h1 span{font-size:12px;display:block;letter-spacing:3px;margin-top:6px;color:#63918b}.scores{display:flex;gap:clamp(12px,3vw,30px);font-size:12px;color:#63918b}.scores strong{display:block;font-size:clamp(22px,4vw,34px);color:#244d54;font-variant-numeric:tabular-nums}.stage{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:26px;border:4px solid white;box-shadow:0 14px 50px #448c7820;background:#c6eeef;touch-action:manipulation;user-select:none}svg{width:100%;height:100%;display:block}.hint{text-align:center;margin:16px 0 0;font-size:14px;color:#63918b}.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#e9faf15c;backdrop-filter:blur(3px)}.overlay[hidden]{display:none}.card{text-align:center;background:#fffdf1;padding:28px 38px;border-radius:24px;box-shadow:0 12px 40px #244d5426}.card h2{font-size:32px;margin:0 0 10px}.card p{margin:8px 0 22px;color:#63918b}button{border:0;border-radius:30px;background:#ffba59;color:#493d31;font-family:inherit;font-size:18px;font-weight:700;padding:13px 32px;cursor:pointer;box-shadow:0 5px 0 #e79a3d}button:active{transform:translateY(3px);box-shadow:0 2px 0 #e79a3d}button:focus-visible{outline:3px solid #244d54;outline-offset:5px}.tag{position:absolute;left:20px;top:18px;font-size:12px;color:#518c88;background:#ffffff8a;border-radius:20px;padding:7px 13px;pointer-events:none}@media(max-width:550px){main{padding:12px}header{margin-bottom:12px}h1 span{font-size:9px;letter-spacing:1px}.stage{border-radius:18px}.hint{font-size:12px;margin-top:12px}.card{padding:24px}}
+</style>
+</head>
+<body>
+<main>
+<header><h1>鹈鹕骑单车<span>微风正好，一起兜风！</span></h1><div class="scores"><div>得分<strong id="score">0</strong></div><div>最高分<strong id="best">0</strong></div></div></header>
+<div class="stage" id="stage">
+<div class="tag">海岸骑行 · 无尽旅程</div>
+<svg id="scene" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet" role="img" aria-label="鹈鹕骑自行车，跳跃躲避路上的障碍">
+<defs>
+<linearGradient id="sky" x2="0" y2="1"><stop stop-color="#bcecf2"/><stop offset="1" stop-color="#eefbdc"/></linearGradient>
+<g id="cloud" fill="#fff" opacity=".86"><ellipse rx="48" ry="18"/><circle cx="-20" cy="-13" r="23"/><circle cx="12" cy="-22" r="29"/><circle cx="37" cy="-6" r="19"/></g>
+<g id="tree"><path d="M0 0V-105" stroke="#aa805d" stroke-width="12" stroke-linecap="round"/><ellipse cy="-110" rx="39" ry="49" fill="#65bb8f"/><ellipse cx="-22" cy="-90" rx="24" ry="30" fill="#77cb98"/><ellipse cx="21" cy="-113" rx="22" ry="30" fill="#8cd4a0"/></g>
+<g id="wheel"><circle r="34" fill="#fff9e8" stroke="#345763" stroke-width="7"/><g stroke="#93b4b5" stroke-width="2"><path d="M-30 0H30M0-30V30M-22-22L22 22M-22 22L22-22"/></g><circle r="5" fill="#345763"/></g>
+</defs>
+<rect width="1000" height="560" fill="url(#sky)"/>
+<g transform="translate(825 92)"><g stroke="#ffdc7b" stroke-width="5" stroke-linecap="round"><path d="M0-51V-61M0 51V61M51 0H61M-51 0H-61M36 36L43 43M-36-36L-43-43M36-36L43-43M-36 36L-43 43"/></g><circle r="36" fill="#ffe589"/><path d="M-12 8Q0 19 12 8" fill="none" stroke="#d7a04d" stroke-width="3"/><g fill="#d7a04d"><circle cx="-12" cy="-3" r="2"/><circle cx="12" cy="-3" r="2"/></g></g>
+<g id="clouds"></g><g id="hills"></g>
+<path d="M0 357Q120 322 240 355T500 348T760 345T1000 350V440H0Z" fill="#a9d99c"/>
+<g id="trees"></g>
+<rect y="413" width="1000" height="147" fill="#e7d9b0"/><rect y="416" width="1000" height="9" fill="#fff3d0"/><rect y="442" width="1000" height="118" fill="#c0bbaa"/>
+<g id="road" stroke="#f8f4db" stroke-width="5" stroke-linecap="round"></g>
+<ellipse id="shadow" cx="245" cy="448" rx="93" ry="10" fill="#4b6963" opacity=".16"/>
+<g id="rider"><g id="bicycle">
+<g id="rear" transform="translate(180 409)"><use href="#wheel"/></g><g id="front" transform="translate(309 409)"><use href="#wheel"/></g>
+<g fill="none" stroke="#ed806e" stroke-width="7" stroke-linejoin="round"><path d="M180 409L218 350L245 409Z M218 350H289L245 409M309 409L281 334"/></g>
+<path d="M211 346H233M281 334L277 322H294" fill="none" stroke="#345763" stroke-width="7" stroke-linecap="round"/>
+<g id="crank"><circle cx="245" cy="409" r="9" fill="#345763"/></g>
+</g>
+<g id="bird">
+<path id="farLeg" d="M235 339L253 365L245 398" fill="none" stroke="#e6a145" stroke-width="10" stroke-linecap="round"/>
+<ellipse cx="234" cy="311" rx="45" ry="40" fill="#fffef2" stroke="#d9e7de" stroke-width="3"/>
+<path d="M196 313L172 295L185 331Z" fill="#fffef2"/>
+<path d="M250 298Q269 278 263 253Q255 233 270 221Q292 210 301 230L301 280Q291 315 262 326" fill="#fffef2" stroke="#d9e7de" stroke-width="3"/>
+<path d="M295 242L365 252Q350 277 299 268Z" fill="#ffc96c" stroke="#e8a24a" stroke-width="3"/>
+<path d="M299 244L369 250L300 253" fill="#ffa950"/>
+<circle cx="289" cy="234" r="4" fill="#345763"/><circle cx="290" cy="233" r="1.3" fill="white"/>
+<ellipse cx="292" cy="248" rx="6" ry="4" fill="#f6b6a4"/>
+<path d="M266 216Q258 207 263 204M273 215Q271 203 277 201" fill="none" stroke="#fffef2" stroke-width="5" stroke-linecap="round"/>
+<g id="wing"><path d="M220 287Q259 285 257 319Q233 334 213 314Q229 317 237 312Q219 310 220 287" fill="#e5eeea" stroke="#cbdcd6" stroke-width="3"/></g>
+<path d="M265 300L284 322" fill="none" stroke="#fffef2" stroke-width="12" stroke-linecap="round"/>
+<path id="nearLeg" d="M230 338L213 368L244 414" fill="none" stroke="#ffbc59" stroke-width="11" stroke-linecap="round"/>
+<path id="foot" d="M235 414H254" stroke="#e69b42" stroke-width="7" stroke-linecap="round"/>
+<path d="M218 275Q238 284 258 275" fill="none" stroke="#70b9ac" stroke-width="7"/><path d="M221 278L196 272L191 282" fill="none" stroke="#70b9ac" stroke-width="6"/>
+</g></g>
+<g id="obstacles"></g><g id="particles"></g>
+</svg>
+<div id="over" class="overlay" hidden><div class="card"><h2>游戏结束</h2><p id="result">哎呀！鱼没掉，车先倒了。</p><button id="restart">再来一次</button></div></div>
+</div>
+<p class="hint">按空格 / 点击屏幕 跳跃</p>
+</main>
+<script>
+'use strict';
+// All coordinates use the SVG's fixed logical canvas; CSS handles window scaling.
+const $=id=>document.getElementById(id), NS='http://www.w3.org/2000/svg';
+let best=0;try{best=Number(localStorage.getItem('pelican-bike-best'))||0;}catch(e){} $('best').textContent=best;
+let state, last=0, obstacles=[], clouds=[], trees=[], distance=0, speed=270, y=0, vy=0, phase=0, spawn=0, deathTime=0;
+function node(tag,attrs,parent){const n=document.createElementNS(NS,tag);for(const [k,v]of Object.entries(attrs))n.setAttribute(k,v);parent.appendChild(n);return n;}
+function scenery(){
+ for(let i=0;i<5;i++)clouds.push({x:i*260+40,y:90+(i%3)*48,n:node('use',{href:'#cloud'},$('clouds'))});
+ for(let i=0;i<6;i++)node('ellipse',{cx:i*240,cy:382,rx:190,ry:90+(i%3)*22,fill:i%2?'#a2d4b3':'#91cbb0'},$('hills'));
+ for(let i=0;i<7;i++)trees.push({x:i*200-50,scale:.65+(i%3)*.16,n:node('use',{href:'#tree'},$('trees'))});
+ for(let i=0;i<12;i++)node('path',{d:`M${i*110} 500h55`},$('road'));
+}
+function reset(){
+ obstacles.forEach(o=>o.n.remove());obstacles=[];distance=0;speed=270;y=0;vy=0;phase=0;spawn=1.7;deathTime=0;state='running';$('over').hidden=true;$('score').textContent=0;$('particles').replaceChildren();$('rider').setAttribute('transform','');
+}
+function jump(){if(state==='running'&&y===0){vy=-650;y=-.1;}}
+function addObstacle(){
+ const type=Math.floor(Math.random()*3),n=node('g',{},$('obstacles'));let w;
+ if(type===0){w=42;node('path',{d:'M-24 0L-20-19L-8-31L10-27L24-10L26 0Z',fill:'#8a9795',stroke:'#677b79','stroke-width':3},n);node('path',{d:'M-12-20L-4-25L7-20',fill:'none',stroke:'#b4c1b9','stroke-width':3},n);}
+ else if(type===1){w=65;node('ellipse',{cx:0,cy:-3,rx:37,ry:7,fill:'#67bccd'},n);node('path',{d:'M-22-4Q-6-8 9-4M16-2h9',fill:'none',stroke:'#c4f3f7','stroke-width':2},n);}
+ else{w=35;node('path',{d:'M-19-2L0-46L19-2Z',fill:'#ff9957',stroke:'#db7c48','stroke-width':2},n);node('path',{d:'M-8-27H8L12-18H-12Z',fill:'#fff8e3'},n);node('rect',{x:-25,y:-5,width:50,height:7,rx:3,fill:'#e17f49'},n);}
+ obstacles.push({x:1060,w,type,n});
+}
+function animateRider(dt){
+ phase+=dt*speed/34;const c=Math.cos(phase),s=Math.sin(phase),px=245+c*19,py=409+s*19;
+ $('rear').setAttribute('transform',`translate(180 409) rotate(${phase*180/Math.PI})`);$('front').setAttribute('transform',`translate(309 409) rotate(${phase*180/Math.PI})`);
+ $('nearLeg').setAttribute('d',`M230 338L${222+c*12} ${367+s*8}L${px} ${py}`);$('farLeg').setAttribute('d',`M235 339L${247-c*12} ${366-s*8}L${245-c*19} ${409-s*19}`);$('foot').setAttribute('d',`M${px-8} ${py}h19`);
+ $('crank').setAttribute('transform',`rotate(${phase*180/Math.PI} 245 409)`);
+ $('bird').setAttribute('transform',`translate(0 ${Math.sin(phase*2)*2})`);$('wing').setAttribute('transform',`rotate(${y<0?Math.sin(phase*1.8)*35-15:Math.sin(phase)*4} 225 294)`);
+ $('rider').setAttribute('transform',`translate(0 ${y})`);$('shadow').setAttribute('rx',Math.max(35,93+y*.12));
+}
+function crash(){
+ state='tumbling';deathTime=0;const score=Math.floor(distance/10);best=Math.max(best,score);$('best').textContent=best;
+ try{localStorage.setItem('pelican-bike-best',String(best));}catch(e){}
+ $('result').textContent=`哎呀！鱼没掉，车先倒了。 本次得分：${score}`;
+ for(let i=0;i<7;i++)node('text',{x:230+Math.cos(i)*55,y:265+Math.sin(i)*35,fill:'#ffb54d','font-size':24},$('particles')).textContent=i%2?'✦':'★';
+}
+function update(dt){
+ if(state==='running'){
+ speed=Math.min(580,270+distance*.006);distance+=speed*dt;spawn-=dt;
+ if(spawn<=0){addObstacle();spawn=(1.25+Math.random()*.7)*Math.max(.78,270/speed);}
+ if(y<0||vy<0){vy+=1700*dt;y+=vy*dt;if(y>=0){y=0;vy=0;}}
+ animateRider(dt);$('score').textContent=Math.floor(distance/10);
+ for(const o of obstacles){o.x-=speed*dt;o.n.setAttribute('transform',`translate(${o.x} 443)`);
+ // Check each wheel against the obstacle; rider feet and beak are decorative.
+ const height=o.type===2?46:o.type===0?31:9;
+ if((Math.abs(o.x-180)<o.w/2+25||Math.abs(o.x-309)<o.w/2+25)&&-y<height-2){crash();break;}}
+ obstacles=obstacles.filter(o=>{if(o.x< -70){o.n.remove();return false;}return true;});
+ }else if(state==='tumbling'){
+ deathTime+=dt;const t=Math.min(deathTime/.65,1);$('rider').setAttribute('transform',`translate(245 ${420+y*(1-t)-Math.sin(t*Math.PI)*50}) rotate(${t*105}) translate(-245 -420)`);
+ if(deathTime>.95){state='over';$('over').hidden=false;$('restart').focus({preventScroll:true});}
+ }
+ const move=state==='running'?speed:35;
+ for(const c of clouds){c.x-=dt*(12+move*.035);if(c.x< -90)c.x=1100;c.n.setAttribute('transform',`translate(${c.x} ${c.y})`);}
+ for(const t of trees){t.x-=dt*move*.42;if(t.x< -70)t.x+=1400;t.n.setAttribute('transform',`translate(${t.x} 416) scale(${t.scale})`);}
+ $('hills').setAttribute('transform',`translate(${-distance*.06%240} 0)`);$('road').setAttribute('transform',`translate(${-distance%110} 0)`);
+}
+function frame(now){const dt=Math.min((now-last)/1000||0,.033);last=now;update(dt);requestAnimationFrame(frame);}
+$('stage').addEventListener('pointerdown',e=>{if(e.target.closest('button')||state!=='running')return;e.preventDefault();jump();});
+$('restart').addEventListener('click',reset);
+window.addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();if(e.repeat)return;if(state==='over')reset();else jump();}});
+// Avoid advancing simulation through time spent in a background tab.
+document.addEventListener('visibilitychange',()=>{last=performance.now();});
+scenery();reset();requestAnimationFrame(frame);
+</script>
+</body>
+</html>
