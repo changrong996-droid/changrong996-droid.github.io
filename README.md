@@ -13,6 +13,8 @@
 ```
 ├── index.html          # 整合首页
 └── works/
-    └── pelican-bike/   # 鹈鹕骑单车小游戏
+    ├── pelican-bike/   # 鹈鹕骑单车小游戏
+    │   └── index.html
+    └── hanjiang-brush/ # 寒江独钓：程序模拟毛笔白描
         └── index.html
 ```
