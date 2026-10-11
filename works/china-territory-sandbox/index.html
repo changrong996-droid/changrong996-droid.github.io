@@ -844,6 +844,40 @@ tr.is-highlight > :last-child { box-shadow: 12px 0 var(--fill-tertiary); }
       .x-map [data-lr].lm-off{opacity:0}
       .x-map.no-terrain .x-relief,.x-map.no-terrain .x-terr{display:none}
       .x-app.sheet-open .x-scrim{opacity:1;pointer-events:auto}
+      /* 本期要点: floating notes card, its collapsed pill, and the phone summary chip */
+      .x-notes{position:absolute;z-index:5;top:0;left:0;width:300px;max-width:calc(100vw - 2 * var(--x-m));box-sizing:border-box;padding:12px 14px;border-radius:var(--r-m);background:color-mix(in srgb,var(--fill-primary-on) 72%,transparent);display:flex;flex-direction:column;gap:8px;font:var(--weight-regular) var(--size-meta)/1.4 var(--sans);color:var(--text-primary);transition:opacity 100ms var(--ease-out)}
+      .x-notes[hidden],.x-npill[hidden],.x-nchip[hidden]{display:none}
+      .x-notes.is-fade{opacity:0}
+      .x-n-head{display:flex;align-items:flex-start;gap:8px}
+      .x-n-head>div{flex:1;min-width:0}
+      .x-n-head .x-tag{flex:none;margin-top:4px;color:var(--text-secondary)}
+      .x-n-yr{font:var(--weight-medium) 22px/1.2 var(--sans);letter-spacing:-.01em;margin:2px 0 0;font-variant-numeric:tabular-nums}
+      .x-n-yr span{font:var(--type-label);font-weight:var(--weight-medium);margin-left:6px}
+      .x-n-x{font:var(--type-caption)}
+      .x-n-x[hidden]{display:none}
+      .x-n-rows{margin:0;display:flex;flex-direction:column;gap:2px}
+      .x-n-rows>div{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+      .x-n-rows dt{font:var(--type-caption);color:var(--text-secondary);margin:0;flex:none}
+      .x-n-rows dd{margin:0;font:inherit;font-weight:var(--weight-medium);text-align:right;font-variant-numeric:tabular-nums;min-width:0}
+      .x-n-rows dd small{display:block;font:var(--type-caption);font-weight:var(--weight-regular);color:var(--text-secondary)}
+      .x-n-rows .x-n-sub{padding-top:4px;margin-top:2px;border-top:1px solid var(--stroke-secondary)}
+      .x-n-txt{margin:0;line-height:1.5}
+      .x-n-evs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+      .x-n-evs button{position:relative;width:100%;min-height:24px;padding:2px 6px;margin:0 -6px;box-sizing:content-box;border:0;border-radius:var(--r-s);background:transparent;color:var(--text-primary);font:inherit;text-align:left;cursor:pointer;display:flex;gap:6px;align-items:baseline}
+      .x-n-evs button::before{content:"";position:absolute;inset:-6px 0}
+      .x-n-evs button:hover{background:var(--fill-tertiary)}
+      .x-n-evs b{font-weight:var(--weight-medium);flex:none}
+      .x-n-foot{display:flex;align-items:center;justify-content:space-between;gap:8px}
+      .x-n-src{font:var(--type-caption);color:var(--text-secondary);margin:0;min-width:0}
+      .x-n-q{color:var(--text-primary);white-space:nowrap}
+      .x-n-q::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--x-qc);margin-right:5px}
+      .x-n-q.q高{--x-qc:var(--fill-system-green)}.x-n-q.q中{--x-qc:var(--fill-system-orange)}.x-n-q.q低{--x-qc:var(--fill-system-red)}
+      .x-npill{position:absolute;z-index:5;font:var(--type-label)}
+      .x-nchip{position:absolute;z-index:4;left:var(--x-m);right:calc(var(--x-m) * 2 + var(--tap));bottom:calc(var(--x-m) * 2 + var(--x-bar));min-height:var(--tap);box-sizing:border-box;padding:6px 14px;border-radius:var(--r-m);background:var(--mat-agent);color:var(--text-primary);text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:1px}
+      .x-nchip b,.x-nchip span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .x-nchip b{font:var(--type-label);font-weight:var(--weight-medium)}
+      .x-nchip span{font:var(--type-caption);color:var(--text-secondary)}
+      .x-app.drawer-open .x-nchip,.x-app.sheet-open .x-nchip{display:none}
       @media (max-width:900px){.x-slab{max-width:140px}.x-drawer__cols{grid-template-columns:minmax(0,1fr)}}
       @media (max-width:640px){
         .x-app{--x-gap:8px;--x-m:8px;--x-sm:var(--tap);--x-bar:52px}
@@ -882,6 +916,9 @@ tr.is-highlight > :last-child { box-shadow: 12px 0 var(--fill-tertiary); }
           <div class="x-chart"><h3>疆域面积<small>万 km² · 示意估算</small></h3><svg id="areac" viewBox="0 0 300 110"></svg></div>
         </div>
       </aside>
+      <aside class="x-notes x-glass" id="notes" aria-label="本期要点" hidden=""></aside>
+      <button class="x-ibtn x-sm x-npill" id="npill" type="button" aria-controls="notes" aria-expanded="false" hidden="">要点</button>
+      <button class="x-nchip x-glass" id="nchip" type="button" aria-controls="drawer" aria-label="本期要点，点按查看说明" hidden=""><b id="nchip1"></b><span id="nchip2"></span></button>
       <div class="x-lay">
         <button class="x-ibtn x-sm" id="laybtn" type="button" aria-controls="laypop" aria-expanded="false">图层</button>
         <div class="x-pop x-glass" id="laypop" hidden="">
@@ -894,6 +931,7 @@ tr.is-highlight > :last-child { box-shadow: 12px 0 var(--fill-tertiary); }
             <label><input type="checkbox" data-l="ev" checked=""/>事件</label>
             <label><input type="checkbox" data-l="route" checked=""/>路线</label>
             <label><input type="checkbox" data-l="today"/>今日中国轮廓</label>
+            <label><input type="checkbox" data-l="notes" checked=""/>要点</label>
           </div>
           <h2>图例</h2>
           <div class="x-legend"><span id="lgcore"><i style="background:var(--x-core)"></i>中原王朝</span><span><i style="background:color-mix(in srgb,var(--x-core) 16%,transparent);outline:1.4px dashed var(--x-core-line);outline-offset:-1.4px"></i>羁縻 / 都护府 / 藩属（间接控制）</span><span><i style="background:linear-gradient(90deg,var(--x-p0) 0 34%,var(--x-p1) 0 67%,var(--x-p2) 0)"></i>并立政权</span><span><i style="background:var(--x-other)"></i>周边</span></div>
@@ -1108,7 +1146,7 @@ const sortParts=ps=>ps.slice().sort((a,b)=>b[1]-a[1]);
 const foldParts=ps=>{const s=sortParts(ps);if(s.length<=4)return{many:false};const r=s.slice(6);return{many:true,top:s.slice(0,6),rest:r.length?{n:r.length,a:r.reduce((t,p)=>t+(+p[1]||0),0)}:null}};
 const cpShade=(k,n)=>{const h=Math.round(348+(n>1?k/(n-1):0)*48)%360,l=[44,58,33][k%3],s=[74,66,70][k%3];return`light-dark(hsl(${h} ${s}% ${l}%),hsl(${h} ${s+10}% ${l+16}%))`};
 function centroid(g){let best=null,ba=0;polys(g).forEach(p=>{const r=p[0].map(c=>P(c[0],c[1]));let a=0,x=0,y=0;for(let i=0,j=r.length-1;i<r.length;j=i++){const f=r[j][0]*r[i][1]-r[i][0]*r[j][1];a+=f;x+=(r[j][0]+r[i][0])*f;y+=(r[j][1]+r[i][1])*f}if(Math.abs(a)>ba){ba=Math.abs(a);best=[x/(3*a),y/(3*a)]}});return best}
-const S={i:0,lens:"territory",playing:false,timer:null,layers:{terrain:true,jimi:true,peer:true,other:true,cap:true,ev:true,route:true,today:false}};
+const S={i:0,lens:"territory",playing:false,timer:null,layers:{terrain:true,jimi:true,peer:true,other:true,cap:true,ev:true,route:true,today:false,notes:true}};
 let vb={x:0,y:0,w:W,h:H},cur=null;
 map.addEventListener("pointermove",e=>{const t=e.target,tip=$("tip");if(e.buttons||!t.dataset||!t.dataset.tip){tip.hidden=true;return}const w=$("mapwrap").getBoundingClientRect();tip.textContent=t.dataset.tip;tip.style.left=(e.clientX-w.left)+"px";tip.style.top=(e.clientY-w.top)+"px";tip.hidden=false});
 map.addEventListener("pointerleave",()=>{$("tip").hidden=true});
@@ -1136,7 +1174,7 @@ g.classList.toggle("lm-off",!on)})}
 function schedLabels(){clearTimeout(lmT);lmT=setTimeout(layoutLabels,120)}
 $("today").setAttribute("d",B[B.length-1].features.filter(f=>f.r==="core").map(f=>geoD(f.g)).join(""));
 // view
-function setVB(v){vb=v;map.setAttribute("viewBox",[v.x,v.y,v.w,v.h].map(n=>n.toFixed(3)).join(" "));scaleMarks();schedLabels()}
+function setVB(v){vb=v;map.setAttribute("viewBox",[v.x,v.y,v.w,v.h].map(n=>n.toFixed(3)).join(" "));scaleMarks();schedLabels();schedNotes()}
 function kNow(){const r=map.getBoundingClientRect();return r.width?Math.max(vb.w/r.width,vb.h/r.height):vb.w/800}
 function scaleMarks(){const k=kNow();map.style.setProperty("--k",k);map.querySelectorAll("[data-x]").forEach(g=>g.setAttribute("transform",`translate(${g.dataset.x} ${g.dataset.y}) scale(${k})`));const r=map.getBoundingClientRect(),sc=Math.min(r.width/vb.w,r.height/vb.h)||1,ox=(r.width-vb.w*sc)/2,oy=(r.height-vb.h*sc)/2;document.querySelectorAll(".x-evb").forEach(b=>{b.style.left=(ox+(b.dataset.ux-vb.x)*sc)+"px";b.style.top=(oy+(b.dataset.uy-vb.y)*sc)+"px"})}
 // the map fills the screen; fit() frames the content inside the area left clear by the floating overlays, and fx/fy give that area's centre
@@ -1171,7 +1209,7 @@ if(instant){g.style.opacity=1;if(old)old.remove()}else{g.getBoundingClientRect()
 [...eras.children].slice(0,-2).forEach(e=>e.remove());
 // move marks layer content: keep events/cap above all eras by placing era into eras only
 renderText();renderCharts();history.replaceState(null,"","#year="+n.year+"&lens="+S.lens)}
-function renderText(){const nd=N.nodes[String(B[S.i].year)]||{},L=N.lenses.find(l=>l.id===S.lens)||N.lenses[0];$("desc").textContent=L.desc;$("dtitle").textContent=L.name+" · "+fy(B[S.i].year)+" "+B[S.i].label;$("text").textContent=(nd.lenses||{})[S.lens]||"暂无该视角的说明。";$("tabs").querySelectorAll("button").forEach(b=>b.setAttribute("aria-selected",b.dataset.id===S.lens))}
+function renderText(){const nd=N.nodes[String(B[S.i].year)]||{},L=N.lenses.find(l=>l.id===S.lens)||N.lenses[0];$("desc").textContent=L.desc;$("dtitle").textContent=L.name+" · "+fy(B[S.i].year)+" "+B[S.i].label;$("text").textContent=(nd.lenses||{})[S.lens]||"暂无该视角的说明。";$("tabs").querySelectorAll("button").forEach(b=>b.setAttribute("aria-selected",b.dataset.id===S.lens));updateNotes()}
 // tabs
 N.lenses.forEach(l=>{const b=document.createElement("button");b.type="button";b.setAttribute("role","tab");b.dataset.id=l.id;b.textContent=l.name;if(l.id==="why"){const t=document.createElement("span");t.className="x-tag";t.textContent="多线索综合解读";b.appendChild(t)}b.onclick=()=>{S.lens=l.id;renderText();history.replaceState(null,"","#year="+B[S.i].year+"&lens="+S.lens)};$("tabs").appendChild(b)});
 // charts
@@ -1196,7 +1234,7 @@ function play(){if(S.playing)return;S.playing=true;$("play").textContent="❚❚
 function pause(){S.playing=false;clearInterval(S.timer);$("play").textContent="▶";$("play").setAttribute("aria-label","播放")}
 $("play").onclick=()=>S.playing?pause():play();
 // layers
-function setLayers(o){o={...(o||{})};for(const k in o)if(!(k in S.layers))delete o[k];Object.assign(S.layers,o);schedLabels();for(const k in S.layers){map.classList.toggle("no-"+k,!S.layers[k]);$("mapwrap").classList.toggle("no-"+k,!S.layers[k]);const cb=document.querySelector(`[data-l="${k}"]`);if(cb)cb.checked=!!S.layers[k]}}
+function setLayers(o){o={...(o||{})};for(const k in o)if(!(k in S.layers))delete o[k];Object.assign(S.layers,o);schedLabels();for(const k in S.layers){map.classList.toggle("no-"+k,!S.layers[k]);$("mapwrap").classList.toggle("no-"+k,!S.layers[k]);const cb=document.querySelector(`[data-l="${k}"]`);if(cb)cb.checked=!!S.layers[k]}schedNotes()}
 document.querySelectorAll("[data-l]").forEach(cb=>cb.onchange=()=>setLayers({[cb.dataset.l]:cb.checked}));
 // pan / zoom
 let drag=null,anim=null;
@@ -1219,17 +1257,63 @@ function setSide(open){side.classList.toggle("is-collapsed",!open);app.classList
 stog.onclick=()=>setSide(side.classList.contains("is-collapsed"));
 $("scrim").onclick=()=>{if(app.classList.contains("sheet-open"))setSide(false)};
 // narrative drawer
-function setDrawer(open){$("drawer").classList.toggle("is-open",open);app.classList.toggle("drawer-open",open);$("drawerbody").hidden=!open;$("drawerbar").setAttribute("aria-expanded",open);$("drawerbar").setAttribute("aria-label",open?"收起说明":"展开说明")}
+function setDrawer(open){$("drawer").classList.toggle("is-open",open);app.classList.toggle("drawer-open",open);$("drawerbody").hidden=!open;$("drawerbar").setAttribute("aria-expanded",open);$("drawerbar").setAttribute("aria-label",open?"收起说明":"展开说明");schedNotes()}
 $("drawerbar").onclick=()=>setDrawer(!$("drawer").classList.contains("is-open"));
 // layers popover
 function setPop(open){$("laypop").hidden=!open;$("laybtn").setAttribute("aria-expanded",open)}
 $("laybtn").onclick=()=>setPop($("laypop").hidden);
 document.addEventListener("pointerdown",e=>{if(!$("laypop").hidden&&!e.target.closest(".x-lay"))setPop(false)});
 document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;if(!$("laypop").hidden)setPop(false);else if($("drawer").classList.contains("is-open"))setDrawer(false);else if(app.classList.contains("sheet-open"))setSide(false)});
+// 本期要点: a floating card placed in the first free slot (phones get a summary chip instead)
+var nT=null,nY=null,nForce=false,nBox={i:-1,b:[]};
+const NC=$("notes"),NP=$("npill"),NH=$("nchip"),CIRC="①②③";
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const trim90=s=>{const a=Array.from(s||"");return a.length>90?a.slice(0,90).join("")+"…":a.join("")};
+const wkm=a=>"约 "+a+" 万km²";
+function nNames(n,r,k){const m=new Map();(n.features||[]).forEach(f=>{if(f.r===r&&f.n)m.set(f.n,(m.get(f.n)||0)+(+f.a||0))});const s=[...m].sort((a,b)=>b[1]-a[1]);return k?s.slice(0,k):s}
+const row=(dt,dd,sub,cls)=>`<div${cls?` class="${cls}"`:""}><dt>${esc(dt)}</dt><dd>${esc(dd)}${sub?`<small>${esc(sub)}</small>`:""}</dd></div>`;
+function nRows(n){const y=n.year,jm=(+n.jimi_wkm2||0)>0&&(n.features||[]).some(f=>f.r==="jimi");
+if(S.lens==="climate"){const c=N.climate.find(c=>y>=c.from&&y<c.to);return c?row("冷暖分期",c.state==="warm"?"温暖期":"寒冷期",c.label)+row("时段",fy(c.from)+"—"+fy(c.to)):row("冷暖分期","不在分期范围内","分期止于"+fy(N.climate[N.climate.length-1].to))}
+if(S.lens==="people"){let p=N.population[0];N.population.forEach(q=>{if(Math.abs(q.year-y)<Math.abs(p.year-y))p=q});return row("人口","约 "+p.value+" 万 · "+p.kind,p.note)+row("记录年份",fy(p.year)+(p.year===y?"":"（最近一次）"))}
+if(S.lens==="fusion"){const lst=(r,k)=>{const s=nNames(n,r);return s.length?s.slice(0,k).map(p=>p[0]).join("、")+(s.length>k?" 等"+s.length+"处":""):""};let h="";const j=lst("jimi",3),p=lst("peer",3),o=lst("other",3);if(j)h+=row("羁縻/藩属",j);if(p)h+=row("并立政权",p);if(o)h+=row("周边",o);return h||row("边疆","暂无数据")}
+let h=row(Array.isArray(n.core_parts)&&n.core_parts.length>1?"诸国合计":"直辖",wkm(n.area_wkm2));if(jm)h+=row("羁縻/藩属",wkm(n.jimi_wkm2));
+const pr=nNames(n,"peer",3);if(pr.length)h+=row("并立政权",pr.map(p=>p[0]+" "+p[1]).join(" · ")+" 万km²","","x-n-sub");return h}
+function fillNotes(){const n=B[S.i],nd=N.nodes[String(n.year)]||{},L=N.lenses.find(l=>l.id===S.lens)||N.lenses[0],evs=(nd.events||[]).slice(0,3);
+NC.innerHTML=`<div class="x-n-head"><div><p class="x-n-yr">${esc(fy(n.year))}<span>${esc(n.label)}</span></p></div><span class="x-tag" title="当前视角">${esc(L.name)}</span><button class="x-ibtn x-sm x-n-x" type="button" aria-label="收起要点"${nForce?"":" hidden"}>收起</button></div>`+
+`<dl class="x-n-rows">${nRows(n)}</dl><p class="x-n-txt">${esc(trim90((nd.lenses||{})[S.lens]||"暂无该视角的说明。"))}</p>`+
+(evs.length?`<ol class="x-n-evs">${evs.map((e,i)=>`<li><button type="button" data-i="${i}"><b>${CIRC[i]}</b>${esc(e.name)}</button></li>`).join("")}</ol>`:"")+
+`<div class="x-n-foot"><p class="x-n-src"><span class="x-n-q q${esc(n.quality)}">可信度 ${esc(n.quality)}</span> · ${esc(n.source)}${n.quality==="低"?" · 边界为示意":""}</p><button class="x-more" type="button" aria-controls="drawer">详细 ▸</button></div>`;
+NC.querySelectorAll(".x-n-evs button").forEach(b=>b.onclick=()=>{const i=+b.dataset.i,e=evs[i];pause();flyTo(e.lon,e.lat,Math.max(1.6,getState().view.zoom),700).then(()=>{layoutLabels();const eb=$("evs").children[i];if(eb)showCard(e,eb)})});
+NC.querySelector(".x-more").onclick=()=>setDrawer(true);
+NC.querySelector(".x-n-x").onclick=()=>{nForce=false;placeNotes();NP.focus()};
+$("nchip1").textContent=fy(n.year)+" · "+(Array.isArray(n.core_parts)&&n.core_parts.length>1?"诸国合计":"直辖")+wkm(n.area_wkm2).replace(" ","");
+$("nchip2").textContent=evs.length?CIRC[0]+" "+evs[0].name:n.label}
+// screen rectangles to keep clear: each core/jimi polygon's projected bbox, the sidebar, the bottom bar and the map controls
+function nObstacles(){const n=B[S.i];if(nBox.i!==S.i){nBox={i:S.i,b:[]};(n.features||[]).forEach(f=>{if(f.r!=="core"&&f.r!=="jimi")return;polys(f.g).forEach(p=>{const a=[1e9,1e9,-1e9,-1e9];p[0].forEach(c=>{const q=P(c[0],c[1]);if(q[0]<a[0])a[0]=q[0];if(q[1]<a[1])a[1]=q[1];if(q[0]>a[2])a[2]=q[0];if(q[1]>a[3])a[3]=q[1]});nBox.b.push(a)})})}
+const r=map.getBoundingClientRect(),sc=Math.min(r.width/vb.w,r.height/vb.h)||1,ox=r.left+(r.width-vb.w*sc)/2,oy=r.top+(r.height-vb.h*sc)/2,toS=(x,y)=>[ox+(x-vb.x)*sc,oy+(y-vb.y)*sc];
+const out=nBox.b.map(a=>{const p=toS(a[0],a[1]),q=toS(a[2],a[3]);return{l:p[0],t:p[1],r:q[0],b:q[1]}});
+[side,$("dock"),document.querySelector(".x-zoom"),$("laybtn")].forEach(e=>{const q=e&&e.getBoundingClientRect();if(q&&q.width)out.push({l:q.left,t:q.top,r:q.right,b:q.bottom})});
+return{out,geo:(lon,lat)=>{const q=P(lon,lat);return toS(q[0],q[1])}}}
+function placeNotes(){clearTimeout(nT);const on=!!S.layers.notes,phone=innerWidth<600;NH.hidden=!(on&&phone);if(!on||phone){NC.hidden=true;NP.hidden=true;return}
+NC.style.visibility="hidden";NC.hidden=false;NC.querySelector(".x-n-x").hidden=true;const w=NC.offsetWidth,h=NC.offsetHeight,W=innerWidth,H=innerHeight,m=parseFloat(getComputedStyle(app).getPropertyValue("--x-m"))||10,lb=$("laybtn").getBoundingClientRect(),bar=$("dock").getBoundingClientRect(),O=nObstacles();
+const slot=(a,b,c,d)=>{const p=O.geo(a,d),q=O.geo(b,c),cx=(p[0]+q[0])/2,cy=(p[1]+q[1])/2;return cx<0||cx>W||cy<0||cy>H?null:[cx-w/2,cy-h/2]};
+const cands=[slot(122,133,18,30),slot(70,88,44,53),[W-m-w,lb.bottom+8],[m,bar.top-8-h]];
+const clamp=c=>[Math.max(m,Math.min(W-m-w,c[0])),Math.max(m,Math.min(H-m-h,c[1]))];
+let pick=null,si=0;for(let i=0;i<cands.length&&!pick;i++){if(!cands[i])continue;const[x,y]=clamp(cands[i]),R={l:x-6,t:y-6,r:x+w+6,b:y+h+6};if(!O.out.some(o=>R.l<o.r&&R.r>o.l&&R.t<o.b&&R.b>o.t)){pick=[x,y];si=i+1}}
+const forced=!pick&&nForce;if(forced){pick=clamp(cands[2]);si=3}
+NC.style.visibility="";NP.setAttribute("aria-expanded",!!pick);
+if(pick){NC.style.transform=`translate(${Math.round(pick[0])}px,${Math.round(pick[1])}px)`;NC.dataset.slot=forced?"3-forced":si;NC.querySelector(".x-n-x").hidden=!forced;NP.hidden=true}
+else{NC.hidden=true;NP.hidden=false;NP.style.top=(lb.bottom+8)+"px";NP.style.right=m+"px"}}
+function schedNotes(){clearTimeout(nT);nT=setTimeout(placeNotes,150)}
+let nFadeT=null;
+function updateNotes(){const y=B[S.i].year,chg=nY!==null&&nY!==y;if(chg)nForce=false;nY=y;clearTimeout(nFadeT);
+if(chg&&!NC.hidden){NC.classList.add("is-fade");nFadeT=setTimeout(()=>{fillNotes();placeNotes();NC.classList.remove("is-fade")},100)}else{fillNotes();placeNotes()}}
+NP.onclick=()=>{nForce=true;placeNotes();const b=NC.querySelector(".x-n-x");if(b&&!b.hidden)b.focus()};
+NH.onclick=()=>setDrawer(true);
 // api
 const nearest=y=>{let bi=0;B.forEach((b,i)=>{if(Math.abs(b.year-y)<Math.abs(B[bi].year-y))bi=i});return bi};
 function goTo(year,lens){if(lens&&N.lenses.some(l=>l.id===lens))S.lens=lens;if(year!=null)render(nearest(+year));else renderText();return getState()}
-function getState(){const f=fit(),cx=vb.x+vb.w*f.fx,cy=vb.y+vb.h*f.fy,n=B[S.i];return{year:n.year,label:n.label,index:S.i,lens:S.lens,layers:{...S.layers},playing:S.playing,view:{lon:+(cx/C+60).toFixed(3),lat:+(58-cy).toFixed(3),zoom:+(f.w/vb.w).toFixed(3)}}}
+function getState(){const f=fit(),cx=vb.x+vb.w*f.fx,cy=vb.y+vb.h*f.fy,n=B[S.i];return{year:n.year,label:n.label,index:S.i,lens:S.lens,layers:{...S.layers},playing:S.playing,notes:!!S.layers.notes,notesView:NC.hidden?(NP.hidden?(NH.hidden?"off":"chip"):"pill"):"card:"+NC.dataset.slot,view:{lon:+(cx/C+60).toFixed(3),lat:+(58-cy).toFixed(3),zoom:+(f.w/vb.w).toFixed(3)}}}
 window.sandbox={goTo,setLayers:o=>{setLayers(o);return getState()},flyTo,play,pause,getState};
 // footer
 $("foot").textContent=(N.sources||[]).join("；")+"。面积为投影估算；可信度“低”的节点为通用历史底图，待校正。 "+(N.climate_source||"")+" 人口：历代户口登记与学界估计，'登记'数通常低于实际。";
@@ -1237,10 +1321,10 @@ $("foot").textContent=(N.sources||[]).join("；")+"。面积为投影估算；�
 const h=new URLSearchParams(location.hash.slice(1));
 {const open=innerWidth>=1440;side.classList.toggle("is-collapsed",!open);app.classList.toggle("side-collapsed",!open);stog.setAttribute("aria-expanded",open);stog.setAttribute("aria-label",open?"收起侧栏":"展开侧栏");$("sideic").textContent=open?"«":isPhone()?"▾":"»"}
 lastF=fit();setVB(lastF);setLayers({});S.lens=h.get("lens")&&N.lenses.some(l=>l.id===h.get("lens"))?h.get("lens"):"territory";
-render(nearest(h.has("year")?+h.get("year"):1820),true);
+render(nearest(h.has("year")?+h.get("year"):741),true);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(schedLabels);
 })();
     </script>
   
 
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a48ca2b06a7def1c',t:'MTc5MTcwODgxNw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body></html>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a48d0728288131df',t:'MTc5MTcxMjkzMw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body></html>
