@@ -231,18 +231,19 @@ function pwStart(Mo) {
     strip(hv);
   }
 
+  // (geomfix: right-handed view, nose on the left: anchors and screen offsets below are the mirror of before)
   function labels(sc, v) {
     const o = [], big = sc > 1, fs = big ? " pw-big" : "";
     const L = D.LBL;
     if (!big) { // phone: these four are in the captions and the 说明 only
-      o.push(label(B(L.dsi), "主进气口", "pw-t-air fz-small", "start", 8, 0));
-      o.push(label(B(L.aux), "辅助进气口", "pw-t-air fz-small", "end", -6, -4, v.aux));
+      o.push(label(B(L.dsi), "主进气口", "pw-t-air fz-small", "end", -8, 0));
+      o.push(label(B(L.aux), "辅助进气口", "pw-t-air fz-small", "start", 6, -4, v.aux));
       o.push(label(B(L.eng), "F135 发动机", "pw-t-eng fz-small", "middle", 0, -6));
       o.push(label(B(L.lpt), "低压涡轮 → 低压轴", "pw-t-pow fz-small", "middle", 0, 18));
     }
-    o.push(label(B(L.shaft), v.clutch > 0.5 ? (big ? "传动轴 ≈29,000 轴马力" : "传动轴 · 最高约 29,000 轴马力") : "传动轴 · 不传功率", "pw-t-pow fz-small" + fs, "end", -10 * sc, 14 * sc, lerp(0.55, 1, v.clutch)));
+    o.push(label(B(L.shaft), v.clutch > 0.5 ? (big ? "传动轴 ≈29,000 轴马力" : "传动轴 · 最高约 29,000 轴马力") : "传动轴 · 不传功率", "pw-t-pow fz-small" + fs, "start", 10 * sc, 14 * sc, lerp(0.55, 1, v.clutch)));
     o.push(label(B(L.clutch), v.clutch > 0.5 ? "离合器 · 接合" : "离合器 · 分离", "pw-t-pow fz-small" + fs, "middle", 0, -12 * sc));
-    o.push(label(B(L.fan), big ? "升力风扇" : "升力风扇 · 两级对转", "pw-t-cool fz-small" + fs, "start", 14 * sc, 0, Math.max(0.5, v.fan)));
+    o.push(label(B(L.fan), big ? "升力风扇" : "升力风扇 · 两级对转", "pw-t-cool fz-small" + fs, "end", -14 * sc, 0, Math.max(0.5, v.fan)));
     // outlets: thrust readouts in hover only (P&W split); names elsewhere
     const fanOut = B([G.FAN[0] + 0.05, 0, -3.0]), nozOut = B(v.plumeEnd), postOut = B(L.postOut);
     if (v.hv > 0.05) {
@@ -251,8 +252,8 @@ function pwStart(Mo) {
       o.push(label(postOut, `<tspan class="fz-val">7.3</tspan> 千牛 ×2`, "pw-t-byp" + fs, "middle", 0, 22 * sc, v.hv));
     }
     o.push(label(fanOut, big ? "风扇冷气流" : "风扇冷气流（VAVN）", "pw-t-cool fz-small" + fs, "middle", 0, (v.hv > 0.05 ? 42 : 20) * sc, v.fan * v.door));
-    if (big && cur.noz < 80) o.push(label(B(v.nz.exit), "三轴承喷管", "pw-t-hot fz-small" + fs, "start", 18 * sc, 30 * sc)); // phone: the plume end can leave the crop
-    else o.push(label(nozOut, big ? "三轴承喷管" : "三轴承喷管 · 热燃气", "pw-t-hot fz-small" + fs, cur.noz < 30 ? "end" : "middle", cur.noz < 30 ? -6 * sc : 0, (cur.noz < 30 ? 4 : v.hv > 0.05 ? 42 : 20) * sc));
+    if (big && cur.noz < 80) o.push(label(B(v.nz.exit), "三轴承喷管", "pw-t-hot fz-small" + fs, "end", -18 * sc, 30 * sc)); // phone: the plume end can leave the crop
+    else o.push(label(nozOut, big ? "三轴承喷管" : "三轴承喷管 · 热燃气", "pw-t-hot fz-small" + fs, cur.noz < 30 ? "start" : "middle", cur.noz < 30 ? 6 * sc : 0, (cur.noz < 30 ? 4 : v.hv > 0.05 ? 42 : 20) * sc));
     o.push(label(postOut, big ? "滚转喷口" : "滚转喷口 · 外涵空气", "pw-t-byp fz-small" + fs, "middle", 0, (v.hv > 0.05 ? 42 : 20) * sc, v.posts));
     return o.join("");
   }
