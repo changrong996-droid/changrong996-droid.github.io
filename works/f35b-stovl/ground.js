@@ -252,17 +252,18 @@ function gdStart(Mo) {
     dots[0].setAttribute("cy", cyp(fount(X, 0) - suck(X, 0)).toFixed(1)); dots[1].setAttribute("cy", cyp(fount(X, 1) - suck(X, 1)).toFixed(1));
     chart.dataset.lid = l > 0.5 ? "1" : "0";
   }
+  // (geomfix: right-handed view, nose on the left: anchors and screen offsets below are the mirror of before)
   function labels(sc, v) {
     const o = [], big = sc > 1;
     const fanMid = A(G.FAN[0] + 0.62 + 0.11 * cur.h * 0.5 + 0.2, 0, Math.max(cur.h * 0.35, 1.2));
-    o.push(label(fanMid, big ? "风扇 · 冷" : "升力风扇 · 较冷的气流", "fz-small gd-t-cool", "start", 4 * sc));
+    o.push(label(fanMid, big ? "风扇 · 冷" : "升力风扇 · 较冷的气流", "fz-small gd-t-cool", "end", -4 * sc));
     const nozMid = A(G.NOZ[0] - 0.5 - 0.11 * v.nz * 0.5 - 0.2, 0, Math.max(v.nz * 0.5, 0.9));
-    o.push(label(nozMid, big ? "喷管 · 热" : "三轴承喷管 · 热燃气", "fz-small gd-t-hot", "end", -4 * sc));
-    o.push(label(A(G.FAN[0] + 6.6, 0.4, 0), "壁面射流", "fz-small gd-t-cool", "start", 0, 20 * sc, v.gW));
-    if (v.l < 0.5 && v.gF > 0.1) o.push(label(A(G.XM - 0.6, 0, 0.5), "喷泉", "fz-small gd-t-hot", "end", 0, 0, clamp(v.gF * 1.5) * clamp((0.5 - v.l) * 4)));
-    if (v.inGlow > 0.15) o.push(label(B(G.INLET[0] + 0.6, G.INLET[1], 1.0), "热燃气 → 进气口", "fz-small gd-t-hot", "start", 0, 0, clamp(v.inGlow * 1.4)));
-    else if (v.hgi > 0.15 && v.l > 0.5) o.push(label(B(G.XM - 1.1, 3.6, Math.max(0.35 - zo, -2.2)), "热燃气被导开", "fz-small gd-t-hot", "end", -8 * sc, 14 * sc, clamp(v.hgi * 1.4)));
-    if (v.l > 0.4) o.push(label(B(G.BAY.x0, G.BAY.y, G.BAYZ[0][1] - G.BAY.w), big ? "舱门（LID）" : "内侧武器舱门（LID）", "fz-small gd-t-door", "start", 6 * sc, 16 * sc, clamp((v.l - 0.4) * 2.5)));
+    o.push(label(nozMid, big ? "喷管 · 热" : "三轴承喷管 · 热燃气", "fz-small gd-t-hot", "start", 4 * sc));
+    o.push(label(A(G.FAN[0] + 6.6, 0.4, 0), "壁面射流", "fz-small gd-t-cool", "end", 0, 20 * sc, v.gW));
+    if (v.l < 0.5 && v.gF > 0.1) o.push(label(A(G.XM - 0.6, 0, 0.5), "喷泉", "fz-small gd-t-hot", "start", 0, 0, clamp(v.gF * 1.5) * clamp((0.5 - v.l) * 4)));
+    if (v.inGlow > 0.15) o.push(label(B(G.INLET[0] + 0.6, G.INLET[1], 1.0), "热燃气 → 进气口", "fz-small gd-t-hot", "end", 0, 0, clamp(v.inGlow * 1.4)));
+    else if (v.hgi > 0.15 && v.l > 0.5) o.push(label(B(G.XM - 1.1, 3.6, Math.max(0.35 - zo, -2.2)), "热燃气被导开", "fz-small gd-t-hot", "start", 8 * sc, 14 * sc, clamp(v.hgi * 1.4)));
+    if (v.l > 0.4) o.push(label(B(G.BAY.x0, G.BAY.y, G.BAYZ[0][1] - G.BAY.w), big ? "舱门（LID）" : "内侧武器舱门（LID）", "fz-small gd-t-door", "end", -6 * sc, 16 * sc, clamp((v.l - 0.4) * 2.5)));
     return o.join("");
   }
 
