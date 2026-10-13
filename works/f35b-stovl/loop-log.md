@@ -219,3 +219,12 @@
 - 验证 shots/topic-forces-nose/final/（1440×900 与 390×844 五个状态 + 说明展开、线条图；1280×720 / 1920×1080 / 1024×768 平衡；动画中帧 anim-*）、close-nose*.png、compare.png（= shots/topic-forces.png，已刷新）。五个视口 × 说明收起/展开均无滚动；线条 0 悬空（1440：0 / 3688 端点，390：0 / 3702）；控制台正常与 --reduced 均干净（http：work/i10/states-http.sh）；降低动效仍直接显示结果姿态；桌面与手机五个状态逐张看过，标签无碰撞。
 - 发布：works/f35b-stovl/forces.js（提交 f48fe9f）、forces.html（76c4cd4）、shots/topic-forces.png（00472aa）、loop-log.md；shared/f35b-model.js 未推送、线上 sha1 不变。GitHub issue（f35b-闭环）记录全部提交，已关闭。
 - 遗留：file:// 下仍退回共用几何；P&W 产品卡另有一组悬停分配（风扇 83.1、主发动机 83.1、滚转喷口合计 14.6 千牛），本页未采用（用户定的是以 Rolls-Royce 最大值为上限）。
+
+## 专题页 · 力与力矩平衡 · 改用 P&W 公布的悬停分配 · 2026-10-13（北京时间，18:07–18:40）· 已发布
+- 用户 2026-10-13 批准。备份 backup/topic-forces-pw/。只改 forces.js 与 build-forces.mjs；model.mjs、shared/*、topics.html、index.html、wide.html 未改（build 重写的 topics.html 与 shared/* 逐字节相同）；site/shared/f35b-model.js sha1 仍为 107900593917ad700f3936527b3106166e0ae2c2。
+- 数据核对：rtx.com 2022 版产品卡（f135-stovl.pdf）只有悬停推力级 40,650 磅力，没有分项；分项出自 P&W 2019 版 F135 STOVL 产品资料（filecache.mediaroom.com/mr5mr_prattwhitney/180796/download/me_f135_engine_stovl.pdf）：主发动机 18,680、升力风扇 18,680、滚转喷口 3,290 磅力（83.1 / 83.1 / 14.6 千牛，合计 40,650 = 180.8）。
+- 平衡 = P&W 分配：风扇 83.1、喷管 83.1、滚转喷口 7.3 + 7.3，标「P&W」。重心由合力矩为零反推（x = ΣF·x / ΣF）：x −1.465，距机头 9.46 米，主轮前 0.39 米（build 检查须在主轮前 0–1.5 米）。力臂 a = 3.38、b = 3.33、滚转喷口在重心后 0.29、离中线 2.40 米；83.1 × 3.38 ≈ 281 = 83.1 × 3.33 ≈ 277 + 14.6 × 0.29 ≈ 4。
+- 删去「各项不超最大值」检查（保留合计 180.8 与非负检查）；说明改为 89 / 80 / 8.7 是其他条件下的部件数值，悬停分配取 P&W 的 83.1 / 83.1 / 14.6。
+- 状态（示意，合计都是 180.8）：抬头 84.6 / 81.6 / 7.3 / 7.3（+10 千牛·米）；低头 81.6 / 84.6 / 7.3 / 7.3（−10）；左滚 7.3 → 左 6.2 右 8.4（+5）；右滚 左 8.4 右 6.2（−5）。姿态 ±6° / ±8°、力矩弧不变。
+- 验证 shots/topic-forces-pw/final/：五个视口 × 说明收起/展开均无滚动；线条 0 悬空（1440：0 / 3688，390：0 / 3702）；控制台正常与 --reduced 均干净；标签无碰撞；shots/topic-forces.png 已刷新。
+- 发布：works/f35b-stovl/forces.js（a1c2254）、forces.html（a765d17）、shots/topic-forces.png（11d06e9）、loop-log.md。
