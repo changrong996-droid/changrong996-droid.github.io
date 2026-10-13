@@ -178,15 +178,15 @@ function fzStart(Mo) {
     out.push(bar(pF, pC, 1.6 * sc, "fz-dim"), bar(pC, pN, 1.6 * sc, "fz-dim"));
     for (const p of [pF, pN, pC]) out.push(bar([p[0], p[1] - 7 * sc], [p[0], p[1] + 7 * sc], 1.6 * sc, "fz-dim"));
     const mid = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
-    out.push(label([pF[0] - 4 * sc, pF[1]], `a = ${D.ARM.fan.toFixed(2)} 米`, "fz-dimlbl", "start", 19 * sc)); // short span: label beside the fan end
-    out.push(label([pN[0] + 4 * sc, pN[1]], `b = ${D.ARM.noz.toFixed(2)} 米`, "fz-dimlbl", "end", 19 * sc)); // beside the nozzle end, clear of the weight arrow
+    out.push(label([pF[0] + 4 * sc, pF[1]], `a = ${D.ARM.fan.toFixed(2)} 米`, "fz-dimlbl", "end", 19 * sc)); // short span: label beside the fan end
+    out.push(label([pN[0] - 4 * sc, pN[1]], `b = ${D.ARM.noz.toFixed(2)} 米`, "fz-dimlbl", "start", 19 * sc)); // beside the nozzle end, clear of the weight arrow
 
     // weight at the CG (world vertical)
     const cgW = toW(D.CG), cg = pr(cgW);
     const wTip = pr([cgW[0], cgW[1], cgW[2] - D.FSUM * D.KN_M * U]);
     out.push(arrow(cg, wTip, 5 * sc, 17 * sc, "fz-arr fz-w"));
-    out.push(label(wTip, `重量 ≈ ${kn(D.FSUM)} 千牛`, "fz-wl", "start", 0).replace(/x="([\d.-]+)"/, (m0, x) => `x="${f1(+x + 12 * sc)}"`));
-    out.push(label([wTip[0] + 12 * sc, wTip[1]], "（由推力反推，非公开数据）", "fz-note", "start", 17 * sc));
+    out.push(label(wTip, `重量 ≈ ${kn(D.FSUM)} 千牛`, "fz-wl", "end", 0).replace(/x="([\d.-]+)"/, (m0, x) => `x="${f1(+x - 12 * sc)}"`));
+    out.push(label([wTip[0] - 12 * sc, wTip[1]], "（由推力反推，非公开数据）", "fz-note", "end", 17 * sc));
 
     // thrusts: from each post along body-up, length ∝ force
     const T = (key, cls) => {
@@ -198,24 +198,25 @@ function fzStart(Mo) {
       return pr(b);
     };
     const tF = T("fan", "fz-cold"), tN = T("noz", "fz-hot"), tL = T("postL", "fz-post"), tR = T("postR", "fz-post");
-    // the two tips stand at about the same height ~6.7 m apart: fan labels to the right of its tip, nozzle labels to the left
+    // the two tips stand at about the same height ~6.7 m apart: fan labels to the left of its tip, nozzle labels to the right
+    // (geomfix: the view is right-handed now, nose on the left, so every screen offset here is the mirror of before)
     // the nozzle's labels stay above the fin tips (in 左滚 the port fin rises into them)
     const finTop = Math.min(...[[-5.47, 2.0, 2.4], [-6.48, 2.0, 2.4], [-5.47, -2.0, 2.4], [-6.48, -2.0, 2.4]].map((p) => pr(toW(p))[1]));
-    const tF2 = [tF[0] - 6 * sc, tF[1]], tN2 = [tN[0] + 6 * sc, Math.min(tN[1], finTop - 2 * sc)];
+    const tF2 = [tF[0] + 6 * sc, tF[1]], tN2 = [tN[0] - 6 * sc, Math.min(tN[1], finTop - 2 * sc)];
     // the balance split is P&W's published hover split; every other split is illustrative
     const tag = (k) => Math.abs(cur[k] - BAL[k]) < 0.05 ? "P&amp;W" : "示意";
-    out.push(label(tF2, "升力风扇", "fz-name", "start", -26 * sc), label(tF2, `${kn(cur.fan)} 千牛 · ${tag("fan")}`, "fz-val fz-cold-t", "start", -9 * sc));
-    out.push(label(tN2, "三轴承喷管", "fz-name", "end", -26 * sc), label(tN2, `${kn(cur.noz)} 千牛 · ${tag("noz")}`, "fz-val fz-hot-t", "end", -9 * sc));
+    out.push(label(tF2, "升力风扇", "fz-name", "end", -26 * sc), label(tF2, `${kn(cur.fan)} 千牛 · ${tag("fan")}`, "fz-val fz-cold-t", "end", -9 * sc));
+    out.push(label(tN2, "三轴承喷管", "fz-name", "start", -26 * sc), label(tN2, `${kn(cur.noz)} 千牛 · ${tag("noz")}`, "fz-val fz-hot-t", "start", -9 * sc));
     // roll posts: labels off to the side with the value
     const pl = pr(toW(D.PTS.postL)), prr = pr(toW(D.PTS.postR));
     // below the lever-arm line (the moved nose wheel now hangs where this label used to sit, just under the posts)
-    out.push(label([pl[0] + 14 * sc, Math.max(pF[1], pC[1]) + 42 * sc], `滚转喷口 左 ${kn(cur.postL)} · 右 ${kn(cur.postR)}`, "fz-small fz-post-t", "start"));
+    out.push(label([pl[0] - 14 * sc, Math.max(pF[1], pC[1]) + 42 * sc], `滚转喷口 左 ${kn(cur.postL)} · 右 ${kn(cur.postR)}`, "fz-small fz-post-t", "end"));
 
     // CG marker (quartered roundel)
     const R0 = 9 * sc;
     out.push(`<circle class="fz-cg-bg" cx="${f1(cg[0])}" cy="${f1(cg[1])}" r="${f1(R0 + 1.6 * sc)}"/>`);
     out.push(`<path class="fz-cg-q" d="M${P2(cg)}L${P2([cg[0] + R0, cg[1]])}A${f1(R0)} ${f1(R0)} 0 0 0 ${P2([cg[0], cg[1] - R0])}ZM${P2(cg)}L${P2([cg[0] - R0, cg[1]])}A${f1(R0)} ${f1(R0)} 0 0 0 ${P2([cg[0], cg[1] + R0])}Z"/>`);
-    out.push(label([cg[0] + 14 * sc, cg[1] - 12 * sc], "重心（估计）", "fz-cgl", "start")); // above-right: the nozzle arrow now stands just left of the CG
+    out.push(label([cg[0] - 14 * sc, cg[1] - 12 * sc], "重心（估计）", "fz-cgl", "end")); // above-right: the nozzle arrow now stands just left of the CG
 
     // moments
     const Mp = cur.fan * D.ARM.fan + (cur.postL + cur.postR) * D.ARM.post - cur.noz * D.ARM.noz;
