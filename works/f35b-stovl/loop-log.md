@@ -260,3 +260,12 @@
 - 验证：shots/loop/geomfix/before/ 与 after/（跟拍五个时刻 + 全景 + 线条 + 特写）；线条 0 / 10308 端点悬空；无头控制台 index（t = 22.7、36.75）与 wide 均干净。对比图 mac-loop/geomfix_before_after.png（线上 shots/geomfix_before_after.png）。
 - 发布 works/f35b-stovl/：index.html（98e3215）、wide.html（85b816f）、shared/f35b-model.js（e27c51f）、forces.html（7c07c9a）、forces.js（7063551）、ground.html（52a836a）、ground.js（6604d3e）、power.html（1ca0f14）、power.js（7720b4a）、shots/geomfix_before_after.png（bb8e0e7）、loop-log.md。目录缩略图未刷新。
 - 目录缩略图已刷新（2026-10-13）：五张 shared/thumb-*.jpg 按修正后的页面重拍（http，480×300，裁切与 JPEG 质量同前：跟拍 t=7.35 与全景整屏 1440×1100、力与力矩 1024×768 平衡、地面效应 1440×900 低悬停舱门关、功率流向 1920×1080 悬停（拍摄时隐藏桑基小图与图例）；页面裁切框随镜像左右翻转，机头朝左）。推送 thumb-follow（80020ed）、thumb-wide（053dd2f）、thumb-forces（22a2fe1）、thumb-ground（ccef891）、thumb-power（a106b7d）；topics.html 未变、未推送。截图 shots/thumbs-geomfix/。
+
+## 性能 · perf-1 · 低配性能优化（跟拍版 index + 全景版 wide）· 2026-10-13 · 已发布
+- 用户 2026-10-13 批准（只瘦身，外观不变）。备份 backup/perf-1/。
+- 保留：跟拍版静态舰船层（船体/甲板/舰岛/停放飞机/直升机/车辆/人员单独 SVG，缩放不变时只平移；跳过同值 viewBox 写入）；低配模式 lite.js/lite.css（两页：WebGL 飞机/下洗/蒸汽换成简易 SVG 飞机，隐藏焊缝/系留格/甲板灯/点纹理，雷达静止，透视件只画轮廓，跟拍小图每 4 帧刷新；跟拍版在低配模式内按屏幕尺寸省略小部件）；直升机截面 16→12 边（差异 0.017 %）；内联脚本 terser 压缩（minify.mjs）。
+- 回滚：全景版阴影层（无增益）、轮胎缓存（无增益）、合并舰岛路径（无可合并）。
+- 低配模式：回放滚动平均 <30 fps 持续约 2 秒（预热 3 秒后）自动开启并提示 6 秒；L 键、「说明」顶部「低配模式：开/关」按钮、#lite / #lite=0；手动关闭后不再自动开启。
+- 数值（沙箱无头 Chrome 软件 WebGL，1440×900）：跟拍 2.8 fps → 低配 33.1（4× 降速 1.5 → 9.9）；全景 5.6 → 低配 43.5（4× 3.1 → 14.2）；低配关闭时无可测差异。Mac Chrome Metal 4× 降速：静态层 17.5 → 18.9 fps；跟拍版全景视角 47 → 59.5（垂直同步上限）。
+- 体积 raw / gzip：跟拍 791,056 / 199,174 → 683,029 / 173,485；全景 696,702 / 168,509 → 600,199 / 146,563。
+- 像素对比（低配关闭）：24 张定帧最差 0.019 %；控制台干净；无滚动。拼图 shots/perf-1/before_after.png。
