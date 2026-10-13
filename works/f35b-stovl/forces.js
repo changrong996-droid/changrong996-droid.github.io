@@ -116,7 +116,7 @@
     out.push(bar(pF, pC, 1.6 * sc, "fz-dim"), bar(pC, pN, 1.6 * sc, "fz-dim"));
     for (const p of [pF, pN, pC]) out.push(bar([p[0], p[1] - 7 * sc], [p[0], p[1] + 7 * sc], 1.6 * sc, "fz-dim"));
     const mid = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
-    out.push(label(mid(pF, pC), `a = ${D.ARM.fan.toFixed(2)} 米`, "fz-dimlbl", "middle", 19 * sc));
+    out.push(label([pF[0] - 4 * sc, pF[1]], `a = ${D.ARM.fan.toFixed(2)} 米`, "fz-dimlbl", "start", 19 * sc)); // short span: label beside the fan end
     out.push(label(mid(pC, pN), `b = ${D.ARM.noz.toFixed(2)} 米`, "fz-dimlbl", "middle", 19 * sc));
 
     // weight at the CG (world vertical)
@@ -136,8 +136,8 @@
       return pr(b);
     };
     const tF = T("fan", "fz-cold"), tN = T("noz", "fz-hot"), tL = T("postL", "fz-post"), tR = T("postR", "fz-post");
-    out.push(label(tF, "升力风扇", "fz-name", "middle", -26 * sc), label(tF, `${kn(cur.fan)} 千牛`, "fz-val fz-cold-t", "middle", -9 * sc));
-    out.push(label(tN, "三轴承喷管", "fz-name", "middle", -26 * sc), label(tN, `${kn(cur.noz)} 千牛`, "fz-val fz-hot-t", "middle", -9 * sc));
+    out.push(label(tF, "升力风扇", "fz-name", "middle", -26 * sc), label(tF, `${kn(cur.fan)} 千牛 · 示意`, "fz-val fz-cold-t", "middle", -9 * sc));
+    out.push(label(tN, "三轴承喷管", "fz-name", "middle", -26 * sc), label(tN, `${kn(cur.noz)} 千牛 · 示意`, "fz-val fz-hot-t", "middle", -9 * sc));
     // roll posts: labels off to the side with the value
     const pl = pr(toW(D.PTS.postL)), prr = pr(toW(D.PTS.postR));
     out.push(label([pl[0] + 14 * sc, pl[1] + 30 * sc], `滚转喷口 左 ${kn(cur.postL)} · 右 ${kn(cur.postR)}`, "fz-small fz-post-t", "start"));
@@ -146,7 +146,7 @@
     const R0 = 9 * sc;
     out.push(`<circle class="fz-cg-bg" cx="${f1(cg[0])}" cy="${f1(cg[1])}" r="${f1(R0 + 1.6 * sc)}"/>`);
     out.push(`<path class="fz-cg-q" d="M${P2(cg)}L${P2([cg[0] + R0, cg[1]])}A${f1(R0)} ${f1(R0)} 0 0 0 ${P2([cg[0], cg[1] - R0])}ZM${P2(cg)}L${P2([cg[0] - R0, cg[1]])}A${f1(R0)} ${f1(R0)} 0 0 0 ${P2([cg[0], cg[1] + R0])}Z"/>`);
-    out.push(label([cg[0] - 16 * sc, cg[1] - 14 * sc], "重心", "fz-cgl", "end"));
+    out.push(big ? label([cg[0] - 14 * sc, cg[1] + 26 * sc], "重心（估计）", "fz-cgl", "end") : label([cg[0] - 16 * sc, cg[1] - 14 * sc], "重心（估计）", "fz-cgl", "end")); // phone: below-left, clear of the nozzle label
 
     // moments
     const Mp = cur.fan * D.ARM.fan + (cur.postL + cur.postR) * D.ARM.post - cur.noz * D.ARM.noz;
