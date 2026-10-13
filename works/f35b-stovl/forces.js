@@ -1,6 +1,67 @@
 // 力与力矩平衡 · F-35B 悬停：one fixed shot, thrust arrows ∝ force, moment arcs, five commands.
+// Page-local geometry override (this page only; shared/f35b-model.js and the two animation pages are unchanged):
+// the 3BSM nozzle and the main gear are moved to where photos of the real aircraft put them (RIAT 2016/2025 hover
+// photos scaled to the published 6.02 m wheelbase, about ±0.5 m). The shared model's source text is patched and
+// evaluated as a private copy; build-forces.mjs applies the same block (between the markers) for its numbers.
+/*FZGEOM>*/
+const FZ_GEOM = {
+  nose: 8.0, // body x of the nose tip (NOSE_TIP)
+  // nozzle exit 12.8 m from the nose (model 15.2), about 0.85 m below the belly as in the photos: the same three
+  // segments (1.22 m along the axis) and serrated petals, but the swivel starts 40° down and turns the last 50° to
+  // vertical. The first ring sits wholly inside the aft fuselage (its lowest point on the belly skin); the segments
+  // are drawn just behind the fuselage, which hides the part inside it, so the duct leaves the belly cleanly.
+  nozBase: [-4.3, 0, -0.2],
+  nozA0: 40, // deg below the aft horizontal at the first ring
+  gearDX: -1.3, // main gear 9.85 m from the nose (model 8.55): legs, wheels, braces, doors, leaves, wells
+  noseDX: -0.88, // nose gear 3.83 m from the nose (model 2.95): leg, wheel, brace, doors, bay seam, well → wheelbase 6.02 m
+};
+function fzPatch(src, G) {
+  const one = (s, a, b) => { const i = s.indexOf(a); if (i < 0 || s.indexOf(a, i + 1) >= 0) throw new Error("fzPatch: " + a.slice(0, 40)); return s.slice(0, i) + b + s.slice(i + a.length); };
+  const dx = G.gearDX, X = (v) => +(v + dx).toFixed(3), N = (v) => +(v + G.noseDX).toFixed(3);
+  const all = (s, a, b, n) => { const k = s.split(a).length - 1; if (k !== n) throw new Error("fzPatch: " + a.slice(0, 40) + " ×" + k); return s.split(a).join(b); };
+  let s = one(src, "const base = [-6.42, 0, 0.04];", `const base = [${G.nozBase.join(", ")}];`);
+  s = one(s, "const th = Math.max(1e-4, deg * D2R);", `const a0 = ${G.nozA0} * D2R; const th = Math.max(1e-4, deg * D2R - a0);`);
+  s = one(s, "const at = (s) => { const f = s / R; return [V3.add(base, [-R * Math.sin(f), 0, -R * (1 - Math.cos(f))]), [-Math.cos(f), 0, -Math.sin(f)]]; };",
+    "const at = (s) => { const f = a0 + s / R; return [V3.add(base, [-R * (Math.sin(f) - Math.sin(a0)), 0, -R * (Math.cos(a0) - Math.cos(f))]), [-Math.cos(f), 0, -Math.sin(f)]]; };");
+  s = one(s, 'add(`nozzle.${i}`, seg, { tone: "hi", lit: true, bias: 3 + i * 0.01, seams: true, smooth: true, cls: "xr-keep" })',
+    'add(`nozzle.${i}`, seg, { tone: "hi", lit: true, bias: 3 + i * 0.01, seams: true, smooth: true, cls: "xr-keep", rel: { to: ["fuselage"], d: 0.05 - i * 0.001, side: [0, 0, -1] } })');
+  for (const id of ["mp", "ms"]) { // main legs: every station in the GEAR entry
+    const a = s.indexOf(`{ id: "${id}",`), b = s.indexOf("\n", a);
+    if (a < 0) throw new Error("fzPatch: gear " + id);
+    s = s.slice(0, a) + s.slice(a, b).replace(/\[(-?[\d.]+), (-?[\d.]+), (-?[\d.]+)\]/g, (m, x, y, z) => `[${X(+x)}, ${y}, ${z}]`) + s.slice(b);
+  }
+  s = one(s, "lerp(1.0, -0.75, u)", `lerp(${X(1.0)}, ${X(-0.75)}, u)`);
+  s = one(s, "skinZ(0.1, side * 1.6, false)", `skinZ(${X(0.1)}, side * 1.6, false)`);
+  s = one(s, "lerp(1.06, -0.6, u)", `lerp(${X(1.06)}, ${X(-0.6)}, u)`);
+  s = one(s, "skinZ(0.2, side * 0.66, false)", `skinZ(${X(0.2)}, side * 0.66, false)`);
+  s = one(s, "lerp(1.06, -0.75, i / 8)", `lerp(${X(1.06)}, ${X(-0.75)}, i / 8)`);
+  s = one(s, "lerp(-0.75, 1.06, i / 8)", `lerp(${X(-0.75)}, ${X(1.06)}, i / 8)`);
+  s = one(s, "at: [0.2, side * 0.83, -0.7]", `at: [${X(0.2)}, side * 0.83, -0.7]`);
+  s = one(s, "at: [0.12, side * 1.3, -0.7]", `at: [${X(0.12)}, side * 1.3, -0.7]`);
+  s = one(s, "at: [0.15, side * 1.1, -0.7]", `at: [${X(0.15)}, side * 1.1, -0.7]`);
+  s = one(s, "out.L0 = [-0.15, g.side * 1.08, -0.42];", `out.L0 = [${X(-0.15)}, g.side * 1.08, -0.42];`);
+  // nose gear: leg, fork, wheel and drag brace; doors and their hinge; bay opening and dark well; the bay seam
+  s = one(s, '{ id: "ng", top: [5.05, 0, -0.5], wheel: [5.05, 0, -1.78], r: 0.3, wid: 0.2, brace: [5.6, 0, -0.55],',
+    `{ id: "ng", top: [${N(5.05)}, 0, -0.5], wheel: [${N(5.05)}, 0, -1.78], r: 0.3, wid: 0.2, brace: [${N(5.6)}, 0, -0.55],`);
+  s = one(s, "lerp(6.5, 4.4, u)", `lerp(${N(6.5)}, ${N(4.4)}, u)`);
+  s = one(s, "skinZ(5.4, side * 0.24, false)", `skinZ(${N(5.4)}, side * 0.24, false)`);
+  s = all(s, "lerp(6.5, 4.4, i / 8)", `lerp(${N(6.5)}, ${N(4.4)}, i / 8)`, 4);
+  s = one(s, "at: [5.4, 0, -0.5]", `at: [${N(5.4)}, 0, -0.5]`);
+  s = one(s, "5.05, 4.7, 4.35, 4.0, 3.7, 3.4,", `5.05, ${N(5.7)}, 4.7, 4.35, 4.0, 3.7, ${N(4.35)}, 3.4,`); // fuselage rings for the moved seam
+  s = one(s, "const ngA = ri(5.7), ngB = ri(4.35);", `const ngA = ri(${N(5.7)}), ngB = ri(${N(4.35)});`);
+  return s;
+}
+/*<FZGEOM*/
 (() => {
-  const D = window.FZ, Mo = window.F35M;
+  const D0 = window.FZ;
+  if (!D0 || !window.F35M) return;
+  // the shared model is already in the HTTP cache (loaded by the page); patch a private copy of it
+  fetch("shared/f35b-model.js").then((r) => r.text()).then((src) => (new Function(fzPatch(src, FZ_GEOM) + "\nreturn F35M;"))())
+    .catch(() => window.F35M) // file:// (no fetch): fall back to the shared geometry
+    .then(fzStart);
+})();
+function fzStart(Mo) {
+  const D = window.FZ;
   const svg = document.querySelector(".tp-svg");
   if (!D || !Mo || !svg) return;
   const gAc = svg.querySelector(".fz-ac"), gOver = svg.querySelector(".fz-over"), gJets = svg.querySelector(".fz-jets"), shadow = svg.querySelector(".fz-shadow");
@@ -13,6 +74,7 @@
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const narrow = matchMedia("(max-width: 700px)");
   const BAL = D.CMD.bal;
+  for (const [id, o] of Object.entries({ up: "down", down: "up", left: "right", right: "left" })) Object.defineProperty(D.CMD[id], "opp", { value: D.CMD[o] });
   const KEYS = ["fan", "noz", "postL", "postR"];
 
   // ---- aircraft (memoised per 0.1° of attitude) ----
@@ -117,7 +179,7 @@
     for (const p of [pF, pN, pC]) out.push(bar([p[0], p[1] - 7 * sc], [p[0], p[1] + 7 * sc], 1.6 * sc, "fz-dim"));
     const mid = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
     out.push(label([pF[0] - 4 * sc, pF[1]], `a = ${D.ARM.fan.toFixed(2)} 米`, "fz-dimlbl", "start", 19 * sc)); // short span: label beside the fan end
-    out.push(label(mid(pC, pN), `b = ${D.ARM.noz.toFixed(2)} 米`, "fz-dimlbl", "middle", 19 * sc));
+    out.push(label([pN[0] + 4 * sc, pN[1]], `b = ${D.ARM.noz.toFixed(2)} 米`, "fz-dimlbl", "end", 19 * sc)); // beside the nozzle end, clear of the weight arrow
 
     // weight at the CG (world vertical)
     const cgW = toW(D.CG), cg = pr(cgW);
@@ -136,23 +198,28 @@
       return pr(b);
     };
     const tF = T("fan", "fz-cold"), tN = T("noz", "fz-hot"), tL = T("postL", "fz-post"), tR = T("postR", "fz-post");
-    out.push(label(tF, "升力风扇", "fz-name", "middle", -26 * sc), label(tF, `${kn(cur.fan)} 千牛 · 示意`, "fz-val fz-cold-t", "middle", -9 * sc));
-    out.push(label(tN, "三轴承喷管", "fz-name", "middle", -26 * sc), label(tN, `${kn(cur.noz)} 千牛 · 示意`, "fz-val fz-hot-t", "middle", -9 * sc));
+    // the two tips stand at about the same height ~6.7 m apart: fan labels to the right of its tip, nozzle labels to the left
+    // the nozzle's labels stay above the fin tips (in 左滚 the port fin rises into them)
+    const finTop = Math.min(...[[-5.47, 2.0, 2.4], [-6.48, 2.0, 2.4], [-5.47, -2.0, 2.4], [-6.48, -2.0, 2.4]].map((p) => pr(toW(p))[1]));
+    const tF2 = [tF[0] - 6 * sc, tF[1]], tN2 = [tN[0] + 6 * sc, Math.min(tN[1], finTop - 2 * sc)];
+    out.push(label(tF2, "升力风扇", "fz-name", "start", -26 * sc), label(tF2, `${kn(cur.fan)} 千牛 · 示意`, "fz-val fz-cold-t", "start", -9 * sc));
+    out.push(label(tN2, "三轴承喷管", "fz-name", "end", -26 * sc), label(tN2, `${kn(cur.noz)} 千牛 · 示意`, "fz-val fz-hot-t", "end", -9 * sc));
     // roll posts: labels off to the side with the value
     const pl = pr(toW(D.PTS.postL)), prr = pr(toW(D.PTS.postR));
-    out.push(label([pl[0] + 14 * sc, pl[1] + 30 * sc], `滚转喷口 左 ${kn(cur.postL)} · 右 ${kn(cur.postR)}`, "fz-small fz-post-t", "start"));
+    // below the lever-arm line (the moved nose wheel now hangs where this label used to sit, just under the posts)
+    out.push(label([pl[0] + 14 * sc, Math.max(pF[1], pC[1]) + 42 * sc], `滚转喷口 左 ${kn(cur.postL)} · 右 ${kn(cur.postR)}`, "fz-small fz-post-t", "start"));
 
     // CG marker (quartered roundel)
     const R0 = 9 * sc;
     out.push(`<circle class="fz-cg-bg" cx="${f1(cg[0])}" cy="${f1(cg[1])}" r="${f1(R0 + 1.6 * sc)}"/>`);
     out.push(`<path class="fz-cg-q" d="M${P2(cg)}L${P2([cg[0] + R0, cg[1]])}A${f1(R0)} ${f1(R0)} 0 0 0 ${P2([cg[0], cg[1] - R0])}ZM${P2(cg)}L${P2([cg[0] - R0, cg[1]])}A${f1(R0)} ${f1(R0)} 0 0 0 ${P2([cg[0], cg[1] + R0])}Z"/>`);
-    out.push(big ? label([cg[0] - 14 * sc, cg[1] + 26 * sc], "重心（估计）", "fz-cgl", "end") : label([cg[0] - 16 * sc, cg[1] - 14 * sc], "重心（估计）", "fz-cgl", "end")); // phone: below-left, clear of the nozzle label
+    out.push(label([cg[0] + 14 * sc, cg[1] - 12 * sc], "重心（估计）", "fz-cgl", "start")); // above-right: the nozzle arrow now stands just left of the CG
 
     // moments
     const Mp = cur.fan * D.ARM.fan + (cur.postL + cur.postR) * D.ARM.post - cur.noz * D.ARM.noz;
     const Mr = (cur.postR - cur.postL) * D.ARM.roll; // + = port wing down (左滚)
     const arcAt = (plane, a0, a1) => {
-      const pts = [], n = 26, Rm = 3.0;
+      const pts = [], n = 26, Rm = 2.2;
       for (let i = 0; i <= n; i++) {
         const th = (a0 + (a1 - a0) * i / n) * Math.PI / 180;
         const q = plane === "p" ? [D.CG[0] + Rm * Math.cos(th), 0, D.CG[2] + Rm * Math.sin(th)] : [D.CG[0], Rm * Math.cos(th), D.CG[2] + Rm * Math.sin(th)];
@@ -161,10 +228,12 @@
       return pts;
     };
     const mArc = (M, plane, word, nameP, nameN) => {
-      const a = Math.min(1, Math.abs(M) / 25);
+      const a = Math.min(1, Math.abs(M) / D.MFULL[plane]); // full strength at the commanded moment
       if (a < 0.02) return;
-      const pts = M > 0 ? arcAt(plane, plane === "p" ? 35 : 145, plane === "p" ? 145 : 35) : arcAt(plane, plane === "p" ? 145 : 35, plane === "p" ? 35 : 145);
-      out.push(`<g class="fz-marc" opacity="${a.toFixed(2)}">${ribbonArc(pts, 3.2 * sc, 13 * sc, "fz-arc")}${label(pts[Math.floor(pts.length / 2)], `${M > 0 ? nameP : nameN} ${Math.abs(M).toFixed(0)} 千牛·米`, "fz-arcl", "middle", -12 * sc)}</g>`);
+      // roll arcs stop at 60° so the head stays clear of 「重心（估计）」 just above-right of the CG
+      const [e0, e1] = plane === "p" ? [35, 145] : [150, 60]; // + : pitch 35° → 145°, roll 150° → 60° (as before, shortened)
+      const pts = M > 0 ? arcAt(plane, e0, e1) : arcAt(plane, e1, e0);
+      out.push(`<g class="fz-marc" opacity="${a.toFixed(2)}">${ribbonArc(pts, 3.2 * sc, 13 * sc, "fz-arc")}${label(pts[Math.floor(pts.length / 2)], `${(M > 0 ? nameP : nameN).slice(0, big ? 2 : 9)} ${Math.abs(M).toFixed(0)} 千牛·米`, "fz-arcl", "middle", -12 * sc)}</g>`);
     };
     mArc(Mp, "p", "", "抬头力矩", "低头力矩");
     mArc(Mr, "r", "", "左滚力矩", "右滚力矩");
@@ -193,16 +262,18 @@
   const attAt = (t) => t < 1.6 ? smoother(t / 1.6) : t < 2.4 ? 1 : 1 - smoother((t - 2.4) / 1.6);
   const WORDS = {
     up: ["多给风扇、少给喷管：抬头力矩，机头抬起", "反过来分配，刹住转动", "保持抬头姿态：分配回到平衡，合力矩为零", "先低头力矩转回，再刹住", "平衡：合推力 = 重量，合力矩 = 0"],
-    down: ["多给喷管、少给风扇：低头力矩，机头下沉", "反过来分配，刹住转动", "保持低头姿态：分配回到平衡，合力矩为零", "先抬头力矩转回，再刹住", "平衡：合推力 = 重量，合力矩 = 0"],
+    down: ["少给风扇、多给喷管和滚转喷口：低头力矩，机头下沉", "反过来分配，刹住转动", "保持低头姿态：分配回到平衡，合力矩为零", "先抬头力矩转回，再刹住", "平衡：合推力 = 重量，合力矩 = 0"],
     left: ["右滚转喷口开大、左侧关小：左滚力矩", "反过来分配，刹住滚转", "保持左倾：左右推力相等，合力矩为零", "反向滚转回正，再刹住", "平衡：合推力 = 重量，合力矩 = 0"],
     right: ["左滚转喷口开大、右侧关小：右滚力矩", "反过来分配，刹住滚转", "保持右倾：左右推力相等，合力矩为零", "反向滚转回正，再刹住", "平衡：合推力 = 重量，合力矩 = 0"],
   };
   const BAL_WORD = "平衡：合推力 = 重量，合力矩 = 0";
   let anim = null, raf = 0;
   function setPressed(id) { btnEls.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.cmd === id))); }
+  // u < 0 brakes with the opposite command's split (抬头 ↔ 低头, 左滚 ↔ 右滚), so every component stays at or
+  // below its published maximum throughout
   function mix(c, u, att) {
-    const o = {};
-    for (const k of KEYS) o[k] = BAL[k] + (c[k] - BAL[k]) * u;
+    const o = {}, e = u < 0 && c.opp ? c.opp : c, w = Math.abs(u);
+    for (const k of KEYS) o[k] = BAL[k] + (e[k] - BAL[k]) * w;
     o.pitch = c.pitch * att; o.roll = c.roll * att;
     return o;
   }
@@ -279,4 +350,4 @@
   phaseWord = BAL_WORD;
   fitVB();
   window.__fz = { bench: (fresh) => { if (fresh) cache.clear(); const keep = Object.assign({}, cur), ts = []; for (let i = 0; i < 30; i++) { cur = mix(D.CMD.up, 1, i / 29); const t = performance.now(); draw(); svg.getBoundingClientRect(); ts.push(performance.now() - t); } cur = keep; draw(); ts.sort((a, b) => a - b); return ts[15].toFixed(1) + '/' + ts[27].toFixed(1); }, command: (id) => { command(id); run(); }, state: () => Object.assign({}, cur), anim: () => anim, cache };
-})();
+}
