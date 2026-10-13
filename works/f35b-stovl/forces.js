@@ -202,8 +202,10 @@ function fzStart(Mo) {
     // the nozzle's labels stay above the fin tips (in 左滚 the port fin rises into them)
     const finTop = Math.min(...[[-5.47, 2.0, 2.4], [-6.48, 2.0, 2.4], [-5.47, -2.0, 2.4], [-6.48, -2.0, 2.4]].map((p) => pr(toW(p))[1]));
     const tF2 = [tF[0] - 6 * sc, tF[1]], tN2 = [tN[0] + 6 * sc, Math.min(tN[1], finTop - 2 * sc)];
-    out.push(label(tF2, "升力风扇", "fz-name", "start", -26 * sc), label(tF2, `${kn(cur.fan)} 千牛 · 示意`, "fz-val fz-cold-t", "start", -9 * sc));
-    out.push(label(tN2, "三轴承喷管", "fz-name", "end", -26 * sc), label(tN2, `${kn(cur.noz)} 千牛 · 示意`, "fz-val fz-hot-t", "end", -9 * sc));
+    // the balance split is P&W's published hover split; every other split is illustrative
+    const tag = (k) => Math.abs(cur[k] - BAL[k]) < 0.05 ? "P&amp;W" : "示意";
+    out.push(label(tF2, "升力风扇", "fz-name", "start", -26 * sc), label(tF2, `${kn(cur.fan)} 千牛 · ${tag("fan")}`, "fz-val fz-cold-t", "start", -9 * sc));
+    out.push(label(tN2, "三轴承喷管", "fz-name", "end", -26 * sc), label(tN2, `${kn(cur.noz)} 千牛 · ${tag("noz")}`, "fz-val fz-hot-t", "end", -9 * sc));
     // roll posts: labels off to the side with the value
     const pl = pr(toW(D.PTS.postL)), prr = pr(toW(D.PTS.postR));
     // below the lever-arm line (the moved nose wheel now hangs where this label used to sit, just under the posts)
@@ -262,15 +264,14 @@ function fzStart(Mo) {
   const attAt = (t) => t < 1.6 ? smoother(t / 1.6) : t < 2.4 ? 1 : 1 - smoother((t - 2.4) / 1.6);
   const WORDS = {
     up: ["多给风扇、少给喷管：抬头力矩，机头抬起", "反过来分配，刹住转动", "保持抬头姿态：分配回到平衡，合力矩为零", "先低头力矩转回，再刹住", "平衡：合推力 = 重量，合力矩 = 0"],
-    down: ["少给风扇、多给喷管和滚转喷口：低头力矩，机头下沉", "反过来分配，刹住转动", "保持低头姿态：分配回到平衡，合力矩为零", "先抬头力矩转回，再刹住", "平衡：合推力 = 重量，合力矩 = 0"],
+    down: ["少给风扇、多给喷管：低头力矩，机头下沉", "反过来分配，刹住转动", "保持低头姿态：分配回到平衡，合力矩为零", "先抬头力矩转回，再刹住", "平衡：合推力 = 重量，合力矩 = 0"],
     left: ["右滚转喷口开大、左侧关小：左滚力矩", "反过来分配，刹住滚转", "保持左倾：左右推力相等，合力矩为零", "反向滚转回正，再刹住", "平衡：合推力 = 重量，合力矩 = 0"],
     right: ["左滚转喷口开大、右侧关小：右滚力矩", "反过来分配，刹住滚转", "保持右倾：左右推力相等，合力矩为零", "反向滚转回正，再刹住", "平衡：合推力 = 重量，合力矩 = 0"],
   };
   const BAL_WORD = "平衡：合推力 = 重量，合力矩 = 0";
   let anim = null, raf = 0;
   function setPressed(id) { btnEls.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.cmd === id))); }
-  // u < 0 brakes with the opposite command's split (抬头 ↔ 低头, 左滚 ↔ 右滚), so every component stays at or
-  // below its published maximum throughout
+  // u < 0 brakes with the opposite command's split (抬头 ↔ 低头, 左滚 ↔ 右滚); the total stays at FSUM throughout
   function mix(c, u, att) {
     const o = {}, e = u < 0 && c.opp ? c.opp : c, w = Math.abs(u);
     for (const k of KEYS) o[k] = BAL[k] + (e[k] - BAL[k]) * w;
