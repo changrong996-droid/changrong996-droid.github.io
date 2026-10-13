@@ -179,5 +179,5 @@
 - 验证：shots/topic-forces/final/（1440×900 与 390×844 五个状态 + 说明展开，1280×720 / 1920×1080 / 1024×768 平衡，动画中帧 anim-*，目录页 1440 与 390）；拼图 shots/topic-forces.png。滚动：专题页 5 视口 × 说明收起/展开、目录页 5 视口均无滚动条。线条检查：5 个状态 × 2 视口 0 悬空（风扇面叶片线在此角度离边缘 1.1 像素，本页用 CSS 隐藏 .ac-blade）。控制台：正常 / --reduced 均干净。
 - 性能（无头 ARM Chrome，1440×900）：新姿态一帧（renderAircraft + 叠加层 + innerHTML + 布局）中位 14–15 ms / p90 20–21 ms，缓存命中 7 ms；动画期间 rAF 稳定 33.3 ms（此机无头上限 30 帧），台式机应可 60 帧。静止时不跑任何循环。
 - 页面体积（未压缩）：forces.html 24.7 kB + forces.js 17 kB + shared/f35b-model.js 100.6 kB + shared/f35b.css 18 kB + shared/topic.css 10 kB ≈ 170 kB（跟拍版 795 kB、全景 692 kB）；目录页 2.4 kB + 两个 css + 三张缩略图 26 kB。
-- 发布：works/f35b-stovl/forces.html、forces.js、topics.html、shared/*、shots/topic-forces.png。issue 见 f35b-闭环 标签。
+- 发布：works/f35b-stovl/forces.html、forces.js、topics.html、shared/*、shots/topic-forces.png。GitHub issue #13（f35b-闭环，已关闭），推送 SHA 见 issue 评论。
 - 遗留：跟拍/全景两页没有加回到目录的链接（需要重建并重新推送 1.5 MB，冻结页暂不动）；重心位置问题（见上）可由用户决定改为实机合理位置并相应改为「实际分配」演示；风扇叶片线隐藏；喷流为静态渐变，没有 WebGL。
