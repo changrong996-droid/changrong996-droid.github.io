@@ -558,7 +558,7 @@ const topLine = (iu, v0 = 0, v1 = vs.length - 1) => alongX(L, iu, v0, v1);
 const botLine = (iu, v0 = 0, v1 = vs.length - 1) => alongX(L, R - iu, v0, v1);
 return { v: L.v, f: L.f, L, R, nu, topLine, botLine, rootBoundary: true };
 }
-const WING = { rootLE: [2.05, 1.66], rootTE: [-3.11, 1.6], tipLE: [-0.56, 5.35], tipTE: [-2.2, 5.35], z0: 0.15, z1: 0.11, thick: [0.24, 0.07] };
+const WING = { rootLE: [0.55, 1.66], rootTE: [-4.61, 1.6], tipLE: [-2.06, 5.35], tipTE: [-3.7, 5.35], z0: 0.15, z1: 0.11, thick: [0.24, 0.07] };
 const BOOM = { y: 1.08 };
 const WING_US = [0, 0.025, 0.08, 0.16, 0.3, 0.45, 0.6, 0.72, 0.8, 0.9, 1];
 const WING_VS = [0, 0.15, 0.35, 0.55, 0.75, 0.9, 1];
@@ -785,7 +785,7 @@ const GLYPHS = {"M":{"a":0.995,"c":[[0.092,0.729,0.331,0.729,0.497,0.339,0.664,0
 function decal(o, n, upHint, snap, groups, minDot = 0.1) {
 n = V3.unit(n);
 const v = V3.unit(V3.sub(upHint, V3.mul(n, V3.dot(upHint, n))));
-const u = V3.unit(V3.cross(n, v)); // text-right: reads unmirrored from the front face
+const u = V3.unit(V3.cross(v, n)); // text-right: reads unmirrored from the front face (right-handed; was n × v under the mirrored projection)
 const at = (a, b) => snap(V3.add(o, V3.add(V3.mul(u, a), V3.mul(v, b))));
 const dense = (c, closed) => { // no edge longer than 8 cm, so long straight strokes bend with the skin too
 const out = [];
@@ -884,7 +884,7 @@ function fuselageDecals() {
 const out = [];
 for (const side of [1, -1]) {
 const snap = fusSnap(side), nAt = (x, z) => { const e = 1e-3; let n = V3.unit(V3.cross(V3.sub(snap([x + e, 0, z]), snap([x - e, 0, z])), V3.sub(snap([x, 0, z + e]), snap([x, 0, z - e])))); return n[1] * side < 0 ? V3.mul(n, -1) : n; };
-out.push(decal(snap([-4.05, 0, 0.0]), nAt(-4.05, 0.0), [0, 0, 1], snap, markGlyphs("MARINES", 0.2, 0.03), 0.15));
+out.push(decal(snap([-5.45, 0, -0.14]), nAt(-5.45, -0.14), [0, 0, 1], snap, markGlyphs("MARINES", 0.2, 0.03), 0.15)); // aft of the wing root (geomfix: the wing moved 1.5 m aft over -4.05)
 out.push(decal(snap([4.95, 0, -0.14]), nAt(4.95, -0.14), [0, 0, 1], snap, markGlyphs("USMC", 0.13, 0.015), 0.15));
 }
 return out;
@@ -892,18 +892,18 @@ return out;
 function wingDecals(side) {
 if (side > 0) { // national insignia: upper port wing
 const snap = (p) => [p[0], p[1], wingTopZ(p[0], p[1]) + 0.004];
-return [decal(snap([-1.25, 4.15, 0]), [0, 0, 1], [1, 0, 0], snap, roundelGroups(0.3), 0.08)];
+return [decal(snap([-2.75, 4.15, 0]), [0, 0, 1], [1, 0, 0], snap, roundelGroups(0.3), 0.08)];
 } // and lower starboard wing
 const snap = (p) => [p[0], p[1], wingBottomZ(p[0], p[1]) - 0.004];
-return [decal(snap([-1.25, -4.15, 0]), [0, 0, -1], [1, 0, 0], snap, roundelGroups(0.3), 0.08)];
+return [decal(snap([-2.75, -4.15, 0]), [0, 0, -1], [1, 0, 0], snap, roundelGroups(0.3), 0.08)];
 }
 function wingWalk(side) {
 const pts = (path) => path.map(([x, y]) => [x, side * y, wingTopZ(x, side * y) + 0.004]);
 const line = (x0, y0, x1, y1, n = 8) => pts(Array.from({ length: n + 1 }, (_, i) => [lerp(x0, x1, i / n), lerp(y0, y1, i / n)]));
 return [
-{ n: [0, 0, 1], line: line(0.95, 1.95, -1.9, 1.95) },
-{ n: [0, 0, 1], line: line(-1.9, 1.95, -1.9, 2.75, 3) },
-{ n: [0, 0, 1], line: line(-1.9, 2.75, 0.6, 2.75) },
+{ n: [0, 0, 1], line: line(-0.55, 1.95, -3.4, 1.95) },
+{ n: [0, 0, 1], line: line(-3.4, 1.95, -3.4, 2.75, 3) },
+{ n: [0, 0, 1], line: line(-3.4, 2.75, -0.9, 2.75) },
 ];
 }
 function staticParts() {
@@ -1128,8 +1128,8 @@ if (sil.length) g.push(`<path class="iso-line" data-tone="${part.lit ? "lit" : p
 return g;
 }
 let STATIC = null;
-const PLANFORM = [NOSE_TIP, [3.6, 1.5, 0], [2.05, 1.66, 0], [-0.56, 5.35, 0], [-2.2, 5.35, 0], [-3.11, 1.6, 0], [-4.75, 1.3, 0], [-6.24, 3.33, 0], [-7.05, 3.33, 0], [-7.58, 1.25, 0], [-7.6, 0, 0]]
-.flatMap((p, i, a) => (i === a.length - 1 ? [p] : [p])).concat([[-7.58, -1.25, 0], [-7.05, -3.33, 0], [-6.24, -3.33, 0], [-4.75, -1.3, 0], [-3.11, -1.6, 0], [-2.2, -5.35, 0], [-0.56, -5.35, 0], [2.05, -1.66, 0], [3.6, -1.5, 0]]);
+const PLANFORM = [NOSE_TIP, [3.6, 1.5, 0], [0.55, 1.66, 0], [-2.06, 5.35, 0], [-3.7, 5.35, 0], [-4.61, 1.6, 0], [-4.75, 1.3, 0], [-6.24, 3.33, 0], [-7.05, 3.33, 0], [-7.58, 1.25, 0], [-7.6, 0, 0]]
+.flatMap((p, i, a) => (i === a.length - 1 ? [p] : [p])).concat([[-7.58, -1.25, 0], [-7.05, -3.33, 0], [-6.24, -3.33, 0], [-4.75, -1.3, 0], [-4.61, -1.6, 0], [-3.7, -5.35, 0], [-2.06, -5.35, 0], [0.55, -1.66, 0], [3.6, -1.5, 0]]);
 let SURF = null;
 function surfBases() {
 if (SURF) return SURF;
@@ -1733,7 +1733,7 @@ const a = (P.azimuth ?? 45) * D2R, e = (P.elevation ?? 30) * D2R;
 const k = P.scale * Math.sqrt(1.6); // the kit's UNIT
 return { sinA: Math.sin(a), cosA: Math.cos(a), sinE: Math.sin(e), cosE: Math.cos(e), k, o: P.origin };
 }
-const project = (p, C) => [C.o[0] + (p[0] * C.sinA - p[1] * C.cosA) * C.k, C.o[1] + ((p[0] * C.cosA + p[1] * C.sinA) * C.sinE - p[2] * C.cosE) * C.k];
+const project = (p, C) => [C.o[0] - (p[0] * C.sinA - p[1] * C.cosA) * C.k, C.o[1] + ((p[0] * C.cosA + p[1] * C.sinA) * C.sinE - p[2] * C.cosE) * C.k];
 const viewDir = (C) => [C.cosA * C.cosE, C.sinA * C.cosE, C.sinE];
 const lightDir = (C) => V3.unit([-C.sinA, C.cosA, 1.2]);
 const BANDS = [0, 0.2, 0.42, 0.62];
