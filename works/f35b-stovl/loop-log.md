@@ -251,3 +251,11 @@
 - 体积（gzip -9）：power.html 6.8 kB + power.js 10.1 kB + 共用 f35b-model.js 31.0 + f35b.css 4.8 + topic.css 2.8 ≈ 55 kB 首次加载（共用文件已缓存时约 17 kB）。
 - 发布：works/f35b-stovl/power.js（d5e94ab）、power.html（371cc93）、shared/thumb-power.jpg（658f989）、topics.html（1578194）、shots/topic-power.png（6a5849c）、loop-log.md。shared/f35b-model.js 未推送。
 - 遗留：file:// 下退回共用几何（喷管/发动机长度不一致）；常规飞行时喷管是画在机身内的伸直短管（为接上修正后的喷管座，示意）；「过渡」喷管角度 45° 为示意；目录 4 列网格第二行只有这一张卡片。
+
+## 几何修正 · 机翼后移 1.5 米 + 投影镜像修正 · 2026-10-13（北京时间，至 21:20）· 已发布
+- 备份 backup/loop-geomfix/。model.mjs：WING 的 rootLE / rootTE / tipLE / tipTE 的 x 各 −1.5 米（翼根前缘距机头比例 41.7 % → 约 51.5 %，三视图 52.5 %）；滚转喷口（POST）、起落架、重心与推力分配都没动，forces / ground / power 页的数值不变。
+- 轮廓核对：平面 IoU 0.693 → 0.923（对 Wikimedia F-35B 三视图），侧面 IoU 0.846 不变；照片轮廓拟合 IoU 0.931 / 0.923（两张俯视照片）。叠图 mac-loop/silhouette/geomfix/，Blender 页面角度渲染 mac-loop/renders/page_angle_i4w_wingfix.png。
+- 投影手性：原来的等轴投影是真镜像（屏幕 右 × 上 = −视线），舰首、舰岛左右颠倒。改为屏幕 x 取反（iso-kit、model 投影、GL 着色器同时改）；贴花文字的「右」方向改为 v × n；舰名/舷号永不镜像；向左拖动 = 正向播放；专题页标签随之镜像；功率页桑基小图换到另一角。
+- 评分 29.5 → 30。真实 Mac Chrome 窗口帧率：index 46.1 → 44.1，wide 55.7 → 55.3（噪声较大）。
+- 验证：shots/loop/geomfix/before/ 与 after/（跟拍五个时刻 + 全景 + 线条 + 特写）；线条 0 / 10308 端点悬空；无头控制台 index（t = 22.7、36.75）与 wide 均干净。对比图 mac-loop/geomfix_before_after.png（线上 shots/geomfix_before_after.png）。
+- 发布 works/f35b-stovl/：index.html（98e3215）、wide.html（85b816f）、shared/f35b-model.js（e27c51f）、forces.html（7c07c9a）、forces.js（7063551）、ground.html（52a836a）、ground.js（6604d3e）、power.html（1ca0f14）、power.js（7720b4a）、shots/geomfix_before_after.png（bb8e0e7）、loop-log.md。目录缩略图未刷新。
