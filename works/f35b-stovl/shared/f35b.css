@@ -1,0 +1,228 @@
+/* F-35B 机体配色与套件基础样式（各专题页共用） */
+.iso{
+  --anatomy-page:#0b0b0b;--anatomy-card:#131313;--anatomy-text:#a3a3a3;--anatomy-strong:#e6e6e6;--anatomy-muted:#6e6e6e;
+  --anatomy-paper:#131313;--anatomy-face:#1b1b1b;--anatomy-top:#1c1c1c;
+  --anatomy-shade-0:#0f0f0f;--anatomy-shade-1:#121212;--anatomy-shade-2:#151515;--anatomy-shade-3:#181818;
+  --anatomy-lit-top:#262626;--anatomy-lit-shade:#1d1d1d;
+  --anatomy-hi:#d4d4d4;--anatomy-mid:#6a6a6a;--anatomy-lo:#3e3e3e;--anatomy-faint:#2a2a2a;--anatomy-lit:#ffffff;
+  --anatomy-halo:#050505;--anatomy-halo-opacity:.9;--anatomy-dot:#e6e6e6;
+  --anatomy-red:#ff6b6b;--anatomy-green:#6be0a0;--anatomy-blue:#6b9bff;
+  --anatomy-weight:.6px;--anatomy-ease:cubic-bezier(.32,.72,0,1);
+  --anatomy-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --anatomy-lift:inset 0 1px 0 0 #ffffff0a,inset 0 0 0 1px #ffffff06,0 0 0 1px #00000026,0 1px 1px -.5px #00000014,0 3px 3px -1.5px #00000014,0 6px 6px -3px #00000014,0 12px 12px -6px #00000014;
+}
+.iso[data-theme="light"]{
+  --anatomy-page:#f2f2ef;--anatomy-card:#fbfbfa;--anatomy-text:#57575a;--anatomy-strong:#18181a;--anatomy-muted:#8c8c90;
+  --anatomy-paper:#fbfbfa;--anatomy-face:#ffffff;--anatomy-top:#ffffff;
+  --anatomy-shade-0:#dcdcd9;--anatomy-shade-1:#e5e5e2;--anatomy-shade-2:#ededea;--anatomy-shade-3:#f4f4f1;
+  --anatomy-lit-top:#ffffff;--anatomy-lit-shade:#eeeeeb;
+  --anatomy-hi:#26262a;--anatomy-mid:#8a8a8f;--anatomy-lo:#b4b4b8;--anatomy-faint:#d4d4d6;--anatomy-lit:#000000;
+  --anatomy-halo:#8a8a80;--anatomy-halo-opacity:.32;--anatomy-dot:#3a3a3e;
+  --anatomy-red:#e5484d;--anatomy-green:#30a46c;--anatomy-blue:#3e63dd;
+  --anatomy-lift:inset 0 1px 0 0 #ffffff,0 0 0 1px #0000000f,0 1px 1px -.5px #0000000a,0 3px 3px -1.5px #0000000a,0 6px 6px -3px #0000000a,0 12px 12px -6px #0000000a;
+}
+
+
+
+.iso-svg{display:block;width:100%;height:auto;overflow:visible}
+.iso-svg path,.iso-svg circle{vector-effect:non-scaling-stroke}
+.iso-fill{fill:var(--anatomy-paper);stroke:none}
+.iso-solid[data-lit]>.iso-fill{fill:var(--anatomy-face)}
+.iso-shade,.iso-top{stroke:none}
+.iso-shade[data-shade="0"]{fill:var(--anatomy-shade-0)}
+.iso-shade[data-shade="1"]{fill:var(--anatomy-shade-1)}
+.iso-shade[data-shade="2"]{fill:var(--anatomy-shade-2)}
+.iso-shade[data-shade="3"]{fill:var(--anatomy-shade-3)}
+.iso-top{fill:var(--anatomy-top)}
+.iso-solid[data-lit]>.iso-top{fill:var(--anatomy-lit-top)}
+.iso-solid[data-lit]>.iso-shade{fill:var(--anatomy-lit-shade)}
+.iso-solid[data-seamless]>.iso-shade,.iso-solid[data-seamless]>.iso-top{stroke-width:.4;stroke-linejoin:round}
+.iso-solid[data-seamless]>.iso-shade[data-shade="0"]{stroke:var(--anatomy-shade-0)}
+.iso-solid[data-seamless]>.iso-shade[data-shade="1"]{stroke:var(--anatomy-shade-1)}
+.iso-solid[data-seamless]>.iso-shade[data-shade="2"]{stroke:var(--anatomy-shade-2)}
+.iso-solid[data-seamless]>.iso-shade[data-shade="3"]{stroke:var(--anatomy-shade-3)}
+.iso-solid[data-seamless]>.iso-top{stroke:var(--anatomy-top)}
+.iso-solid[data-seamless][data-lit]>.iso-top{stroke:var(--anatomy-lit-top)}
+.iso-solid[data-seamless][data-lit]>.iso-shade{stroke:var(--anatomy-lit-shade)}
+.iso-solid[data-lit]>.iso-edge{stroke:var(--anatomy-lit)}
+.iso-halo{fill:var(--anatomy-halo);stroke:none;filter:blur(9px);opacity:var(--anatomy-halo-opacity);transform:translateY(3px)}
+.iso-line{fill:none;stroke:var(--anatomy-lo);stroke-width:var(--anatomy-weight);stroke-linecap:round;stroke-linejoin:round}
+.iso-line[data-tone="hi"]{stroke:var(--anatomy-hi)}
+.iso-line[data-tone="mid"]{stroke:var(--anatomy-mid)}
+.iso-line[data-tone="lo"]{stroke:var(--anatomy-lo)}
+.iso-line[data-tone="faint"]{stroke:var(--anatomy-faint)}
+.iso-line[data-tone="lit"]{stroke:var(--anatomy-lit)}
+.iso-line[data-tone="red"]{stroke:var(--anatomy-red)}
+.iso-line[data-tone="green"]{stroke:var(--anatomy-green)}
+.iso-line[data-tone="blue"]{stroke:var(--anatomy-blue)}
+.iso-line[data-dotted]{stroke-dasharray:.01 3.5;stroke-width:1}
+.iso-line[data-dashed]{stroke-dasharray:3 3}
+.iso-line[data-flow]{stroke-dasharray:2 6}
+.iso-wire-end{fill:var(--anatomy-paper);stroke:var(--anatomy-lo);stroke-width:var(--anatomy-weight)}
+.iso-wire[data-tone="hi"] .iso-wire-end{stroke:var(--anatomy-hi)}
+.iso-wire[data-tone="mid"] .iso-wire-end{stroke:var(--anatomy-mid)}
+.iso-wire[data-tone="faint"] .iso-wire-end{stroke:var(--anatomy-faint)}
+.iso-wire[data-tone="lit"] .iso-wire-end{stroke:var(--anatomy-lit)}
+.iso-dots circle{fill:var(--anatomy-dot);stroke:none;opacity:.32}
+.iso-dots[data-tone="hi"] circle{opacity:.85}
+.iso-dots[data-tone="mid"] circle{opacity:.45}
+.iso-dots[data-tone="lo"] circle{opacity:.22}
+.iso-dots[data-tone="faint"] circle{opacity:.12}
+.iso-face-text{fill:var(--anatomy-mid);font-family:var(--anatomy-mono);letter-spacing:.04em}
+.iso-face-text[data-tone="hi"]{fill:var(--anatomy-hi)}
+.iso-face-text[data-tone="lo"]{fill:var(--anatomy-lo)}
+.iso-face-text[data-tone="faint"]{fill:var(--anatomy-faint)}
+.tb-body{fill:var(--anatomy-shade-2);stroke:none}
+.tb-shine{fill:var(--anatomy-top);stroke:none}
+.tb-shade{fill:var(--anatomy-shade-0);stroke:none}
+.tb-ring{fill:none;stroke:var(--anatomy-lo);stroke-width:.45;stroke-linecap:butt;stroke-linejoin:round}
+.tb-ring[data-tone="mid"]{stroke:var(--anatomy-mid)}
+.tb-ring[data-tone="faint"]{stroke:var(--anatomy-faint)}
+.tb-ring[data-tone="hi"]{stroke:var(--anatomy-hi)}
+@keyframes iso-flow{to{stroke-dashoffset:-32}}
+@keyframes iso-pulse{0%,100%{opacity:.18}12%{opacity:1}40%{opacity:.18}}
+.iso-line[data-flow]{animation:iso-flow 1600ms linear infinite}
+.iso-dots circle[data-pulse]{animation:iso-pulse 1600ms steps(1,end) infinite;animation-delay:var(--pulse-at,0ms)}
+.iso-figure{margin:32px 0 36px}
+.iso-plate{position:relative;padding:52px 24px;border-radius:0;background:var(--anatomy-card);box-shadow:0 0 0 1px var(--anatomy-mid);--anatomy-paper:var(--anatomy-card)}
+.iso-plate-corners{position:absolute;inset:18px 20px;pointer-events:none}
+.iso-plate-corner{position:absolute;color:var(--anatomy-muted);font-family:var(--anatomy-mono);font-size:10.5px;line-height:1;letter-spacing:.04em;white-space:nowrap}
+.iso-plate-corner[data-corner="fig"]{top:0;left:0;color:var(--anatomy-text)}
+.iso-plate-corner[data-corner="title"]{top:0;right:0;text-transform:uppercase;letter-spacing:.1em}
+.iso-plate-corner[data-corner="hint"]{bottom:0;left:0;text-transform:uppercase;letter-spacing:.1em}
+.iso-plate-corner[data-corner="readout"]{right:0;bottom:0;color:var(--anatomy-text);font-variant-numeric:tabular-nums}
+.iso-plate .iso-svg{margin:0 auto}
+.iso-legend{display:grid;gap:8px;margin-top:12px;color:var(--anatomy-muted);font-size:13px;line-height:1.55}
+.iso-keys{display:flex;flex-wrap:wrap;gap:6px 18px}
+.iso-key{display:inline-flex;align-items:center;gap:7px}
+.iso-swatch{width:16px;height:10px;flex:none;overflow:visible}
+.iso-swatch path{fill:none;stroke:var(--anatomy-hi);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round}
+.iso-swatch[data-mark="raised"] path,.iso-swatch[data-mark="flat"] path{stroke:var(--anatomy-mid)}
+.iso-swatch[data-mark="lit"] path{stroke:var(--anatomy-lit)}
+.iso-swatch[data-mark="dim"] path{stroke:var(--anatomy-lo)}
+.iso-swatch[data-mark="dotted"] path{stroke-dasharray:.01 3;stroke-width:1.4}
+.iso-swatch[data-mark="dashed"] path{stroke-dasharray:3 2.5}
+.iso-swatch[data-mark="red"] path{stroke:var(--anatomy-red)}
+.iso-swatch[data-mark="green"] path{stroke:var(--anatomy-green)}
+.iso-swatch[data-mark="blue"] path{stroke:var(--anatomy-blue)}
+.iso-swatch-crease{stroke:var(--anatomy-lo)!important}
+@media (max-width:560px){.iso-plate{padding:48px 12px 70px}.iso-plate-corner[data-corner="hint"]{bottom:18px}}
+@media (prefers-reduced-motion:reduce){.iso-line[data-flow],.iso-dots circle[data-pulse]{animation:none}}
+
+.f35 {
+  --f35-cav: #9a9a9e; --f35-cav-line: #6f6f74;
+  --f35-glass-0: #9ea6ae; --f35-glass-1: #a9b1b9; --f35-glass-2: #b5bcc3; --f35-glass-3: #c1c7cd; --f35-glass-4: #ced3d8;
+  --f35-tyre-0: #a9a9ad; --f35-tyre-1: #b4b4b8; --f35-tyre-2: #bdbdc1; --f35-tyre-3: #c6c6ca; --f35-tyre-4: #d0d0d3;
+  --f35-sea: #eef1f2; --f35-sea-line: #dfe5e8;
+  --f35-deck-0: #d6d6d3; --f35-deck-1: #dddddb; --f35-deck-2: #e4e4e1; --f35-deck-3: #ebebe8; --f35-deck-top: #f1f1ee;
+  --f35-shadow: #6d6d66;
+}
+.ac-part path[data-s] { stroke-width: .45; stroke-linejoin: round; }
+.ac-part path[data-s="0"] { fill: var(--anatomy-shade-0); stroke: var(--anatomy-shade-0); }
+.ac-part path[data-s="1"] { fill: var(--anatomy-shade-1); stroke: var(--anatomy-shade-1); }
+.ac-part path[data-s="2"] { fill: var(--anatomy-shade-2); stroke: var(--anatomy-shade-2); }
+.ac-part path[data-s="3"] { fill: var(--anatomy-shade-3); stroke: var(--anatomy-shade-3); }
+.ac-part path[data-s="4"] { fill: var(--anatomy-top); stroke: var(--anatomy-top); }
+.ac-part path[data-s="c"] { fill: var(--f35-cav); stroke: var(--f35-cav); }
+.ac-part.canopy path[data-s="0"] { fill: var(--f35-glass-0); stroke: var(--f35-glass-0); }
+.ac-part.canopy path[data-s="1"] { fill: var(--f35-glass-1); stroke: var(--f35-glass-1); }
+.ac-part.canopy path[data-s="2"] { fill: var(--f35-glass-2); stroke: var(--f35-glass-2); }
+.ac-part.canopy path[data-s="3"] { fill: var(--f35-glass-3); stroke: var(--f35-glass-3); }
+.ac-part.canopy path[data-s="4"] { fill: var(--f35-glass-4); stroke: var(--f35-glass-4); }
+.ac-part.tyre path[data-s="0"], .ac-part.tyre path[data-s="c"] { fill: var(--f35-tyre-0); stroke: var(--f35-tyre-0); }
+.ac-part.tyre path[data-s="1"] { fill: var(--f35-tyre-1); stroke: var(--f35-tyre-1); }
+.ac-part.tyre path[data-s="2"] { fill: var(--f35-tyre-2); stroke: var(--f35-tyre-2); }
+.ac-part.tyre path[data-s="3"] { fill: var(--f35-tyre-3); stroke: var(--f35-tyre-3); }
+.ac-part.tyre path[data-s="4"] { fill: var(--f35-tyre-4); stroke: var(--f35-tyre-4); }
+.ac-part.tyre path[data-s] { stroke-width: 1.1; } /* face-sorted smooth bands: cover the anti-alias seams between pieces */
+.ac-cav { fill: var(--f35-cav); stroke: none; }
+.ac-hub { fill: var(--anatomy-shade-1); stroke: var(--anatomy-mid); stroke-width: var(--anatomy-weight); }
+.ac-blade { stroke: #e9e9e6 !important; }
+
+.f35 .iso-plate { padding: 52px 24px 58px; overflow: hidden; }
+.f35-stage { position: relative; touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: ew-resize; }
+.f35-stage:focus { outline: none; }
+.f35-stage:focus-visible { outline: 1px solid var(--anatomy-muted); outline-offset: 6px; }
+.f35-stage > svg, .f35-stage > canvas { display: block; width: 100%; height: auto; }
+.f35-front, .f35-gl { position: absolute; inset: 0; height: 100% !important; pointer-events: none; }
+.f35-deck { --anatomy-top: var(--f35-deck-top); --anatomy-shade-0: var(--f35-deck-0); --anatomy-shade-1: var(--f35-deck-1); --anatomy-shade-2: var(--f35-deck-2); --anatomy-shade-3: var(--f35-deck-3); }
+.f35-hangar { fill: var(--f35-cav); opacity: .55; }
+.f35-shadow { fill: var(--f35-shadow); stroke: none; opacity: 0; }
+.f35-fallback { display: block; }
+.f35-stage[data-gl] .f35-fallback { display: none; }
+.f35-fb-jet { fill: #f2a35a; stroke: none; mix-blend-mode: multiply; }
+.f35-fb-wash { fill: #d8dbe0; stroke: none; mix-blend-mode: multiply; }
+.f35-strip { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1.2fr 1.9fr; gap: 1px; margin: 18px 0 0; background: var(--anatomy-faint); box-shadow: 0 0 0 1px var(--anatomy-faint); }
+.f35-cell { background: var(--anatomy-card); padding: 8px 10px 9px; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.f35-cell-k { font: 9.5px/1 var(--anatomy-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--anatomy-muted); }
+.f35-cell-v { font: 15px/1.25 var(--anatomy-mono); color: var(--anatomy-strong); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.f35-cell-v small { font-size: 10px; color: var(--anatomy-muted); margin-left: 4px; }
+.f35-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.f35-btn { appearance: none; border: 0; background: var(--anatomy-card); box-shadow: var(--anatomy-lift); border-radius: 999px; padding: 7px 13px; font: 11px/1 var(--anatomy-mono); letter-spacing: .06em; color: var(--anatomy-text); cursor: pointer; display: inline-flex; align-items: center; gap: 7px; }
+.f35-btn:hover { color: var(--anatomy-strong); }
+.f35-btn[data-on] { color: var(--anatomy-strong); box-shadow: var(--anatomy-lift), inset 0 0 0 1px var(--anatomy-mid); }
+.f35-btn:focus-visible { outline: 1px solid var(--anatomy-muted); outline-offset: 3px; }
+.f35-num { color: var(--anatomy-muted); }
+.f35-icon { width: 8px; height: 9px; background: currentColor; clip-path: polygon(0 0, 35% 0, 35% 100%, 0 100%, 0 0, 65% 0, 100% 0, 100% 100%, 65% 100%); }
+.f35-play[data-paused] .f35-icon { clip-path: polygon(0 0, 100% 50%, 0 100%); }
+.f35-track { position: relative; flex: 1 1 160px; height: 2px; background: var(--anatomy-faint); margin-left: 6px; min-width: 120px; }
+.f35-track-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--anatomy-mid); width: 0; }
+.f35-tick { position: absolute; top: -3px; width: 1px; height: 8px; background: var(--anatomy-mid); }
+.f35-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 700px) { .f35-strip { grid-template-columns: 1fr 1fr 1fr; } .f35-cell-v { font-size: 13px; } }
+@media (prefers-reduced-motion: reduce) { .f35-btn { transition: none; } }
+@media (max-width: 700px) { .f35-stage { width: 128%; margin-left: -14%; } .f35 .iso-plate { padding-bottom: 70px; } }
+
+/* ---- 简体中文 ---- CJK-capable stacks: Latin digits stay monospace, Chinese falls back to a CJK sans */
+.iso { --f35-cjk: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Noto Sans CJK SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+  --anatomy-mono: ui-monospace, "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Noto Sans CJK SC", "Microsoft YaHei", monospace; }
+body.iso, .f35, .f35 .iso-caption, .f35 .iso-key { font-family: var(--f35-cjk); }
+.f35 .iso-caption { line-height: 1.75; }
+.f35 .iso-plate-corner { letter-spacing: .02em; font-size: 11.5px; }
+.f35 .iso-plate-corner[data-corner="title"] { color: var(--anatomy-text); }
+.f35-cell-k { font: 11px/1.1 var(--f35-cjk); letter-spacing: .06em; text-transform: none; }
+.f35-cell-v small { font-family: var(--f35-cjk); font-size: 10.5px; margin-left: 5px; letter-spacing: .01em; }
+.f35-btn { font: 12px/1 var(--f35-cjk); letter-spacing: .04em; }
+.f35-num { font-family: var(--anatomy-mono); font-size: 11px; }
+.fc-mm-label { font: 10px/1 var(--f35-cjk); letter-spacing: .08em; }
+@media (max-width: 700px) {
+  .f35-cell-v { white-space: normal; }
+  .f35-cell-v[data-v="phase"] { white-space: nowrap; font-size: 12.5px; }
+  .f35-cell-k { white-space: nowrap; font-size: 10px; letter-spacing: .02em; overflow: hidden; text-overflow: ellipsis; }
+  .f35-cell { padding: 7px 8px 8px; }
+  .f35-cell-v small { display: block; margin: 2px 0 0; font-size: 9.5px; line-height: 1.3; white-space: normal; }
+  .f35 .iso-plate-corner { font-size: 10px; }
+  .f35 .iso-plate-corner[data-corner="hint"] { max-width: 46%; white-space: normal; line-height: 1.3; }
+  .f35-btn { padding: 7px 10px; font-size: 11.5px; }
+}
+/* canopy: smoky gold tint (the F-35's indium-tin-oxide coated glass), a highlight streak */
+.f35 { --f35-glass-0: #8e8a7e; --f35-glass-1: #9a968a; --f35-glass-2: #a6a296; --f35-glass-3: #b3afa3; --f35-glass-4: #c0bcb0; }
+.ac-glint { fill: #ffffff; stroke: none; opacity: .62; }
+
+/* ---- round 3: low-visibility F-35B scheme ----
+   Overall mid-grey (FS 36170-like) in the kit's five light bands, so the airframe reads against the light deck;
+   panel lines and part outlines darker than the skin; darker radar-absorbent edge bands; low-vis grey markings. */
+.f35-ac, .fc-under-ac, .fc-door-ac {
+  --anatomy-top: #b3b7ba; --anatomy-shade-3: #a5a9ad; --anatomy-shade-2: #979ba0; --anatomy-shade-1: #8a8e93; --anatomy-shade-0: #7c8085;
+  --anatomy-lo: #686c71; --anatomy-mid: #4c5055; --anatomy-faint: #8f9398;
+  --f35-cav: #4a4e53; --f35-cav-line: #33363a;
+  --f35-tyre-0: #2e3033; --f35-tyre-1: #36383b; --f35-tyre-2: #3f4144; --f35-tyre-3: #484a4e; --f35-tyre-4: #525458;
+  --f35-glass-0: #6f6b5f; --f35-glass-1: #7b776b; --f35-glass-2: #878377; --f35-glass-3: #949084; --f35-glass-4: #a29e92;
+}
+.ac-ram { fill: #3a3e43; fill-opacity: .2; stroke: none; }
+.ac-inner { fill: #2f3236; fill-opacity: .34; stroke: none; }
+.ac-web { fill: #6f7378; stroke: var(--anatomy-mid); stroke-width: calc(var(--anatomy-weight) * .8); stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.fc-door-ac .ac-web { fill: #a7abb0; stroke: #3f4348; } /* door inset: the frames catch the light against the shaded inner skin */
+.ac-mark { fill: #3b3f44; fill-opacity: .5; stroke: none; font-family: "DejaVu Sans", "Noto Sans", "Helvetica Neue", Arial, sans-serif; }
+.ac-mark .ac-mark-line, .ac-mark-line { fill: none; stroke: #3b3f44; stroke-opacity: .5; stroke-width: calc(var(--anatomy-weight) * 1.2); vector-effect: non-scaling-stroke; stroke-linecap: round; }
+.ac-part.chrome path[data-s="4"] { fill: #f3f5f6; stroke: #f3f5f6; }
+.ac-part.chrome path[data-s="3"] { fill: #dde1e4; stroke: #dde1e4; }
+.ac-part.chrome path[data-s="2"] { fill: #8f969c; stroke: #8f969c; }
+.ac-part.chrome path[data-s="1"] { fill: #c3c8cc; stroke: #c3c8cc; }
+.ac-part.chrome path[data-s="0"], .ac-part.chrome path[data-s="c"] { fill: #7a8187; stroke: #7a8187; }
+.ac-part.hub path[data-s] { fill: #a9adb1; stroke: #a9adb1; }
+.ac-part.hub path[data-s="0"], .ac-part.hub path[data-s="1"] { fill: #8c9095; stroke: #8c9095; }
+.ac-part.hub path[data-s="c"] { fill: #6b6f74; stroke: #6b6f74; }
+.f35-ac .ac-blade2, .fc-under-ac .ac-blade2, .fc-door-ac .ac-blade2 { fill: #6c7075; stroke: #45484c; }
+.f35-ac .ac-well, .fc-under-ac .ac-well, .fc-door-ac .ac-well { fill: #3c4044; }
+.f35-ac .ac-blade, .fc-under-ac .ac-blade, .fc-door-ac .ac-blade { fill: #a3a7ab; }
