@@ -259,3 +259,4 @@
 - 评分 29.5 → 30。真实 Mac Chrome 窗口帧率：index 46.1 → 44.1，wide 55.7 → 55.3（噪声较大）。
 - 验证：shots/loop/geomfix/before/ 与 after/（跟拍五个时刻 + 全景 + 线条 + 特写）；线条 0 / 10308 端点悬空；无头控制台 index（t = 22.7、36.75）与 wide 均干净。对比图 mac-loop/geomfix_before_after.png（线上 shots/geomfix_before_after.png）。
 - 发布 works/f35b-stovl/：index.html（98e3215）、wide.html（85b816f）、shared/f35b-model.js（e27c51f）、forces.html（7c07c9a）、forces.js（7063551）、ground.html（52a836a）、ground.js（6604d3e）、power.html（1ca0f14）、power.js（7720b4a）、shots/geomfix_before_after.png（bb8e0e7）、loop-log.md。目录缩略图未刷新。
+- 目录缩略图已刷新（2026-10-13）：五张 shared/thumb-*.jpg 按修正后的页面重拍（http，480×300，裁切与 JPEG 质量同前：跟拍 t=7.35 与全景整屏 1440×1100、力与力矩 1024×768 平衡、地面效应 1440×900 低悬停舱门关、功率流向 1920×1080 悬停（拍摄时隐藏桑基小图与图例）；页面裁切框随镜像左右翻转，机头朝左）。推送 thumb-follow（80020ed）、thumb-wide（053dd2f）、thumb-forces（22a2fe1）、thumb-ground（ccef891）、thumb-power（a106b7d）；topics.html 未变、未推送。截图 shots/thumbs-geomfix/。
