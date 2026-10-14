@@ -63,3 +63,6 @@ shaft position and gearbox shape — all schematic.
 - Five leader labels (扰流板, 富勒襟翼, 滑轨整流罩, 后梁, 襟翼传动轴) outside the silhouette; fade out when exploded, the flap label also while the flap is out; hidden under 480 px.
 - All figures: the tour no longer resumes (and resets F/S) 3.6 s after a key press; now 15 s.
 - Backup: /workspace/work/a380r/pre-goal/a380-flaps.build.mjs. Review shots: /workspace/work/a380r/review/a380-flaps/{base,v3}.
+
+## M5 v3 (2026-10-14)
+- Camera azimuth 55 → 40, elevation 28 → 34: at 55/28 a spoiler raised 45° lay almost exactly edge-on; now its top face reads when S raises it. Flap section and slot still visible.
