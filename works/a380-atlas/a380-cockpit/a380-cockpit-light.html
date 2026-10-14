@@ -120,6 +120,10 @@ body{margin:0;background:var(--anatomy-page);color:var(--anatomy-text);font:14px
 .iso[data-theme="dark"] .iso-plate,.iso:not([data-theme="light"]) .iso-plate{--anatomy-top:#2b2b2b;--anatomy-face:#262626;--anatomy-paper:#1e1e1e;
   --anatomy-shade-0:#171717;--anatomy-shade-1:#1c1c1c;--anatomy-shade-2:#212121;--anatomy-shade-3:#262626;
   --anatomy-lit-top:#3d3d3d;--anatomy-lit-shade:#323232;--anatomy-lo:#575757;--anatomy-mid:#7c7c7c;--anatomy-faint:#383838}
+/* P3 (2026-10-14): long readouts wrap inside the plate on narrow screens instead of running off its left edge */
+@media (max-width:640px){main.iso-page .iso-plate-corner[data-corner="readout"]{left:0;white-space:normal;text-align:right;line-height:1.3}
+  main.iso-page .iso-plate-corner[data-corner="hint"]{bottom:30px}
+  main.iso-page .iso-plate{padding-bottom:62px}}
 main.iso-page .iso-stage:focus{outline:none!important}
 main.iso-page .iso-stage:focus-visible{outline:1px dashed var(--anatomy-mid)!important;outline-offset:-3px!important}
 html,body{height:100%}
