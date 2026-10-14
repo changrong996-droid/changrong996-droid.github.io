@@ -90,3 +90,6 @@ fills the card).
   skin).
 - Several leader lines cross parts (后梁 crosses the inner flap, 前缘缝翼 / 上蒙皮 cross the leading edge).
 - The tank capacities were not read from an opened copy of the Airbus documents (see sources).
+
+## M2 phone (2026-10-14)
+- Under 640 px the button bar moves to the top left (the wingtip fence sat under it at top right).
