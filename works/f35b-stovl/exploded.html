@@ -1,0 +1,87 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>部件拆解 · F-35B 短距起飞/垂直降落</title><link rel="stylesheet" href="shared/f35b.css"><link rel="stylesheet" href="shared/topic.css"><style>.ac-part.xr-eng path[data-s="0"] { fill: #56636f; stroke: #56636f; }
+.ac-part.xr-eng path[data-s="1"] { fill: #6d7b89; stroke: #6d7b89; }
+.ac-part.xr-eng path[data-s="2"] { fill: #8796a5; stroke: #8796a5; }
+.ac-part.xr-eng path[data-s="3"] { fill: #a4b2bf; stroke: #a4b2bf; }
+.ac-part.xr-eng path[data-s="4"] { fill: #c3ced8; stroke: #c3ced8; }
+.ac-part.xr-eng path[data-s="c"] { fill: #2c3238; stroke: #2c3238; }
+.ac-part.xr-core path[data-s="0"] { fill: #4a535c; stroke: #4a535c; }
+.ac-part.xr-core path[data-s="1"] { fill: #5c6670; stroke: #5c6670; }
+.ac-part.xr-core path[data-s="2"] { fill: #727d88; stroke: #727d88; }
+.ac-part.xr-core path[data-s="3"] { fill: #8d98a3; stroke: #8d98a3; }
+.ac-part.xr-core path[data-s="4"] { fill: #a9b3bd; stroke: #a9b3bd; }
+.ac-part.xr-turb path[data-s="0"] { fill: #6b4630; stroke: #6b4630; }
+.ac-part.xr-turb path[data-s="1"] { fill: #87593b; stroke: #87593b; }
+.ac-part.xr-turb path[data-s="2"] { fill: #a46f4a; stroke: #a46f4a; }
+.ac-part.xr-turb path[data-s="3"] { fill: #c18c60; stroke: #c18c60; }
+.ac-part.xr-turb path[data-s="4"] { fill: #d9ab7f; stroke: #d9ab7f; }
+.ac-part.xr-case path[data-s] { fill: #4f7f86; stroke: none; fill-opacity: .34; }
+.ac-part.xr-case path[data-s="3"], .ac-part.xr-case path[data-s="4"] { fill: #6f9ea4; }
+.ac-part.xr-gear path[data-s="0"] { fill: #6e5826; stroke: #6e5826; }
+.ac-part.xr-gear path[data-s="1"] { fill: #8a7032; stroke: #8a7032; }
+.ac-part.xr-gear path[data-s="2"] { fill: #a88a42; stroke: #a88a42; }
+.ac-part.xr-gear path[data-s="3"] { fill: #c4a758; stroke: #c4a758; }
+.ac-part.xr-gear path[data-s="4"] { fill: #dcc27a; stroke: #dcc27a; }
+.ac-part.xr-gear path[data-s="c"] { fill: #5a481f; stroke: #5a481f; }
+.ac-part.xr-shaft path[data-s="0"], .ac-part.xr-shaft path[data-s="c"] { fill: #7d858c; stroke: #7d858c; }
+.ac-part.xr-shaft path[data-s="1"] { fill: #a1a9b0; stroke: #a1a9b0; }
+.ac-part.xr-shaft path[data-s="2"] { fill: #bfc6cc; stroke: #bfc6cc; }
+.ac-part.xr-shaft path[data-s="3"] { fill: #dbe0e4; stroke: #dbe0e4; }
+.ac-part.xr-shaft path[data-s="4"] { fill: #f1f3f5; stroke: #f1f3f5; }
+.ac-part.xr-coup path[data-s] { fill: #5d646b; stroke: #5d646b; }
+.ac-part.xr-coup path[data-s="3"], .ac-part.xr-coup path[data-s="4"] { fill: #828a92; stroke: #828a92; }
+.ac-part.xr-clutch path[data-s] { fill: #3d4146; stroke: #3d4146; }
+.ac-part.xr-clutch path[data-s="3"], .ac-part.xr-clutch path[data-s="4"] { fill: #565b61; stroke: #565b61; }
+.ac-part.xr-clutch.on path.iso-line { stroke: #c8641e; }
+.ac-part.xr-duct path[data-s="0"] { fill: #4f7b98; stroke: #4f7b98; }
+.ac-part.xr-duct path[data-s="1"] { fill: #6590ad; stroke: #6590ad; }
+.ac-part.xr-duct path[data-s="2"] { fill: #7fa8c3; stroke: #7fa8c3; }
+.ac-part.xr-duct path[data-s="3"] { fill: #9cc0d6; stroke: #9cc0d6; }
+.ac-part.xr-duct path[data-s="4"] { fill: #bcd6e6; stroke: #bcd6e6; }
+.xr-stripe { fill: none; stroke: #1e2226; stroke-width: 1.5px; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.xr-flow { fill: none; stroke: #f4fbff; stroke-width: 1.6px; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.xr-disc { fill: #36414b; fill-opacity: .55; stroke: none; }
+.xr-blade { fill: #b8c3cc; stroke: #48525c; stroke-width: .6px; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.xr-blade.b2 { fill: #8a96a1; }
+.xr-hub { fill: #5d6670; stroke: #3a4148; stroke-width: .6px; vector-effect: non-scaling-stroke; }
+.xr-col { fill: none; stroke: #5d6670; stroke-width: 3px; vector-effect: non-scaling-stroke; }
+.ac-part.xr-inlet path[data-s] { fill: #8a9fb0; stroke: none; fill-opacity: .3; }
+.ac-part.xr-inlet path[data-s="3"], .ac-part.xr-inlet path[data-s="4"] { fill: #b3c3cf; }
+.ac-part.xr-inlet path[data-s="0"], .ac-part.xr-inlet path[data-s="c"] { fill: #6c8193; }
+.ac-part.xr-inlet path.iso-line { stroke: #4d6172; stroke-opacity: .8; }
+.ac-part.xr-auxd path[data-s] { fill: #9aa98a; }
+.ac-part.xr-auxd path.iso-line { stroke: #5a6a4a; }
+.ac-part.xr-fair path[data-s] { fill: #7d858c; fill-opacity: .4; }
+.ac-part.xr-byp path[data-s] { fill: #7fa8c3; stroke: none; fill-opacity: .24; }
+.ac-part.xr-byp path.iso-line { stroke: #3f6a88; stroke-opacity: .9; }
+.xr-iflow { stroke: #ffffff; stroke-width: 1.3px; }
+.ex .xr-flow,.ex .xr-stripe{display:none}
+.ex .tp-svg{touch-action:none;cursor:grab}.ex .tp-svg:active{cursor:grabbing}
+.ex-ac .ac-part{transition:opacity .18s}
+.ex-ac.ex-hl .ac-part:not(.ex-on){opacity:.22}
+.ex-ac.ex-hl .ac-part.ex-on path.iso-line{stroke:#1f4fd1;stroke-opacity:1}
+.ex-ac.ex-hl .ac-part.ex-on path[data-s]{filter:none}
+.ex-lead{fill:none;stroke:#1f4fd1;stroke-width:1.1px}
+.ex-dot{fill:#1f4fd1;stroke:var(--anatomy-card);stroke-width:1.4px}
+.ex-box{fill:color-mix(in srgb,var(--anatomy-card) 96%,transparent);stroke:#1f4fd1;stroke-width:1px}
+.ex-t1{font:600 13.5px/1 var(--f35-cjk);fill:var(--anatomy-strong)}
+.ex-t2{font:12px/1 var(--f35-cjk);fill:var(--anatomy-text)}
+.ex-m{visibility:hidden}
+.ex-fail{font:14px/1 var(--f35-cjk);fill:var(--anatomy-muted)}
+.ex-lab{pointer-events:none}
+.ex-range{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--anatomy-muted);flex:1 1 200px;max-width:340px}
+.ex-range input{flex:1;min-width:90px;accent-color:#1f4fd1}
+.ex-sep{width:1px;height:18px;background:var(--anatomy-faint);margin:0 4px}
+.ex-hint{position:absolute;right:12px;bottom:8px;font-size:11.5px;color:var(--anatomy-muted);pointer-events:none}
+.ex-go{min-width:72px;justify-content:center}.ex-go[aria-pressed="true"]{color:#1f4fd1}
+@media (max-width:700px){.ex-hint{display:none}.ex-range{order:5;flex:1 0 100%;max-width:none}.ex-sep{display:none}.ex .tp-read{min-height:3.9em}}
+@media (prefers-reduced-motion:reduce){.ex-ac .ac-part{transition:none}}</style><script src="shared/f35b-model.js" defer></script></head>
+<body class="iso" data-theme="light"><main class="tp ex f35">
+<header class="tp-head"><a class="tp-back" href="topics.html">← 目录</a><h1 class="tp-title">部件拆解<span class="tp-sub">F-35B 短距起飞/垂直降落 · 由外到内逐层拆开</span></h1><span class="tp-read" data-read aria-live="polite"></span></header>
+<div class="tp-box"><svg class="tp-svg" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid meet" role="img" aria-label="F-35B 部件拆解示意（短距起飞/垂直降落构型）：可把蒙皮、舱门、进气道、F135、三轴承喷管、滚转喷口、起落架、传动轴、离合器、锥齿轮箱和升力风扇由外到内逐层移开；悬停或点按部件看名称与作用。" tabindex="0">
+<g class="f35-ac ex-ac"></g><g class="ex-lab"></g></svg><div class="ex-hint" aria-hidden="true">拖动旋转 · 悬停或点按部件看说明 · 分块与位移为示意</div></div>
+<div class="tp-controls"><button type="button" class="tp-btn ex-go" data-explode aria-pressed="false"><span>炸开</span></button><label class="ex-range">拆解<input type="range" min="0" max="100" step="1" value="0" data-p aria-label="拆解进度"></label><span class="ex-sep" aria-hidden="true"></span><button type="button" class="tp-btn" data-view="iso" aria-pressed="true"><span>等轴测</span><span class="tp-num">1</span></button><button type="button" class="tp-btn" data-view="side" aria-pressed="false"><span>侧视</span><span class="tp-num">2</span></button><button type="button" class="tp-btn" data-view="top" aria-pressed="false"><span>俯视</span><span class="tp-num">3</span></button><details class="tp-notes"><summary class="tp-btn tp-notes-btn"><span class="tp-chev" aria-hidden="true"></span>说明</summary><div class="tp-notes-body"><div class="tp-notes-panel" role="region" aria-label="说明"><p><b>怎么看。</b>「炸开」把部件按由外到内的顺序一层层移开：先是蒙皮、座舱盖、机翼和尾翼，再是各处舱门，然后是 DSI 进气口和 S 形进气道，接着是 F135、三轴承喷管、滚转喷口管路和起落架，最后是传动轴、离合器、锥齿轮箱和升力风扇。拖动滑块可停在任意进度；拖动图形可旋转，或用「等轴测 / 侧视 / 俯视」三个预设视角。鼠标悬停或点按部件会高亮它，并显示名称和一句作用说明。</p>
+<p><b>升力系统。</b>升力模式下，从 F135 的低压涡轮取出功率，经传动轴、离合器和 90° 锥齿轮箱驱动座舱后方的升力风扇；锥齿轮箱里上下两个锥齿轮反向旋转，各驱动一级风扇，所以风扇是两级对转。Rolls-Royce 给出传动轴与离合器最高可传递约 29,000 轴马力，升力风扇直径 50 英寸，三轴承旋转喷管 2.5 秒内可转 95°。P&amp;W 公布的悬停推力级为 40,650 磅力（约 180.8 千牛），分配为升力风扇 83.1、主发动机喷管 83.1、两侧滚转喷口合计 14.6 千牛。</p>
+<p class="tp-src"><b>哪些是示意。</b>蒙皮的分块位置（沿边条线与几个已有的框位切开）、各部件移开的方向和距离、动画的先后与缓动都是示意，不代表真实的拆装顺序或结构分块。机体沿用本系列按照片修正的几何（机翼后移 1.5 米，喷管出口距机头 12.80 米，主轮 9.85 米，前轮 3.83 米）；透视件中 F135 为接上前移的喷管画得比实物短，发动机内部各段长度为示意。本页不给重量、材料或尺寸公差。</p>
+<p class="tp-src">资料：Rolls-Royce LiftSystem 资料页与数据单（29,000 轴马力、50 英寸两级对转风扇、3BSM 95° / 2.5 秒）；Lockheed Martin《F-35 Air Vehicle Technology Overview》（升力模式从低压涡轮经传动轴、离合器、齿轮箱取功率；辅助进气口）；Lockheed Martin 2007 年 12 月 18 日新闻稿（风扇上下舱门、离合器、背部辅助进气口）；Space.com《From Supersonic to Hover: How the F-35 Flies》，2007（90° 齿轮箱与对转锥齿轮、VAVN）；Pratt &amp; Whitney F135 STOVL 产品资料，2019（悬停分配）。操作：空格 炸开 / 装回；1–3 视角；聚焦图形后 ←→ 逐个查看部件，Esc 取消。</p></div></div></details></div>
+</main>
+<script>window.EX={"ISO":[132,26],"PHONE_K":[0.55,0.6,1.15],"GROUPS":[{"id":"canopy","L":0,"o":[0.4,0,4.1],"name":"座舱盖","role":"单座座舱的气泡式座舱盖"},{"id":"skin.radome","L":0,"o":[2.7,0,0.3],"name":"机头整流罩","role":"机头最前端的整流罩（雷达罩）"},{"id":"skin.uf","L":0,"o":[1.1,0,2.9],"name":"上机身蒙皮 · 前段","role":"座舱周围的背部蒙皮（分块为示意）"},{"id":"skin.um","L":0,"o":[0,0,3.1],"name":"上机身蒙皮 · 中段","role":"升力风扇舱与辅助进气口所在的背部（分块为示意）"},{"id":"skin.ua","L":0,"o":[-1.1,0,2.9],"name":"上机身蒙皮 · 后段","role":"F135 发动机舱上方的背部（分块为示意）"},{"id":"skin.lf","L":0,"o":[1.1,0,-3.5],"name":"下机身蒙皮 · 前段","role":"前起落架舱所在的机腹前段（分块为示意）"},{"id":"skin.lm","L":0,"o":[0,0,-3.7],"name":"下机身蒙皮 · 中段","role":"武器舱门、主起落架舱与风扇下舱门所在的机腹（分块为示意）"},{"id":"skin.la","L":0,"o":[-1.1,0,-3.5],"name":"下机身蒙皮 · 后段","role":"三轴承喷管从这里向下伸出（分块为示意）"},{"id":"boom","L":0,"o":[-1.2,1.3,0.3],"name":"后机身侧板（左 / 右）","role":"承载垂尾和平尾的后机身两侧"},{"id":"wing","L":0,"o":[-0.3,2.9,0.3],"name":"机翼（左 / 右）","role":"翼根内有通往滚转喷口的外涵管路"},{"id":"fin","L":0,"o":[-1.7,1.5,2.3],"name":"垂尾（左 / 右）","role":"两片外倾的垂直尾翼，后缘是方向舵"},{"id":"stab","L":0,"o":[-2.5,2,0.1],"name":"平尾（左 / 右）","role":"全动平尾，偏转控制俯仰"},{"id":"dlift","L":1,"o":[0.3,0,4.4],"name":"升力风扇上舱门","role":"向后铰接，STOVL 时打开，风扇从这里吸入空气"},{"id":"daux","L":1,"o":[-0.5,0.3,4.1],"name":"辅助进气门","role":"STOVL 时打开，给 F135 补充进气"},{"id":"dlow","L":1,"o":[0,0.4,-4.4],"name":"升力风扇下舱门","role":"STOVL 时向两侧打开，风扇冷气流经叶栅喷口（VAVN）向下"},{"id":"dpost","L":1,"o":[-0.3,3.1,-0.6],"name":"滚转喷口舱门","role":"机翼下方，悬停时打开让滚转喷口出气"},{"id":"gdoorN","L":1,"o":[1.1,0.3,-4.3],"name":"前起落架舱门","role":"前起落架放下后舱口两侧的舱门"},{"id":"gdoorM","L":1,"o":[0,0.7,-4.3],"name":"主起落架舱门","role":"主起落架舱外侧的舱门"},{"id":"dsi","L":2,"o":[1,1.9,-0.1],"name":"DSI 进气口（左 / 右）","role":"两侧主进气口与机身鼓包，空气由此进入 S 形进气道"},{"id":"sduct","L":2,"o":[0.5,0.8,0.05],"name":"S 形进气道","role":"绕过升力风扇舱弯到发动机前，从进气口直线看不到风扇面"},{"id":"post","L":3,"o":[-0.6,1.3,-0.9],"name":"滚转喷口管路与喷口","role":"外涵引气送到翼下喷口，悬停两侧合计 14.6 千牛（P&W）"},{"id":"ngear","L":3,"o":[0.9,0,-0.45],"name":"前起落架","role":"单轮前起落架，带减震支柱与撑杆"},{"id":"mgear","L":3,"o":[-0.1,0.5,-0.45],"name":"主起落架（左 / 右）","role":"两侧主起落架，带减震支柱、扭力臂与撑杆"},{"id":"noz","L":3,"o":[-2.5,0,-0.6],"name":"三轴承旋转喷管（3BSM）","role":"2.5 秒内可转 95°，悬停时分得 83.1 千牛（P&W）"},{"id":"eng","L":3,"o":[-1.3,0,0],"name":"F135-PW-600 发动机","role":"悬停推力级约 180.8 千牛（40,650 磅力，P&W）"},{"id":"shaft","L":4,"o":[0.25,0,0.35],"name":"传动轴","role":"从低压涡轮向前取功率，最高约 29,000 轴马力（Rolls-Royce）"},{"id":"clutch","L":4,"o":[0.7,0,0.55],"name":"离合器","role":"转入 STOVL 时接合，常规飞行时分离、风扇不转"},{"id":"gbox","L":4,"o":[1.1,0,0.75],"name":"锥齿轮箱","role":"90° 换向，上下两个锥齿轮反向旋转，各驱动一级风扇"},{"id":"fan","L":4,"o":[1.6,0,1.05],"name":"升力风扇","role":"直径 50 英寸、两级对转，悬停时分得 83.1 千牛（P&W）"}],"MAP":[["^boom\\.","boom"],["^wing\\.","wing"],["^(fin|fin\\.tip|fillet|rudder)\\.","fin"],["^stab\\.","stab"],["^(intake|bump)\\.","dsi"],["^door\\.(liftfan|hinge|ram|rod)$","dlift"],["^door\\.aux$","daux"],["^door\\.lower$","dlow"],["^door\\.post$","dpost"],["^(post\\.nozzle|xr\\.duct)$","post"],["^nozzle\\.","noz"],["^xr\\.(eng\\.|bypass)","eng"],["^xr\\.(shaft|coupling)$","shaft"],["^xr\\.clutch","clutch"],["^xr\\.gearbox$","gbox"],["^xr\\.(fan\\.case|rotors)$","fan"],["^xr\\.(inlet|plenum|fairing|aux)$","sduct"]],"READ":"STOVL 构型（舱门打开、喷管向下、起落架放下）· 悬停或点按部件看名称与作用"};</script><script src="exploded.js" defer></script></body></html>
