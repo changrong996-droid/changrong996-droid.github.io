@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fig 1 · G1 擎天柱的变形</title>
+<style>.iso{
+  --anatomy-page:#0b0b0b;--anatomy-card:#131313;--anatomy-text:#a3a3a3;--anatomy-strong:#e6e6e6;--anatomy-muted:#6e6e6e;
+  --anatomy-paper:#131313;--anatomy-face:#1b1b1b;--anatomy-top:#1c1c1c;
+  --anatomy-shade-0:#0f0f0f;--anatomy-shade-1:#121212;--anatomy-shade-2:#151515;--anatomy-shade-3:#181818;
+  --anatomy-lit-top:#262626;--anatomy-lit-shade:#1d1d1d;
+  --anatomy-hi:#d4d4d4;--anatomy-mid:#6a6a6a;--anatomy-lo:#3e3e3e;--anatomy-faint:#2a2a2a;--anatomy-lit:#ffffff;
+  --anatomy-halo:#050505;--anatomy-halo-opacity:.9;--anatomy-dot:#e6e6e6;
+  --anatomy-red:#ff6b6b;--anatomy-green:#6be0a0;--anatomy-blue:#6b9bff;
+  --anatomy-weight:.6px;--anatomy-ease:cubic-bezier(.32,.72,0,1);
+  --anatomy-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --anatomy-lift:inset 0 1px 0 0 #ffffff0a,inset 0 0 0 1px #ffffff06,0 0 0 1px #00000026,0 1px 1px -.5px #00000014,0 3px 3px -1.5px #00000014,0 6px 6px -3px #00000014,0 12px 12px -6px #00000014;
+}
+.iso[data-theme="light"]{
+  --anatomy-page:#f2f2ef;--anatomy-card:#fbfbfa;--anatomy-text:#57575a;--anatomy-strong:#18181a;--anatomy-muted:#8c8c90;
+  --anatomy-paper:#fbfbfa;--anatomy-face:#ffffff;--anatomy-top:#ffffff;
+  --anatomy-shade-0:#dcdcd9;--anatomy-shade-1:#e5e5e2;--anatomy-shade-2:#ededea;--anatomy-shade-3:#f4f4f1;
+  --anatomy-lit-top:#ffffff;--anatomy-lit-shade:#eeeeeb;
+  --anatomy-hi:#26262a;--anatomy-mid:#8a8a8f;--anatomy-lo:#b4b4b8;--anatomy-faint:#d4d4d6;--anatomy-lit:#000000;
+  --anatomy-halo:#8a8a80;--anatomy-halo-opacity:.32;--anatomy-dot:#3a3a3e;
+  --anatomy-red:#e5484d;--anatomy-green:#30a46c;--anatomy-blue:#3e63dd;
+  --anatomy-lift:inset 0 1px 0 0 #ffffff,0 0 0 1px #0000000f,0 1px 1px -.5px #0000000a,0 3px 3px -1.5px #0000000a,0 6px 6px -3px #0000000a,0 12px 12px -6px #0000000a;
+}
+.iso-svg{display:block;width:100%;height:auto;overflow:visible}
+.iso-svg path,.iso-svg circle{vector-effect:non-scaling-stroke}
+.iso-fill{fill:var(--anatomy-paper);stroke:none}
+.iso-solid[data-lit]>.iso-fill{fill:var(--anatomy-face)}
+.iso-shade,.iso-top{stroke:none}
+.iso-shade[data-shade="0"]{fill:var(--anatomy-shade-0)}
+.iso-shade[data-shade="1"]{fill:var(--anatomy-shade-1)}
+.iso-shade[data-shade="2"]{fill:var(--anatomy-shade-2)}
+.iso-shade[data-shade="3"]{fill:var(--anatomy-shade-3)}
+.iso-top{fill:var(--anatomy-top)}
+.iso-solid[data-lit]>.iso-top{fill:var(--anatomy-lit-top)}
+.iso-solid[data-lit]>.iso-shade{fill:var(--anatomy-lit-shade)}
+.iso-solid[data-seamless]>.iso-shade,.iso-solid[data-seamless]>.iso-top{stroke-width:.4;stroke-linejoin:round}
+.iso-solid[data-seamless]>.iso-shade[data-shade="0"]{stroke:var(--anatomy-shade-0)}
+.iso-solid[data-seamless]>.iso-shade[data-shade="1"]{stroke:var(--anatomy-shade-1)}
+.iso-solid[data-seamless]>.iso-shade[data-shade="2"]{stroke:var(--anatomy-shade-2)}
+.iso-solid[data-seamless]>.iso-shade[data-shade="3"]{stroke:var(--anatomy-shade-3)}
+.iso-solid[data-seamless]>.iso-top{stroke:var(--anatomy-top)}
+.iso-solid[data-seamless][data-lit]>.iso-top{stroke:var(--anatomy-lit-top)}
+.iso-solid[data-seamless][data-lit]>.iso-shade{stroke:var(--anatomy-lit-shade)}
+.iso-solid[data-lit]>.iso-edge{stroke:var(--anatomy-lit)}
+.iso-halo{fill:var(--anatomy-halo);stroke:none;filter:blur(9px);opacity:var(--anatomy-halo-opacity);transform:translateY(3px)}
+.iso-line{fill:none;stroke:var(--anatomy-lo);stroke-width:var(--anatomy-weight);stroke-linecap:round;stroke-linejoin:round}
+.iso-line[data-tone="hi"]{stroke:var(--anatomy-hi)}
+.iso-line[data-tone="mid"]{stroke:var(--anatomy-mid)}
+.iso-line[data-tone="lo"]{stroke:var(--anatomy-lo)}
+.iso-line[data-tone="faint"]{stroke:var(--anatomy-faint)}
+.iso-line[data-tone="lit"]{stroke:var(--anatomy-lit)}
+.iso-line[data-tone="red"]{stroke:var(--anatomy-red)}
+.iso-line[data-tone="green"]{stroke:var(--anatomy-green)}
+.iso-line[data-tone="blue"]{stroke:var(--anatomy-blue)}
+.iso-line[data-dotted]{stroke-dasharray:.01 3.5;stroke-width:1}
+.iso-line[data-dashed]{stroke-dasharray:3 3}
+.iso-line[data-flow]{stroke-dasharray:2 6}
+.iso-wire-end{fill:var(--anatomy-paper);stroke:var(--anatomy-lo);stroke-width:var(--anatomy-weight)}
+.iso-wire[data-tone="hi"] .iso-wire-end{stroke:var(--anatomy-hi)}
+.iso-wire[data-tone="mid"] .iso-wire-end{stroke:var(--anatomy-mid)}
+.iso-wire[data-tone="faint"] .iso-wire-end{stroke:var(--anatomy-faint)}
+.iso-wire[data-tone="lit"] .iso-wire-end{stroke:var(--anatomy-lit)}
+.iso-dots circle{fill:var(--anatomy-dot);stroke:none;opacity:.32}
+.iso-dots[data-tone="hi"] circle{opacity:.85}
+.iso-dots[data-tone="mid"] circle{opacity:.45}
+.iso-dots[data-tone="lo"] circle{opacity:.22}
+.iso-dots[data-tone="faint"] circle{opacity:.12}
+.iso-face-text{fill:var(--anatomy-mid);font-family:var(--anatomy-mono);letter-spacing:.04em}
+.iso-face-text[data-tone="hi"]{fill:var(--anatomy-hi)}
+.iso-face-text[data-tone="lo"]{fill:var(--anatomy-lo)}
+.iso-face-text[data-tone="faint"]{fill:var(--anatomy-faint)}
+.tb-body{fill:var(--anatomy-shade-2);stroke:none}
+.tb-shine{fill:var(--anatomy-top);stroke:none}
+.tb-shade{fill:var(--anatomy-shade-0);stroke:none}
+.tb-ring{fill:none;stroke:var(--anatomy-lo);stroke-width:.45;stroke-linecap:butt;stroke-linejoin:round}
+.tb-ring[data-tone="mid"]{stroke:var(--anatomy-mid)}
+.tb-ring[data-tone="faint"]{stroke:var(--anatomy-faint)}
+.tb-ring[data-tone="hi"]{stroke:var(--anatomy-hi)}
+@keyframes iso-flow{to{stroke-dashoffset:-32}}
+@keyframes iso-pulse{0%,100%{opacity:.18}12%{opacity:1}40%{opacity:.18}}
+.iso-line[data-flow]{animation:iso-flow 1600ms linear infinite}
+.iso-dots circle[data-pulse]{animation:iso-pulse 1600ms steps(1,end) infinite;animation-delay:var(--pulse-at,0ms)}
+.iso-figure{margin:32px 0 36px}
+.iso-plate{position:relative;padding:52px 24px;border-radius:0;background:var(--anatomy-card);box-shadow:0 0 0 1px var(--anatomy-mid);--anatomy-paper:var(--anatomy-card)}
+.iso-plate-corners{position:absolute;inset:18px 20px;pointer-events:none}
+.iso-plate-corner{position:absolute;color:var(--anatomy-muted);font-family:var(--anatomy-mono);font-size:10.5px;line-height:1;letter-spacing:.04em;white-space:nowrap}
+.iso-plate-corner[data-corner="fig"]{top:0;left:0;color:var(--anatomy-text)}
+.iso-plate-corner[data-corner="title"]{top:0;right:0;text-transform:uppercase;letter-spacing:.1em}
+.iso-plate-corner[data-corner="hint"]{bottom:0;left:0;text-transform:uppercase;letter-spacing:.1em}
+.iso-plate-corner[data-corner="readout"]{right:0;bottom:0;color:var(--anatomy-text);font-variant-numeric:tabular-nums}
+.iso-plate .iso-svg{margin:0 auto}
+.iso-legend{display:grid;gap:8px;margin-top:12px;color:var(--anatomy-muted);font-size:13px;line-height:1.55}
+.iso-keys{display:flex;flex-wrap:wrap;gap:6px 18px}
+.iso-key{display:inline-flex;align-items:center;gap:7px}
+.iso-swatch{width:16px;height:10px;flex:none;overflow:visible}
+.iso-swatch path{fill:none;stroke:var(--anatomy-hi);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round}
+.iso-swatch[data-mark="raised"] path,.iso-swatch[data-mark="flat"] path{stroke:var(--anatomy-mid)}
+.iso-swatch[data-mark="lit"] path{stroke:var(--anatomy-lit)}
+.iso-swatch[data-mark="dim"] path{stroke:var(--anatomy-lo)}
+.iso-swatch[data-mark="dotted"] path{stroke-dasharray:.01 3;stroke-width:1.4}
+.iso-swatch[data-mark="dashed"] path{stroke-dasharray:3 2.5}
+.iso-swatch[data-mark="red"] path{stroke:var(--anatomy-red)}
+.iso-swatch[data-mark="green"] path{stroke:var(--anatomy-green)}
+.iso-swatch[data-mark="blue"] path{stroke:var(--anatomy-blue)}
+.iso-swatch-crease{stroke:var(--anatomy-lo)!important}
+@media (max-width:560px){.iso-plate{padding:48px 12px 70px}.iso-plate-corner[data-corner="hint"]{bottom:18px}}
+@media (prefers-reduced-motion:reduce){.iso-line[data-flow],.iso-dots circle[data-pulse]{animation:none}}
+
+body.iso { margin: 0; background: var(--anatomy-page); color: var(--anatomy-text); font: 15px/1.6 "PingFang SC", "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif; }
+.op-page { max-width: 880px; margin: 0 auto; padding: 40px 20px 60px; }
+.op-head h1 { font-size: 26px; line-height: 1.3; color: var(--anatomy-strong); margin: 4px 0 10px; font-weight: 600; }
+.op-kicker { margin: 0; font: 11px/1 var(--anatomy-mono); letter-spacing: .14em; color: var(--anatomy-muted); }
+.op-lede { margin: 0 0 8px; max-width: 46em; }
+.op .iso-plate { padding: 48px 20px 52px; }
+.op .iso-plate-corner { font-family: var(--anatomy-mono), "Noto Sans SC", sans-serif; }
+.op-stage { position: relative; touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: grab; }
+.op-stage:active { cursor: grabbing; }
+.op-svg { max-height: 74vh; }
+.op:focus { outline: none; }
+.op:focus-visible .iso-plate { box-shadow: 0 0 0 1px var(--anatomy-mid), 0 0 0 4px #0000000d; }
+
+/* the drawing */
+.op-fig path { stroke-linejoin: round; }
+.op-fig .pp > path[fill] { stroke-width: .35; }
+.op-fig .ed { fill: none; stroke: #2a2a2f; stroke-width: .62; stroke-linecap: round; }
+.op-fig .cr { fill: none; stroke: #2a2a2f; stroke-opacity: .32; stroke-width: .42; stroke-linecap: round; }
+.op-fig .ln { fill: none; stroke: #2a2a2f; stroke-opacity: .5; stroke-width: .38; stroke-linecap: round; }
+.op-fig .lf { fill: none; stroke: #2a2a2f; stroke-opacity: .26; stroke-width: .34; stroke-linecap: round; }
+.op-fig .ld { fill: none; stroke: #1c1c20; stroke-opacity: .72; stroke-width: .7; stroke-linecap: round; }
+.op-fig .lm { fill: none; stroke: #2a2a2f; stroke-opacity: .7; stroke-width: .5; stroke-linecap: round; }
+.op-fig .lg { fill: none; stroke: #ffffff; stroke-opacity: .85; stroke-width: .8; stroke-linecap: round; }
+.op-fig .dt { fill: #2a2a2f; fill-opacity: .55; }
+.op-fig .tk { fill: none; stroke: #2a2a2f; stroke-opacity: .38; stroke-width: .34; }
+.op-fig .base-top { fill: #fdfdfc; stroke: #2a2a2f; stroke-width: .62; }
+.op-fig .shadow { fill: #6f6f68; opacity: .22; filter: blur(2.2px); }
+
+.op-strip { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr; gap: 1px; margin: 16px 0 0; background: var(--anatomy-faint); box-shadow: 0 0 0 1px var(--anatomy-faint); }
+.op-cell { background: var(--anatomy-card); padding: 8px 10px 9px; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.op-k { font-size: 11px; line-height: 1; color: var(--anatomy-muted); letter-spacing: .06em; }
+.op-v { font: 15px/1.3 var(--anatomy-mono), "Noto Sans SC", sans-serif; color: var(--anatomy-strong); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.op-cell-wide .op-v { font-family: "Noto Sans SC", "PingFang SC", sans-serif; font-size: 14px; }
+.op-v small { font-size: 10px; color: var(--anatomy-muted); margin-left: 3px; }
+.op-controls, .op-steps { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.op-steps { margin-top: 10px; }
+.op-btn { appearance: none; border: 0; background: var(--anatomy-card); box-shadow: var(--anatomy-lift); border-radius: 999px; padding: 7px 13px; font: 12px/1 "Noto Sans SC", "PingFang SC", sans-serif; color: var(--anatomy-text); cursor: pointer; display: inline-flex; align-items: center; gap: 7px; }
+.op-btn b { font: 600 11px/1 var(--anatomy-mono); color: var(--anatomy-muted); }
+.op-btn:hover { color: var(--anatomy-strong); }
+.op-btn[data-on] { color: var(--anatomy-strong); box-shadow: var(--anatomy-lift), inset 0 0 0 1px var(--anatomy-mid); }
+.op-btn[data-on] b { color: var(--anatomy-strong); }
+.op-icon { width: 8px; height: 9px; background: currentColor; clip-path: polygon(0 0, 35% 0, 35% 100%, 0 100%, 0 0, 65% 0, 100% 0, 100% 100%, 65% 100%); }
+.op-play[data-paused] .op-icon { clip-path: polygon(0 0, 100% 50%, 0 100%); }
+.op-track { position: relative; flex: 1 1 200px; height: 22px; cursor: pointer; touch-action: none; min-width: 140px; }
+.op-track::before { content: ""; position: absolute; left: 0; right: 0; top: 10px; height: 2px; background: var(--anatomy-faint); }
+.op-track-fill { position: absolute; left: 0; top: 10px; height: 2px; background: var(--anatomy-mid); width: 0; }
+.op-knob { position: absolute; top: 5px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: var(--anatomy-card); box-shadow: 0 0 0 1px var(--anatomy-mid), 0 1px 2px #0002; }
+.op-sw { width: 14px; height: 9px; display: inline-block; box-shadow: 0 0 0 1px #0003 inset; }
+.op .iso-legend p { margin: 4px 0 0; }
+@media (max-width: 560px) {
+  .op-page { padding: 24px 12px 40px; }
+  .op-head h1 { font-size: 21px; }
+  .op-strip { grid-template-columns: 1fr 1fr; }
+  .op-cell-wide { grid-column: 1 / -1; }
+}
+</style>
+</head>
+<body class="iso" data-theme="light">
+<main class="op-page">
+  <header class="op-head">
+    <p class="op-kicker">变形金刚 · 结构图解</p>
+    <h1>G1 擎天柱：一辆卡车头怎样站起来</h1>
+    <p class="op-lede">1984 年的初代玩具只有一个车头，却装下了整个机器人：车尾是腿，车厢两侧是手臂，车顶舱盖底下藏着头。按下播放看完整变形，拖动图形可以转着看。</p>
+  </header>
+  <figure class="iso-figure op" tabindex="0" aria-label="G1 擎天柱从卡车变成机器人的动画图解">
+    <div class="iso-plate">
+      <div class="iso-plate-corners" aria-hidden="true">
+        <span class="iso-plate-corner" data-corner="fig">Fig 1</span>
+        <span class="iso-plate-corner" data-corner="title">卡车 ⇄ 机器人</span>
+        <span class="iso-plate-corner" data-corner="hint">拖动转向 · 空格 播放</span>
+        <span class="iso-plate-corner" data-corner="readout" data-readout>变形 0%</span>
+      </div>
+      <div class="op-stage">
+        <svg class="op-svg iso-svg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="擎天柱"><g class="op-fig"></g></svg>
+      </div>
+    </div>
+    <div class="op-strip">
+      <div class="op-cell op-cell-wide"><span class="op-k">当前步骤</span><span class="op-v" data-v="phase">卡车形态</span></div>
+      <div class="op-cell"><span class="op-k">腿 下摆</span><span class="op-v" data-v="leg">0°</span></div>
+      <div class="op-cell"><span class="op-k">前臂 下摆</span><span class="op-v" data-v="arm">0°</span></div>
+      <div class="op-cell"><span class="op-k">头 翻转</span><span class="op-v" data-v="head">0°</span></div>
+      <div class="op-cell"><span class="op-k">全高</span><span class="op-v" data-v="height">0</span></div>
+      <div class="op-cell"><span class="op-k">前后长</span><span class="op-v" data-v="length">0</span></div>
+    </div>
+    <div class="op-controls">
+      <button class="op-btn op-play" data-play type="button"><i class="op-icon"></i><span data-play-label>暂停</span></button>
+      <div class="op-track" role="slider" aria-label="变形进度"><div class="op-track-fill"></div><div class="op-knob"></div></div>
+      <button class="op-btn" data-speed type="button"><span>慢放</span></button>
+      <button class="op-btn" data-view type="button">视角复位</button>
+    </div>
+    <div class="op-steps">
+      <button class="op-btn" data-phase="0" type="button"><b>1</b> 卡车</button>
+      <button class="op-btn" data-phase="1" type="button"><b>2</b> 双腿</button>
+      <button class="op-btn" data-phase="2" type="button"><b>3</b> 双脚</button>
+      <button class="op-btn" data-phase="3" type="button"><b>4</b> 双臂</button>
+      <button class="op-btn" data-phase="4" type="button"><b>5</b> 机器人</button>
+    </div>
+    <figcaption class="iso-legend">
+      <div class="iso-keys">
+        <span class="iso-key"><i class="op-sw" style="background:#e0675c"></i>红：车头 → 胸部与双臂</span>
+        <span class="iso-key"><i class="op-sw" style="background:#5f78bd"></i>蓝：车尾 → 小腿、脚、头、拳</span>
+        <span class="iso-key"><i class="op-sw" style="background:#cfd3d8"></i>银：格栅、大腿、油箱、烟囱</span>
+      </div>
+      <p>变形顺序按 1984 年孩之宝 G1 玩具说明：车尾向前下摆成腿、两端翻出成脚；带车灯的挡泥板向外、带烟囱的车厢侧板向前，成为双臂；车顶舱盖翻转露出头部；拳头插进车灯位置。挡风玻璃是胸口，进气格栅是腹部，后轮留在小腿两侧。尺寸按玩具比例（机器人约 16 cm 高），读数直接从同一个模型量出；关节结构为示意简化，并非玩具零件的逐一复刻。</p>
+    </figcaption>
+  </figure>
+</main>
+<script>// G1 擎天柱 · model: parts in robot pose (torso frame, mm at toy scale), joints, the transformation timeline,
+// and a small convex-solid renderer (projection, facing shade, separating-plane painter order, SVG strings).
+// Works in the browser (window.PRIME) and in node (globalThis.PRIME) for checks.
+(function () {
+const R2D = 180 / Math.PI, D2R = Math.PI / 180;
+const sub = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+const nrm = (a) => { const l = Math.hypot(a[0], a[1], a[2]) || 1; return [a[0] / l, a[1] / l, a[2] / l]; };
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const ease = (x) => { x = clamp(x); return x * x * (3 - 2 * x); };
+const ease2 = (x) => { x = clamp(x); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+
+// ---------- 3x4 matrices
+const I = () => [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0];
+function mul(A, B) {
+  const r = new Array(12);
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) r[i * 4 + j] = A[i * 4] * B[j] + A[i * 4 + 1] * B[4 + j] + A[i * 4 + 2] * B[8 + j];
+    r[i * 4 + 3] = A[i * 4] * B[3] + A[i * 4 + 1] * B[7] + A[i * 4 + 2] * B[11] + A[i * 4 + 3];
+  }
+  return r;
+}
+const T = (x, y, z) => [1, 0, 0, x, 0, 1, 0, y, 0, 0, 1, z];
+function Rot(axis, deg, p = [0, 0, 0]) {
+  const c = Math.cos(deg * D2R), s = Math.sin(deg * D2R);
+  const R = axis === "x" ? [1, 0, 0, 0, 0, c, -s, 0, 0, s, c, 0]
+    : axis === "y" ? [c, 0, s, 0, 0, 1, 0, 0, -s, 0, c, 0]
+    : [c, -s, 0, 0, s, c, 0, 0, 0, 0, 1, 0];
+  return mul(T(p[0], p[1], p[2]), mul(R, T(-p[0], -p[1], -p[2])));
+}
+const ap = (M, p) => [M[0] * p[0] + M[1] * p[1] + M[2] * p[2] + M[3], M[4] * p[0] + M[5] * p[1] + M[6] * p[2] + M[7], M[8] * p[0] + M[9] * p[1] + M[10] * p[2] + M[11]];
+const apN = (M, p) => [M[0] * p[0] + M[1] * p[1] + M[2] * p[2], M[4] * p[0] + M[5] * p[1] + M[6] * p[2], M[8] * p[0] + M[9] * p[1] + M[10] * p[2]];
+
+// ---------- convex meshes
+function finish(v, f, smooth = false) {
+  const c = v.reduce((a, p) => [a[0] + p[0] / v.length, a[1] + p[1] / v.length, a[2] + p[2] / v.length], [0, 0, 0]);
+  const faces = f.map((idx) => {
+    let n = [0, 0, 0];
+    for (let i = 0; i < idx.length; i++) {
+      const a = v[idx[i]], b = v[idx[(i + 1) % idx.length]];
+      n[0] += (a[1] - b[1]) * (a[2] + b[2]); n[1] += (a[2] - b[2]) * (a[0] + b[0]); n[2] += (a[0] - b[0]) * (a[1] + b[1]);
+    }
+    n = nrm(n);
+    const fc = idx.reduce((a, i) => [a[0] + v[i][0] / idx.length, a[1] + v[i][1] / idx.length, a[2] + v[i][2] / idx.length], [0, 0, 0]);
+    if (dot(n, sub(fc, c)) < 0) { idx = idx.slice().reverse(); n = [-n[0], -n[1], -n[2]]; }
+    return { idx, n, p: v[idx[0]] };
+  });
+  const em = new Map();
+  faces.forEach((fa, fi) => fa.idx.forEach((a, k) => {
+    const b = fa.idx[(k + 1) % fa.idx.length];
+    const key = a < b ? a + "-" + b : b + "-" + a;
+    if (!em.has(key)) em.set(key, [Math.min(a, b), Math.max(a, b), fi, -1]); else em.get(key)[3] = fi;
+  }));
+  const edges = [...em.values()].map(([a, b, f1, f2]) => {
+    let soft = false;
+    if (f2 >= 0) soft = dot(faces[f1].n, faces[f2].n) > Math.cos((smooth ? 32 : 8) * D2R);
+    return { a, b, f1, f2, soft };
+  });
+  return { v, faces, edges, c };
+}
+function box(x0, x1, y0, y1, z0, z1) {
+  const v = [];
+  for (const z of [z0, z1]) for (const y of [y0, y1]) for (const x of [x0, x1]) v.push([x, y, z]);
+  return finish(v, [[0, 1, 3, 2], [4, 5, 7, 6], [0, 1, 5, 4], [2, 3, 7, 6], [0, 2, 6, 4], [1, 3, 7, 5]]);
+}
+// a convex polygon given in the plane of two axes, extruded along the third
+function prism(axis, poly, a0, a1) {
+  const v = [], n = poly.length;
+  const put = (u, w, a) => axis === "x" ? [a, u, w] : axis === "y" ? [u, a, w] : [u, w, a];
+  for (const a of [a0, a1]) for (const [u, w] of poly) v.push(put(u, w, a));
+  const f = [[...Array(n).keys()], [...Array(n).keys()].map((i) => i + n)];
+  for (let i = 0; i < n; i++) f.push([i, (i + 1) % n, n + (i + 1) % n, n + i]);
+  return finish(v, f, n > 8);
+}
+const ngon = (cu, cw, r, n, rot = 0) => Array.from({ length: n }, (_, i) => [cu + r * Math.cos(rot + (i / n) * 2 * Math.PI), cw + r * Math.sin(rot + (i / n) * 2 * Math.PI)]);
+// cylinder along axis: centre (u,w) in the other two axes (x,z for "y"; y,z for "x"; x,y for "z")
+const cyl = (axis, cu, cw, r, a0, a1, n = 18) => prism(axis, ngon(cu, cw, r, n, Math.PI / n), a0, a1);
+// a box with its edges along one axis chamfered by c
+function cbox(axis, u0, u1, w0, w1, a0, a1, c) {
+  return prism(axis, [[u0 + c, w0], [u1 - c, w0], [u1, w0 + c], [u1, w1 - c], [u1 - c, w1], [u0 + c, w1], [u0, w1 - c], [u0, w0 + c]], a0, a1);
+}
+
+// ---------- materials: [dark, light] ends of the facing ramp
+const MAT = {
+  red: ["#a33a33", "#f0a397"], blue: ["#2f4a8a", "#9db2e2"], silver: ["#8d939b", "#f1f2f4"], chrome: ["#9aa1aa", "#ffffff"],
+  glass: ["#5d86aa", "#d5e8f4"], tyre: ["#2b2b30", "#77777f"], dark: ["#38383e", "#6e6e76"], yellow: ["#c48d12", "#ffe590"],
+  amber: ["#c9741b", "#ffcf8f"], base: ["#d7d7d3", "#ffffff"], grey: ["#6d7178", "#c9ccd1"], lens: ["#b7a46a", "#fff8dc"],
+};
+const hex = (h) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+const RAMP = Object.fromEntries(Object.entries(MAT).map(([k, [a, b]]) => [k, [hex(a), hex(b)]]));
+const LIGHT = nrm([0.55, 0.4, 1]);
+function shadeOf(mat, n) {
+  const [a, b] = RAMP[mat];
+  const lam = Math.max(0, dot(n, LIGHT));
+  const t = 0.18 + 0.82 * Math.pow(lam, 0.85);
+  const c = a.map((x, i) => Math.round(x + (b[i] - x) * t));
+  return "#" + c.map((x) => x.toString(16).padStart(2, "0")).join("");
+}
+
+// ---------- the figure, robot pose. x forward, y left, z up. Torso frame: waist hinge line at z = 0.
+const PARTS = [];
+const S2 = [1, -1]; // left, right
+function part(grp, mat, mesh, o = {}) { const p = { grp, mat, mesh, lines: o.lines || [], dots: o.dots || [], hide: o.hide, dyn: o.dyn, name: o.name || grp, rank: o.rank || 0 }; PARTS.push(p); return p; }
+const L = (n, pts, tone = "line") => ({ n, pts, tone });
+
+// --- torso / cab (red), with the head well behind the windscreen
+const XF = 38; // cab front face
+part("torso", "red", box(-2, 38, -24, 24, 0, 34), { name: "cab-lower", lines: [
+  // doors and panel seams on both sides
+  ...S2.flatMap((s) => [
+    L([0, s, 0], [[14, 24 * s, 2], [14, 24 * s, 34]]),
+    L([0, s, 0], [[30, 24 * s, 9], [30, 24 * s, 34]]),
+    L([0, s, 0], [[-2, 24 * s, 9], [38, 24 * s, 9]], "faint"),
+    L([0, s, 0], [[16.5, 24 * s, 27], [21, 24 * s, 27]], "dark"),
+  ]),
+  // rear wall: the sleeper's seam line and a fifth-wheel air-line plate
+  L([-1, 0, 0], [[-2, -18, 6], [-2, 18, 6]], "faint"),
+] });
+for (const [y, m] of [[6, "red"], [-6, "blue"]]) {
+  part("torso", "grey", box(-3.4, -2, y - 2.2, y + 2.2, 17, 22), { name: "glad-hand-plate" });
+  part("torso", m, cyl("x", y, 19.5, 1.5, -5.4, -3.4, 10), { name: "glad-hand" });
+}
+part("torso", "grey", box(-3, -2, -20, -14, 24, 30), { name: "junction-box", lines: [L([-1, 0, 0], [[-3, -19, 27], [-3, -15, 27]], "faint")] });
+part("torso", "red", box(22, 38, -24, 24, 34, 54), { name: "cab-front-upper", lines: S2.map((s) => L([0, s, 0], [[30, 24 * s, 34], [30, 24 * s, 54]])) });
+part("torso", "red", box(-2, 2, -24, 24, 34, 54), { name: "cab-rear-wall" });
+for (const s of S2) part("torso", "red", box(2, 22, s > 0 ? 12.5 : -24, s > 0 ? 24 : -12.5, 34, 54), { name: "cab-side-upper", lines: [L([0, s, 0], [[2, 24 * s, 44], [22, 24 * s, 44]], "faint")] });
+// roof cap around the hatch
+part("torso", "red", box(22, 39, -24.5, 24.5, 54, 57), { name: "roof-front", lines: [L([0, 0, 1], [[24, -22, 57], [24, 22, 57]], "faint")] });
+part("torso", "red", box(-2.5, 2, -24.5, 24.5, 54, 57), { name: "roof-rear" });
+for (const s of S2) part("torso", "red", box(2, 22, s > 0 ? 12.5 : -24.5, s > 0 ? 24.5 : -12.5, 54, 57), { name: "roof-side" });
+// five amber marker lights on the roof's front edge
+for (let i = -2; i <= 2; i++) part("torso", "amber", box(33.5, 37.5, i * 8.5 - 2, i * 8.5 + 2, 57, 59), { name: "marker" });
+// windscreen: two panes and the centre post (the robot's chest windows)
+for (const s of S2) part("torso", "glass", box(38, 38.8, s > 0 ? 2.2 : -21.5, s > 0 ? 21.5 : -2.2, 36, 51.5), { name: "windscreen", lines: [
+  L([1, 0, 0], [[38.8, s * 5, 49], [38.8, s * 9, 39]], "glint"), L([1, 0, 0], [[38.8, s * 9, 49.5], [38.8, s * 12, 42]], "glint"),
+] });
+part("torso", "red", box(38, 39.2, -2.2, 2.2, 35, 52.5), { name: "centre-post" });
+part("torso", "red", box(38, 39.4, -23, 23, 33.6, 35.4), { name: "screen-sill" });
+// side windows on the door tops
+for (const s of S2) part("torso", "glass", box(24, 35.5, s * 24, s * 24.7, 37, 50), { name: "side-window" });
+// grille (the robot's abdomen) with its bars, bumper, licence plate
+part("torso", "silver", box(38, 40, -15, 15, 8, 31), { name: "grille", lines: [
+  ...Array.from({ length: 9 }, (_, i) => L([1, 0, 0], [[40, -13.5, 10.2 + i * 2.4], [40, 13.5, 10.2 + i * 2.4]], i % 3 === 1 ? "mid" : "line")),
+  L([1, 0, 0], [[40, 0, 9], [40, 0, 30]], "faint"),
+], dots: [[40, -14, 9], [40, 14, 9], [40, -14, 30], [40, 14, 30]].map((p) => ({ p, n: [1, 0, 0], r: 0.55 })) });
+part("torso", "silver", box(38, 45, -25.5, 25.5, 0.5, 6.5), { name: "bumper", lines: [L([1, 0, 0], [[45, -25.5, 3.5], [45, 25.5, 3.5]], "faint")],
+  dots: [-21, -14, 14, 21].map((y) => ({ p: [45, y, 3.5], n: [1, 0, 0], r: 0.6 })) });
+part("torso", "yellow", box(45, 45.6, -6, 6, 1.5, 5.5), { name: "plate" });
+// fender steps under the doors
+for (const s of S2) part("torso", "silver", box(4, 13, s * 24, s * 28, 1, 3), { name: "step" });
+// front wheels on axle stubs (they end up beside the robot's waist)
+for (const s of S2) {
+  part("torso", "grey", cyl("y", 26, -9, 3, s * 24, s * 25.2, 10), { name: "axle" });
+  part("torso", "tyre", cyl("y", 26, -9, 8.8, s * 25.2, s * 33, 22), { name: "tyre-front", lines: [] });
+  part("torso", "chrome", cyl("y", 26, -9, 5.4, s * 33, s * 33.8, 16), { name: "hub-front",
+    dots: Array.from({ length: 6 }, (_, i) => ({ p: [26 + 3.6 * Math.cos(i * Math.PI / 3), s * 33.8, -9 + 3.6 * Math.sin(i * Math.PI / 3)], n: [0, s, 0], r: 0.45 })) });
+  part("torso", "dark", cyl("y", 26, -9, 1.8, s * 33.8, s * 34.6, 8), { name: "hub-cap" });
+}
+
+// --- head (blue helmet, silver face), on the roof hatch. Pivot for the 180° flip: (12, 0, 55.5).
+part("head", "red", box(3, 21, -11.5, 11.5, 54, 57), { name: "hatch", lines: [L([0, 0, 1], [[5, -9.5, 57], [19, -9.5, 57]], "faint"), L([0, 0, 1], [[5, 9.5, 57], [19, 9.5, 57]], "faint")],
+  dots: [[4.5, -10.4], [4.5, 10.4], [19.5, -10.4], [19.5, 10.4]].map(([x, y]) => ({ p: [x, y, 57], n: [0, 0, 1], r: 0.5 })) });
+part("head", "grey", box(8, 16, -4, 4, 57, 60), { name: "neck" });
+part("head", "blue", cbox("z", 4, 17.5, -8.5, 8.5, 60, 73, 1.8), { name: "helmet", lines: [L([0, 0, 1], [[7, 0, 73], [15, 0, 73]], "faint")] });
+part("head", "blue", prism("y", [[12, 73], [19.5, 73], [18.2, 76], [13.6, 76]], -1.5, 1.5), { name: "crest" });
+part("head", "silver", box(17.5, 19.2, -6, 6, 59.5, 68.5), { name: "face", lines: [
+  L([1, 0, 0], [[19.2, -4.6, 62.8], [19.2, 4.6, 62.8]]), L([1, 0, 0], [[19.2, -4, 61.2], [19.2, 4, 61.2]], "faint"),
+  L([1, 0, 0], [[19.2, 0, 59.5], [19.2, 0, 64.5]], "faint"),
+] });
+part("head", "yellow", box(19.2, 19.9, -5, 5, 65.4, 67.6), { name: "eyes" });
+part("head", "blue", box(17.5, 20.4, -8.5, 8.5, 68.5, 70.8), { name: "brow" });
+for (const s of S2) {
+  part("head", "blue", cyl("y", 10.5, 66, 3.4, s * 8.5, s * 10, 14), { name: "ear" });
+  part("head", "blue", cyl("z", 10.5, s * 10.9, 0.9, 61, 75.5, 8), { name: "antenna" });
+}
+
+// --- arms (red sleeper sides). Arm frame: shoulder at the top; the forearm (fender) hinges at the elbow (4, ·, 14).
+for (const s of S2) {
+  const g = s > 0 ? "armL" : "armR", gf = s > 0 ? "foreL" : "foreR", gk = s > 0 ? "fistL" : "fistR";
+  const y0 = s * 24, y1 = s * 36, ym = s * 30;
+  const Y = (a, b) => (s > 0 ? [a, b] : [-b, -a]);
+  part(g, "red", cbox("z", -2, 10, ...Y(24, 36), 19, 57, 1.2), { name: "upper-arm", lines: [
+    L([0, s, 0], [[-1, y1, 30], [9, y1, 30]], "faint"), L([0, s, 0], [[-1, y1, 46], [9, y1, 46]], "faint"),
+    L([-1, 0, 0], [[-2, s * 26, 52], [-2, s * 34, 52]], "faint"),
+  ], dots: [[0.5, y1, 32], [7.5, y1, 32], [0.5, y1, 44], [7.5, y1, 44]].map((p) => ({ p, n: [0, s, 0], r: 0.5 })) });
+  // the shoulder slide: a bar that runs out of the cab side as the arm swings out (dynamic length)
+  part(g, "grey", box(0, 1, ...Y(23, 24), 46, 52), { name: "shoulder-bar", dyn: (S) => (S.sy < 0.3 ? null : box(0, 9, ...Y(24 - S.sy, 24), 46, 52)), hide: (S) => S.sy < 0.3 });
+  // smokestack on the back face with two brackets
+  part(g, "chrome", cyl("z", -5.2, ym, 2.5, 22, 80, 14), { name: "stack", lines: [L([-1, 0, 0], [[-7.7, ym, 72], [-7.7, ym, 78]], "faint")] });
+  part(g, "dark", cyl("z", -5.2, ym, 1.6, 80, 80.6, 10), { name: "stack-mouth" });
+  for (const z of [27, 50]) part(g, "grey", box(-4, -2, ...Y(28.6, 31.4), z, z + 2.4), { name: "stack-bracket" });
+  // air cleaner on the outer face
+  part(g, "silver", cyl("z", 4, s * 39, 2.6, 25, 46, 14), { name: "air-cleaner",
+    lines: [33, 38].map((z) => L([0, s, 0], [[4, s * 41.6, z], [4, s * 41.6, z + 0.01]], "faint")) });
+  part(g, "grey", cyl("z", 4, s * 39, 1.4, 46, 49, 10), { name: "air-cap" });
+  for (const z of [28, 43]) part(g, "grey", box(2.8, 5.2, ...Y(36, 36.6), z, z + 2), { name: "air-strap" });
+  // elbow hinge and forearm (fender + headlight end)
+  part(gf, "grey", cyl("y", 4, 14, 5, ...Y(25, 35), 16), { name: "elbow" });
+  part(gf, "red", cbox("z", -3, 11, ...Y(24, 36), -22, 8, 1.4), { name: "forearm", lines: [
+    L([0, s, 0], [[-2, y1, -6], [10, y1, -6]], "faint"),
+    ...[-1, 1, 3, 5].map((dz) => L([1, 0, 0], [[11, s * 26.5, dz - 12], [11, s * 33.5, dz - 12]], "dark")),
+    L([-1, 0, 0], [[-3, s * 26, 0], [-3, s * 34, 0]], "faint"),
+  ] });
+  part(gf, "chrome", box(-2.4, 10.4, ...Y(24.6, 35.4), -22.8, -22), { name: "headlight-bezel" });
+  part(gf, "lens", box(-1.2, 1.4, ...Y(25.6, 34.4), -23.3, -22.8), { name: "headlight" });
+  part(gk, "blue", cbox("z", 1.8, 10.2, ...Y(25.6, 34.4), -34, -22, 1.2), { name: "fist", hide: (S) => S.fist < 0.04, lines: [
+    ...[-25.5, -28.5, -31.5].map((z) => L([1, 0, 0], [[10.2, s * 26.5, z], [10.2, s * 33.5, z]])),
+    L([0, -s, 0], [[3, s * 25.6, -26], [9, s * 25.6, -26]], "faint"),
+  ] });
+}
+
+// --- legs (blue shins, silver thighs and groin). Legs hinge at (7, 0, 0) on y; truck pose = 90°.
+part("legs", "silver", cbox("y", 10, 24.5, -14, 0, -15, 15, 1.2), { name: "pelvis", lines: [L([1, 0, 0], [[25, -9, -7], [25, 9, -7]], "faint")] });
+part("legs", "grey", box(13, 23, -6, 6, -16, -14), { name: "pelvis-keel" });
+part("legs", "silver", prism("y", [[12, -14], [24, -14], [24, -10], [21, -6], [15, -6], [12, -10]], -5, 5), { name: "groin" });
+for (const s of S2) {
+  const g = s > 0 ? "legL" : "legR", gf = s > 0 ? "footL" : "footR";
+  const Y = (a, b) => (s > 0 ? [a, b] : [-b, -a]);
+  part(g, "grey", cyl("y", 17.5, -9, 4.2, ...Y(15, 18), 14), { name: "hip" });
+  part(g, "silver", cbox("z", 9, 24, ...Y(4, 21), -42, -14, 1.5), { name: "thigh", lines: [
+    L([1, 0, 0], [[24, s * 6, -28], [24, s * 19, -28]], "faint"),
+    L([0, s, 0], [[10, s * 21, -16], [23, s * 21, -16]], "faint"),
+  ] });
+  part(g, "chrome", cyl("z", 16.5, s * 24.4, 3.4, -41, -24.5, 14), { name: "fuel-tank",
+    lines: [-37, -29].map((z) => L([0, s, 0], [[16.5, s * 27.8, z], [16.5, s * 27.8, z + 0.01]], "faint")) });
+  part(g, "dark", cyl("z", 16.5, s * 24.4, 1.4, -24.5, -23.4, 8), { name: "tank-cap" });
+  for (const z of [-38.5, -28.5]) part(g, "grey", box(15.6, 17.4, ...Y(21, 21.3), z, z + 2), { name: "tank-strap" });
+  part(g, "blue", box(9, 24, ...Y(4.5, 20.5), -45, -42), { name: "knee" });
+  part(g, "blue", cbox("z", 7, 24.5, ...Y(2, 22), -74, -45, 1.6), { name: "shin", lines: [
+    L([1, 0, 0], [[24.5, s * 4, -50], [24.5, s * 20, -50]], "faint"),
+    L([1, 0, 0], [[24.5, s * 4, -62], [24.5, s * 20, -62]], "faint"),
+    ...[-66, -68, -70].map((z) => L([1, 0, 0], [[24.5, s * 7, z], [24.5, s * 17, z]], "dark")),
+    L([-1, 0, 0], [[7, s * 6, -55], [7, s * 18, -55]], "faint"),
+  ], dots: [[24.5, s * 4.5, -47], [24.5, s * 19.5, -47]].map((p) => ({ p, n: [1, 0, 0], r: 0.5 })) });
+  part(g, "silver", box(6.2, 7, ...Y(4, 20), -72, -50), { name: "deck-plate",
+    dots: [-52, -58, -64, -70].flatMap((z) => [5, 12, 19].map((y) => ({ p: [6.2, s * y, z], n: [-1, 0, 0], r: 0.45 }))) });
+  // rock guard over the wheels
+  part(g, "grey", box(8.5, 24, ...Y(22, 31.5), -42.5, -41), { name: "rock-guard" });
+  for (const zc of [-52, -70]) {
+    part(g, "tyre", cyl("y", 16, zc, 8.8, ...Y(22.2, 30.2), 22), { name: "tyre-rear" });
+    part(g, "chrome", cyl("y", 16, zc, 5, ...Y(30.2, 31), 16), { name: "hub-rear",
+      dots: Array.from({ length: 6 }, (_, i) => ({ p: [16 + 3.3 * Math.cos(i * Math.PI / 3), s * 31, zc + 3.3 * Math.sin(i * Math.PI / 3)], n: [0, s, 0], r: 0.42 })) });
+    part(g, "dark", cyl("y", 16, zc, 1.6, ...Y(31, 31.7), 8), { name: "hub-cap" });
+  }
+  // foot: the truck's rear end. Pivot (11.5, ·, -80.5); truck pose = +90°
+  part(gf, "blue", cbox("y", 5, 39, -85, -74, ...Y(2.5, 21.5), 1.2), { name: "foot", lines: [
+    L([0, 0, 1], [[7, s * 12, -74], [37, s * 12, -74]], "faint"),
+    L([0, s, 0], [[6, s * 21.5, -80], [38, s * 21.5, -80]], "faint"),
+  ] });
+  part(gf, "red", box(39, 39.6, ...Y(4.5, 9.5), -83, -76), { name: "tail-light" });
+  part(gf, "amber", box(39, 39.6, ...Y(12, 15), -83, -76), { name: "tail-light" });
+  part(gf, "grey", box(39, 39.6, ...Y(16.5, 19.5), -83, -76), { name: "reflector" });
+}
+
+// ---------- joints and the timeline (forward time u, seconds)
+const PH = [
+  { k: "truck", t0: 0, t1: 0.8, name: "卡车形态" },
+  { k: "legs", t0: 0.8, t1: 3.2, name: "车尾下摆成双腿" },
+  { k: "feet", t0: 3.0, t1: 4.0, name: "车尾两端翻出成脚" },
+  { k: "arms", t0: 4.0, t1: 6.4, name: "车厢两侧展开成双臂" },
+  { k: "head", t0: 6.4, t1: 8.6, name: "车顶舱盖翻出头部" },
+  { k: "fists", t0: 8.6, t1: 9.2, name: "拳头从车灯处伸出" },
+];
+const U_END = 9.2;
+function stateAt(u) {
+  const p = (a, b) => ease((u - a) / (b - a));
+  const head = u < 7.0 ? [24 * p(6.4, 7.0), 180] : u < 8.0 ? [24, 180 * (1 - ease2((u - 7.0) / 1.0))] : [24 * (1 - p(8.0, 8.6)), 0];
+  return {
+    u,
+    leg: 90 * (1 - ease2((u - 0.8) / 2.4)), // hip hinge, truck 90°
+    splay: 2.5 * p(2.8, 3.5), // legs open a little
+    foot: 90 * (1 - p(3.0, 4.0)), // foot fold
+    sy: 11 * p(4.0, 4.8), // arms swing out
+    elbow: -90 * (1 - ease2((u - 4.8) / 1.6)), // forearm (fender) swings down
+    sx: 14 * p(4.9, 6.4), // sleeper sides swing forward to the shoulders
+    headLift: head[0], headFlip: head[1],
+    fist: p(8.6, 9.2),
+  };
+}
+function phaseAt(u) {
+  if (u >= U_END - 1e-6) return { i: PH.length, name: "机器人形态" };
+  let i = 0;
+  for (let k = 0; k < PH.length; k++) if (u >= PH[k].t0) i = k;
+  return { i, name: PH[i].name };
+}
+function groupMats(S) {
+  const G = {};
+  G.torso = I();
+  G.head = mul(T(0, 0, S.headLift), Rot("y", S.headFlip, [12, 0, 55.5]));
+  for (const s of S2) {
+    const a = s > 0 ? "L" : "R";
+    G["arm" + a] = T(S.sx, s * S.sy, 0);
+    G["fore" + a] = mul(G["arm" + a], Rot("y", S.elbow, [4, 0, 14]));
+    G["fist" + a] = mul(G["fore" + a], T(0, 0, 12 * (1 - S.fist)));
+  }
+  G.legs = Rot("y", S.leg, [7, 0, 0]);
+  for (const s of S2) {
+    const a = s > 0 ? "L" : "R";
+    G["leg" + a] = mul(G.legs, Rot("x", s * S.splay, [17.5, s * 12, -9]));
+    G["foot" + a] = mul(G["leg" + a], Rot("y", S.foot, [11.5, 0, -80.5]));
+  }
+  return G;
+}
+
+// ---------- camera
+function camera(az, el) {
+  const a = az * D2R, e = el * D2R;
+  const V = [Math.cos(e) * Math.cos(a), Math.cos(e) * Math.sin(a), Math.sin(e)];
+  const R = [-Math.sin(a), Math.cos(a), 0];
+  const U = [-Math.sin(e) * Math.cos(a), -Math.sin(e) * Math.sin(a), Math.cos(e)];
+  return { az, el, V, R, U, pr: (p) => [dot(p, R), -dot(p, U)] };
+}
+
+// ---------- pose: world solids for a state
+const BASE = { cx: -30, cy: 0, r: 104, h: 7 };
+function pose(S) {
+  const G = groupMats(S);
+  const solids = [];
+  let minZ = Infinity;
+  for (const P of PARTS) {
+    if (P.hide && P.hide(S)) continue;
+    const mesh = P.dyn ? P.dyn(S) : P.mesh;
+    if (!mesh) continue;
+    const M = G[P.grp];
+    const v = mesh.v.map((p) => ap(M, p));
+    for (const p of v) if (p[2] < minZ) minZ = p[2];
+    solids.push({ P, M, mesh, v });
+  }
+  const lift = -minZ;
+  for (const s of solids) for (const p of s.v) p[2] += lift;
+  return { solids, lift, G, S };
+}
+
+// ---------- painter's order: separating planes between convex solids, depth as tie-break
+function sideTest(A, B, V) {
+  for (const f of A.wf) {
+    const nv = dot(f.n, V);
+    if (Math.abs(nv) < 1e-4) continue;
+    let ok = true;
+    for (const p of B.v) { if (dot(f.n, sub(p, f.p)) < -0.04) { ok = false; break; } }
+    if (ok) return nv > 0 ? 1 : -1; // B is outside A's face: in front when that face looks at the viewer
+  }
+  return 0;
+}
+function order(solids, cam) {
+  const n = solids.length, V = cam.V;
+  for (const s of solids) {
+    s.wf = s.mesh.faces.map((f) => { const n = nrm(apN(s.M, f.n)); return { n, p: s.v[f.idx[0]], vis: dot(n, V) > 1e-3 }; });
+    s.sc = s.v.map(cam.pr);
+    let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity, d = 0;
+    for (const [x, y] of s.sc) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    for (const p of s.v) d += dot(p, V);
+    s.bb = [x0, x1, y0, y1]; s.depth = d / s.v.length + (s.P.rank || 0);
+  }
+  const out = Array.from({ length: n }, () => []), indeg = new Array(n).fill(0);
+  for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) {
+    const a = solids[i].bb, b = solids[j].bb;
+    if (a[1] < b[0] - 0.5 || b[1] < a[0] - 0.5 || a[3] < b[2] - 0.5 || b[3] < a[2] - 0.5) continue;
+    let r = sideTest(solids[i], solids[j], V);
+    if (!r) r = -sideTest(solids[j], solids[i], V);
+    if (!r) continue;
+    if (r > 0) { out[i].push(j); indeg[j]++; } else { out[j].push(i); indeg[i]++; }
+  }
+  const done = new Array(n).fill(false), res = [];
+  for (let k = 0; k < n; k++) {
+    let best = -1;
+    for (let i = 0; i < n; i++) if (!done[i] && indeg[i] === 0 && (best < 0 || solids[i].depth < solids[best].depth)) best = i;
+    if (best < 0) for (let i = 0; i < n; i++) if (!done[i] && (best < 0 || solids[i].depth < solids[best].depth)) best = i; // a cycle: farthest first
+    done[best] = true; res.push(solids[best]);
+    for (const j of out[best]) indeg[j]--;
+  }
+  return res;
+}
+
+// ---------- SVG
+const f1 = (x) => (Math.round(x * 10) / 10).toString();
+const TONE = { line: "ln", faint: "lf", dark: "ld", mid: "lm", glint: "lg" };
+function solidSvg(s, cam, out) {
+  const { mesh, sc, wf } = s;
+  let fill = "";
+  mesh.faces.forEach((f, fi) => {
+    if (!wf[fi].vis) return;
+    const c = shadeOf(s.P.mat, wf[fi].n);
+    fill += `<path fill="${c}" stroke="${c}" d="M${f.idx.map((i) => f1(sc[i][0]) + " " + f1(sc[i][1])).join("L")}Z"/>`;
+  });
+  let edge = "", crease = "";
+  for (const e of mesh.edges) {
+    const va = wf[e.f1].vis, vb = e.f2 >= 0 ? wf[e.f2].vis : false;
+    if (!va && !vb) continue;
+    const seg = `M${f1(sc[e.a][0])} ${f1(sc[e.a][1])}L${f1(sc[e.b][0])} ${f1(sc[e.b][1])}`;
+    if (va !== vb) edge += seg; else if (!e.soft) crease += seg;
+  }
+  out.push(`<g class="pp">${fill}`);
+  if (crease) out.push(`<path class="cr" d="${crease}"/>`);
+  for (const l of s.P.lines) {
+    if (dot(nrm(apN(s.M, l.n)), cam.V) < 0.06) continue;
+    const pts = l.pts.map((p) => cam.pr(lifted(s, p)));
+    out.push(`<path class="${TONE[l.tone] || "ln"}" d="M${pts.map(([x, y]) => f1(x) + " " + f1(y)).join("L")}"/>`);
+  }
+  for (const d of s.P.dots) {
+    if (dot(nrm(apN(s.M, d.n)), cam.V) < 0.1) continue;
+    const [x, y] = cam.pr(lifted(s, d.p));
+    out.push(`<circle class="dt" cx="${f1(x)}" cy="${f1(y)}" r="${d.r}"/>`);
+  }
+  out.push(`<path class="ed" d="${edge}"/></g>`);
+}
+function lifted(s, p) { const q = ap(s.M, p); q[2] += s.lift; return q; }
+
+function hull2(pts) {
+  pts = pts.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  const cr = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+  const lo = [], up = [];
+  for (const p of pts) { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], p) <= 0) lo.pop(); lo.push(p); }
+  for (const p of pts.slice().reverse()) { while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], p) <= 0) up.pop(); up.push(p); }
+  return lo.slice(0, -1).concat(up.slice(0, -1));
+}
+
+// the display base: a round plinth with a ruler ring (10 mm ticks), drawn in the same camera
+function baseSvg(cam) {
+  const N = 72, out = [];
+  const ring = (r, z) => Array.from({ length: N }, (_, i) => { const a = (i / N) * 2 * Math.PI; return [BASE.cx + r * Math.cos(a), BASE.cy + r * Math.sin(a), z]; });
+  const top = ring(BASE.r, 0), bot = ring(BASE.r, -BASE.h);
+  const P = (p) => cam.pr(p);
+  // side band: only the half facing the viewer
+  let side = "";
+  for (let i = 0; i < N; i++) {
+    const a = ((i + 0.5) / N) * 2 * Math.PI, n = [Math.cos(a), Math.sin(a), 0];
+    if (dot(n, cam.V) <= 0) continue;
+    const q = [top[i], top[(i + 1) % N], bot[(i + 1) % N], bot[i]].map(P);
+    const c = shadeOf("base", n);
+    side += `<path fill="${c}" stroke="${c}" d="M${q.map(([x, y]) => f1(x) + " " + f1(y)).join("L")}Z"/>`;
+  }
+  out.push(`<g class="base">${side}`);
+  out.push(`<path class="base-top" d="M${top.map(P).map(([x, y]) => f1(x) + " " + f1(y)).join("L")}Z"/>`);
+  // inner ring and ticks
+  const inner = ring(BASE.r - 9, 0).map(P);
+  out.push(`<path class="lf" d="M${inner.map(([x, y]) => f1(x) + " " + f1(y)).join("L")}Z"/>`);
+  let ticks = "";
+  for (let i = 0; i < 120; i++) {
+    const a = (i / 120) * 2 * Math.PI, l = i % 10 === 0 ? 6 : i % 5 === 0 ? 4 : 2.2;
+    const p0 = P([BASE.cx + (BASE.r - 9) * Math.cos(a), BASE.cy + (BASE.r - 9) * Math.sin(a), 0]);
+    const p1 = P([BASE.cx + (BASE.r - 9 + l) * Math.cos(a), BASE.cy + (BASE.r - 9 + l) * Math.sin(a), 0]);
+    ticks += `M${f1(p0[0])} ${f1(p0[1])}L${f1(p1[0])} ${f1(p1[1])}`;
+  }
+  out.push(`<path class="tk" d="${ticks}"/>`);
+  // outline: the lower front arc between the two tangents, and the tangents themselves
+  const vis = Array.from({ length: N }, (_, i) => dot([Math.cos((i / N) * 2 * Math.PI), Math.sin((i / N) * 2 * Math.PI), 0], cam.V) >= 0);
+  let k0 = 0; while (!(vis[k0] && !vis[(k0 - 1 + N) % N])) k0++;
+  const arc = [];
+  for (let k = 0; k < N; k++) { const i = (k0 + k) % N; if (!vis[i]) break; arc.push(i); }
+  const a0 = arc[0], a1 = arc[arc.length - 1];
+  let low = `M${P(top[a0]).map(f1).join(" ")}` + arc.map((i) => "L" + P(bot[i]).map(f1).join(" ")).join("") + `L${P(top[a1]).map(f1).join(" ")}`;
+  out.push(`<path class="ed" d="${low}"/></g>`);
+  return out.join("");
+}
+
+function render(ps, cam) {
+  const out = [baseSvg(cam)];
+  // contact shadow: the footprint of the solids that come near the base
+  const near = [];
+  for (const s of ps.solids) for (const p of s.v) if (p[2] < 24) near.push([p[0], p[1]]);
+  if (near.length > 2) {
+    const h = hull2(near).map(([x, y]) => cam.pr([x, y, 0]));
+    out.push(`<path class="shadow" d="M${h.map(([x, y]) => f1(x) + " " + f1(y)).join("L")}Z"/>`);
+  }
+  const sorted = order(ps.solids, cam);
+  for (const s of sorted) { s.lift = ps.lift; solidSvg(s, cam, out); }
+  return out.join("");
+}
+
+// measures for the readout, all from the same pose
+function measures(ps) {
+  let z1 = -Infinity, x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+  for (const s of ps.solids) for (const p of s.v) { z1 = Math.max(z1, p[2]); x0 = Math.min(x0, p[0]); x1 = Math.max(x1, p[0]); y0 = Math.min(y0, p[1]); y1 = Math.max(y1, p[1]); }
+  return { height: z1, length: x1 - x0, width: y1 - y0, lift: ps.lift };
+}
+
+const PRIME = { PARTS, PH, U_END, stateAt, phaseAt, pose, camera, render, measures, BASE, ease };
+if (typeof window !== "undefined") window.PRIME = PRIME; else globalThis.PRIME = PRIME;
+})();
+</script>
+<script>// live layer: clock (forward, hold, back, hold), scrubber, phase jumps, drag to turn the view, readout
+(function () {
+const P = window.PRIME;
+const root = document.querySelector(".op");
+const svg = root.querySelector(".op-svg");
+const g = svg.querySelector(".op-fig");
+const stage = root.querySelector(".op-stage");
+const playBtn = root.querySelector("[data-play]");
+const playLabel = root.querySelector("[data-play-label]");
+const speedBtn = root.querySelector("[data-speed]");
+const viewBtn = root.querySelector("[data-view]");
+const track = root.querySelector(".op-track");
+const fill = root.querySelector(".op-track-fill");
+const knob = root.querySelector(".op-knob");
+const phaseBtns = [...root.querySelectorAll("[data-phase]")];
+const cell = Object.fromEntries([...root.querySelectorAll("[data-v]")].map((el) => [el.dataset.v, el]));
+const readout = root.querySelector("[data-readout]");
+const still = matchMedia("(prefers-reduced-motion: reduce)");
+
+const AZ0 = 32, EL = 24;
+let az = AZ0, azTarget = AZ0;
+const HOLD = 2.2, U = P.U_END, LOOP = 2 * (U + HOLD);
+let T = 0, playing = !still.matches, speed = 1, last = 0, dirty = true;
+let jump = null; // eased seek {from, to, t0}
+
+// viewBox: wide enough for the base at any turn, tall enough for the robot standing on it
+{
+  const r = P.BASE.r + 6, e = (EL * Math.PI) / 180;
+  const top = 172 * Math.cos(e) + 78 * Math.sin(e), bot = r * Math.sin(e) + P.BASE.h * Math.cos(e) + 4;
+  const cam = P.camera(AZ0, EL), c = cam.pr([P.BASE.cx, P.BASE.cy, 0]);
+  svg.setAttribute("viewBox", `${(c[0] - r).toFixed(1)} ${(c[1] - top).toFixed(1)} ${(2 * r).toFixed(1)} ${(top + bot).toFixed(1)}`);
+}
+// turning the view keeps the base's centre fixed on screen
+function camAt(a) {
+  const cam = P.camera(a, EL), c0 = P.camera(AZ0, EL).pr([P.BASE.cx, P.BASE.cy, 0]), c = cam.pr([P.BASE.cx, P.BASE.cy, 0]);
+  const dx = c0[0] - c[0], dy = c0[1] - c[1], pr = cam.pr;
+  cam.pr = (p) => { const q = pr(p); return [q[0] + dx, q[1] + dy]; };
+  return cam;
+}
+const uOf = (t) => { t = ((t % LOOP) + LOOP) % LOOP; return t < U ? t : t < U + HOLD ? U : t < 2 * U + HOLD ? 2 * U + HOLD - t : 0; };
+
+function draw() {
+  const u = jump ? jump.u : uOf(T);
+  const S = P.stateAt(u);
+  const ps = P.pose(S);
+  g.innerHTML = P.render(ps, camAt(az));
+  const m = P.measures(ps), ph = P.phaseAt(u);
+  const pct = Math.round((u / U) * 100);
+  cell.phase.textContent = ph.name;
+  cell.leg.innerHTML = `${(90 - S.leg).toFixed(0)}<small>°</small>`;
+  cell.arm.innerHTML = `${(90 + S.elbow).toFixed(0)}<small>°</small>`;
+  cell.head.innerHTML = `${(180 - S.headFlip).toFixed(0)}<small>°</small>`;
+  cell.height.innerHTML = `${m.height.toFixed(0)}<small>mm</small>`;
+  cell.length.innerHTML = `${m.length.toFixed(0)}<small>mm</small>`;
+  readout.textContent = `变形 ${String(pct).padStart(3, " ")}%`;
+  fill.style.width = (u / U) * 100 + "%";
+  knob.style.left = (u / U) * 100 + "%";
+  const i = ph.i;
+  phaseBtns.forEach((b) => b.toggleAttribute("data-on", +b.dataset.phase === stepOf(u)));
+  root.dataset.u = u.toFixed(2);
+}
+// the five stops the buttons jump to
+const STOPS = [0, 3.2, 4.0, 6.4, U];
+const stepOf = (u) => { if (u < 0.81) return 0; for (let i = 1; i < STOPS.length; i++) if (u <= STOPS[i] + 0.01) return i; return STOPS.length - 1; };
+
+function frame(now) {
+  const dt = Math.min(0.05, (now - (last || now)) / 1000); last = now;
+  if (jump) {
+    const k = Math.min(1, (now - jump.t0) / jump.dur);
+    jump.u = jump.from + (jump.to - jump.from) * P.ease(k);
+    if (k >= 1) { T = jump.to; jump = null; }
+    dirty = true;
+  } else if (playing && !still.matches) { T += dt * speed; dirty = true; }
+  if (Math.abs(azTarget - az) > 0.01) { az += (azTarget - az) * (1 - Math.exp(-dt * 10)); dirty = true; }
+  if (dirty && visible) { draw(); dirty = false; }
+  requestAnimationFrame(frame);
+}
+let visible = true;
+new IntersectionObserver((es) => { visible = es[0].isIntersecting; if (visible) dirty = true; }).observe(stage);
+
+function setPlaying(on) {
+  playing = on;
+  playBtn.toggleAttribute("data-paused", !on);
+  playLabel.textContent = on ? "暂停" : "播放";
+}
+function seek(u, animate = true) {
+  // land on the forward half of the loop at progress u
+  const from = jump ? jump.u : uOf(T);
+  if (animate && Math.abs(from - u) > 0.05) jump = { from, to: u, u: from, t0: performance.now(), dur: 500 + 260 * Math.abs(u - from) };
+  else { T = u; jump = null; }
+  dirty = true;
+}
+playBtn.addEventListener("click", () => {
+  if (!playing && uOf(T) >= U - 1e-3) T = U; // resume from the hold
+  setPlaying(!playing);
+});
+speedBtn.addEventListener("click", () => { speed = speed === 1 ? 0.35 : 1; speedBtn.toggleAttribute("data-on", speed !== 1); speedBtn.querySelector("span").textContent = speed === 1 ? "慢放" : "慢放 ×0.35"; });
+viewBtn.addEventListener("click", () => { azTarget = AZ0; });
+phaseBtns.forEach((b) => b.addEventListener("click", () => { setPlaying(false); seek(STOPS[+b.dataset.phase]); }));
+
+// scrubbing on the track
+function trackAt(e) { const r = track.getBoundingClientRect(); return Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)) * U; }
+track.addEventListener("pointerdown", (e) => {
+  track.setPointerCapture(e.pointerId); setPlaying(false); jump = null; T = trackAt(e); dirty = true;
+  const mv = (ev) => { T = trackAt(ev); dirty = true; };
+  const up = () => { track.removeEventListener("pointermove", mv); track.removeEventListener("pointerup", up); };
+  track.addEventListener("pointermove", mv); track.addEventListener("pointerup", up);
+});
+// drag on the figure to turn it
+stage.addEventListener("pointerdown", (e) => {
+  if (e.button !== 0) return;
+  stage.setPointerCapture(e.pointerId);
+  const x0 = e.clientX, a0 = azTarget, w = stage.getBoundingClientRect().width;
+  const mv = (ev) => { azTarget = a0 - ((ev.clientX - x0) / w) * 300; };
+  const up = () => { stage.removeEventListener("pointermove", mv); stage.removeEventListener("pointerup", up); };
+  stage.addEventListener("pointermove", mv); stage.addEventListener("pointerup", up);
+});
+stage.addEventListener("dblclick", () => { azTarget = AZ0; });
+root.addEventListener("keydown", (e) => {
+  if (e.key === " ") { e.preventDefault(); playBtn.click(); }
+  else if (e.key === "ArrowLeft") { azTarget += 15; e.preventDefault(); }
+  else if (e.key === "ArrowRight") { azTarget -= 15; e.preventDefault(); }
+  else if (/^[1-5]$/.test(e.key)) phaseBtns[+e.key - 1].click();
+  else if (e.key === "Home") { setPlaying(false); seek(0); }
+});
+still.addEventListener("change", () => { if (still.matches) { setPlaying(false); T = U; dirty = true; } });
+
+// #u=4.5 deep-links a paused moment, #az=60 a view
+const h = new URLSearchParams(location.hash.slice(1));
+if (h.has("u")) { T = +h.get("u"); setPlaying(false); }
+else if (still.matches) { T = U; setPlaying(false); }
+else setPlaying(true);
+if (h.has("az")) az = azTarget = +h.get("az");
+window.__op = { draw, seek, set: (u, a) => { T = u; if (a != null) az = azTarget = a; jump = null; draw(); } };
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
