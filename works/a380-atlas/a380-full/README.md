@@ -71,3 +71,6 @@
 - Six index leader labels via tools/labels/a380-full.json, each naming the detail figure it opens (图1 客舱剖面, 图2 驾驶舱, 图3 翼根起落架, 图4 发动机, 图5 尾段, 图7 襟翼); fade when exploded, hidden under 480 px.
 - Light theme hover/tour highlight: LIT() now blends toward the series' warm lamp tone (#f4dc9a / #e3c27a) instead of white, which barely read on the pale airframe. Dark theme unchanged.
 - Nose facets and near-side flap visibility reviewed at 2x zoom: no defect worth changing at this camera.
+
+## M6 (2026-10-14)
+- Cabin cut-away zone now links to 图9 a380-cabin; new zone "wing" (outer wings + fences) links to 图10 a380-wing; added to ORDER and tour. Labels: 图9 客舱内部 (cut-away), 图1 客舱剖面 (fuselage), 图10 机翼结构 (near outer wing).
