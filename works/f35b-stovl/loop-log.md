@@ -269,3 +269,10 @@
 - 数值（沙箱无头 Chrome 软件 WebGL，1440×900）：跟拍 2.8 fps → 低配 33.1（4× 降速 1.5 → 9.9）；全景 5.6 → 低配 43.5（4× 3.1 → 14.2）；低配关闭时无可测差异。Mac Chrome Metal 4× 降速：静态层 17.5 → 18.9 fps；跟拍版全景视角 47 → 59.5（垂直同步上限）。
 - 体积 raw / gzip：跟拍 791,056 / 199,174 → 683,029 / 173,485；全景 696,702 / 168,509 → 600,199 / 146,563。
 - 像素对比（低配关闭）：24 张定帧最差 0.019 %；控制台干净；无滚动。拼图 shots/perf-1/before_after.png。
+
+## 返回链接 · 跟拍版 index + 全景版 wide 加「← 目录」· 2026-10-14（北京时间，约 12:00–12:15）· 已发布
+- 用户批准。备份 backup/backlink/（两个 build、f35b.css、followcam.css、live.js、live-fc.js、两份旧 html、loop-log.md）。新建 back.css（两个 build 都读）；build-followcam.mjs / build.mjs 只改标题角标一处与 CSS 拼接一行；f35b.css、followcam.css、live*.js 未改（f35b.css 与专题页共用，所以没动它）。
+- 位置：标题角标「F-35B 短距起飞/垂直降落循环」右侧 14 px，`<a class="f35-toc" href="topics.html">← 目录</a>`，与专题页 .tp-back 同款（12 px、--anatomy-muted、无下划线，悬停变深），绝对定位、不占版面。1440×900 在 (249,20)–(288,32)，390×844 在 (214,158)–(253,170)（全景版 (214,173)–(253,185)）。角标容器去掉 aria-hidden，改为每个角标各自 aria-hidden，链接可读、首个 Tab 即聚焦（:focus-visible 2 px 描边）。
+- 注意：类名不能用 .f35-back——舞台的背景 SVG 层已叫 f35-back（live-fc.js 用它），第一次用这个名字时尾焰/下洗渲染被改动，已改名 f35-toc。
+- 验证 shots/backlink/：before/ 与 after/ 两页 × 1440、390 × 两个定帧 + 说明展开 + 聚焦（降低动效；WebGL 与 --no-webgl 两套）；同一版本重复拍摄 0 像素差；新旧对比所有差异都在链接自身方框内（≤ 189 像素，说明展开时被浮层盖住一部分）；无滚动；不压飞机、控制条、说明浮层、低配提示；控制台干净。
+- 发布：works/f35b-stovl/index.html（512988d）、wide.html（b3376f5）、loop-log.md。
