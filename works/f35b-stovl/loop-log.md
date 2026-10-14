@@ -293,3 +293,13 @@
 - 像素对比（关声音，降低动效，t=7.35 与 t=22.7+3、说明展开、Tab 聚焦；shots/sound-merge/）：1440×900 差异框 (468,855)–(1161,890)，只在控制条（新按钮 + 进度条变短）；390×844 差异框 (111–125,637–643)–(373,671–677)，只在控制条第二行（新按钮排在说明后）；说明展开时 1440 多一段文字导致面板内容变化（149,846 px，框 (315,275)–(1161,890)）。无滚动（scroll 尺寸 = 视口）；控制台干净。拼图 shots/sound-merge/controls_before_after.png。
 - 行为（本地 http 复制站点结构 index.html + shared/sound.js）：打开前 0 次请求 sound.js；按 S 后请求 /shared/sound.js 200，电平约 0.18–0.20；空格暂停后约 0.0005，恢复后 0.18–0.19；再按 S 关为 0.0002；点击按钮同样有效且不重复加载。X、L、V、1–3、空格、←→ 与旧版逐项结果相同。shots/sound-merge/behaviour*.txt。
 - 发布：works/f35b-stovl/index.html（d2d00f9），线上 sha1 = 本地 104b13d5abddac44b35006999831d081cab0f9a4；lab/sound.html 保留在线上；loop-log.md。
+
+## 声音并入全景版 wide · 2026-10-14（北京时间，约 14:30）· 已发布
+- 用户批准。备份 backup/sound-wide/（build.mjs、live.js、f35b.css、sound-ui.js、sound.js、旧 f35b-stovl-light.html、发布前线上 wide-live.html（sha1 586d7f1c…，与旧本地构建相同）、loop-log.md）。只改 build.mjs；live.js、f35b.css、sound-ui.js、sound.js 未改；index / topics / 专题页未动。
+- 做法（与 index 相同）：「声音：关/开」按钮在透视之后（手机排在说明之后，同一段 .snd-btn CSS）；S 键；说明里加声音段（把「跟拍镜头越近越响」改为「全景视角固定，音量不随距离变化」）；操作行加「S 声音」；舞台 aria-label 加 S；draw() 在 `const show = s.show * fade.x;` 后一行钩子；内联 sound-ui.js，懒加载路径替换为 shared/sound.js。构建里每个替换点找不到就报错。
+- 增益：全景镜头固定，用固定距离 zoom 1.7 → √(1.7/3) ≈ 0.75 倍跟拍近景电平（介于跟拍拉远 0.61–0.71 与近景 1.0 之间），再乘飞机淡入淡出。实测 RMS（分析器接在输出端）wide 约 0.045–0.05，index 同法约 0.048–0.06。
+- 跟拍版 index 构建逐字节不变（f35b-stovl-followcam-light.html sha1 104b13d5…）；site/shared/sound.js = 线上 = bc352bec…。
+- 体积 raw / gzip -9：wide 600,983 / 146,822 → 602,954 / 147,530（+1,971 / +708）。
+- 像素对比（关声音，降低动效，两个定帧、说明展开、Tab 聚焦；shots/sound-wide/parity/）：1440×900 差异框 (394,855)–(1143,890) 共 1,276 px，只在控制条（新按钮 + 进度条变短）；390×844 差异框 (83,643)–(373,677) 共 1,918 px，只在控制条第二行；说明展开 1440 面板内容变化 130,788 px（多一段文字），390 仍只有控制条。无滚动（scroll = 视口，两种尺寸）；控制台干净。拼图 controls_before_after.png。
+- 行为（本地 http 复制站点结构 wide.html + shared/sound.js，shots/sound-wide/*.txt）：打开前 0 次请求；按 S 后 GET /shared/sound.js 200，电平 RMS 0.022–0.037（刚启动）；空格暂停 0.0000，恢复 0.046；S 关 0.0000；按钮开关同样有效且只加载 1 次；1440 与 390 都通过。X、L、空格、1–3、←→、目录链接与旧 wide 逐项结果相同（keys-old/new.txt 仅声音按钮状态一行不同）。
+- 发布：works/f35b-stovl/wide.html（e03e41a），约 60 秒后加缓存参数抓取线上 sha1 = 本地 69fa4b49e3db00a1f04fc757b5b7b34f9c1dbe9f；线上 index.html 仍为 104b13d5…；loop-log.md。
