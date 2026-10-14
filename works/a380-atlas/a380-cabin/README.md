@@ -86,3 +86,6 @@ the business rows fit) — schematic.
 - The aft end ring crosses the last economy rows (it is in front of them); intended, as in a380-section.
 - No leader labels yet (the atlas adds them with tools/addlabels.py); not integrated into figures/index.html.
 - No `--audit` (no pipes/round parts); painter's order verified by the sort log and screenshots only.
+
+## M2 引线标注 (2026-10-14)
+- Screen-placed leader labels per focus state (全景 7 / 主舱 4 / 上层 3), shown via CSS on svg[data-focus], hidden when apart (svg[data-apart]) and under 480 px. Edit the LB table in build.mjs.
