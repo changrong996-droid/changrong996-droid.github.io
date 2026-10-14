@@ -58,3 +58,6 @@ Box depth 2.1 m at the root (tapering 0.05 m/m), spar positions (front spar 4.4 
 - Light theme no longer white on white: the wing box (`[data-zone="box"]`), both gears and the gear doors take steps of the anatomy ladder (mixW of --anatomy-mid).
 - Stowed gear: a closed copy of each belly door (`[data-stow]`) paints after its gear and shows only once the gear is up and the doors have shut, so the stowed wheels no longer show through the closed doors.
 - Three more leader labels via tools/addlabels.py (tools/labels/a380-wing-root.json): 中央翼盒, 机翼主起落架 · 4 轮, 机身主起落架 · 6 轮 (the gear labels fade as the gear retracts); the four wing-box labels stay.
+
+## M5 v3 (2026-10-14)
+- Body gear tyres use the coarse profile (tyreCoarse); the rounded shoulder bands of tyreProfile drew sawtooth lit edges, most visible in the stowed bay.
