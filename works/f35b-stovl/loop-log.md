@@ -325,3 +325,9 @@
 - 体积（raw / gzip -9）：exploded.html 14,985 / 5,485 → 16,559 / 5,598；exploded.js 29,164 / 10,978 → 26,865 / 9,892。
 - 发布：works/f35b-stovl/exploded.js（45f0b09）、shared/thumb-exploded.jpg（09165bb）、shared/loop-exploded.mp4（cb25d26）、shared/loop-exploded.webm（34c6c49）、exploded.html（cbbc4b8）、topics.html（d95a973）、shots/topic-exploded.png（4b8ca72，新炸开图）、loop-log.md。约 60 秒后加缓存参数抓取，线上 sha1 全部 = 本地（exploded.html ca14637d…、exploded.js 9d54417c…、topics.html 7868275f…、thumb fdaa73f8…、mp4 687985b8…、webm 3adec3ab…）；shared/f35b-model.js 未推送仍 db21b396…；index.html 仍 104b13d5…。issue #21 已评论（issuecomment-6163870932）。线上页面没有在浏览器里跑过（沙箱无头 Chrome 不出外网），只核对字节。
 - 遗留：传动轴、离合器、锥齿轮箱实物尺寸小，炸开后在 1440 上也只有约 30–60 像素，要靠标签认；S 形进气道是半透明壳，移到机头上方后与幽灵机头叠在一起，形状不如发动机清楚；机体幽灵很淡，机翼和平尾在浅底上只剩轮廓；升力风扇上舱门（打开状态）的幽灵立在风扇后面；侧视 / 俯视里机体可能贴边；手机侧视、俯视下整机较小。沙箱字体又丢了一次，已从 /workspace/work/demo/NotoSansSC.otf 重装到 ~/.fonts 后再截图。
+
+## 撤下「部件拆解」专题页（exploded.html v2）· 2026-10-14（北京时间约 16:20）· 已撤下
+- 用户否定 v2 并要求撤下。备份 backup/topic-exploded-v2/（src：build-exploded.mjs、exploded.js、build-forces.mjs、loop-log.md、README.md；site：exploded.html/.js、带卡片的 topics.html、shared 缩略图与两段循环视频；shots：topic-exploded.png 与 shots/topic-exploded/）。本地源码 build-exploded.mjs、exploded.js 保留未删。
+- build-forces.mjs 去掉目录卡片「部件拆解」一行；卡片模板的可选 video 字段与播放脚本保留（无卡片使用时输出不变，注释已改为「未使用」）。重跑后 forces.*、ground.*、power.*、shared/f35b-model.js、f35b.css、topic.css 逐字节不变；topics.html sha1 9697f701…，与 8819dbb 之前线上版本（4ca9209 时的 topics.html）及 backup/topic-exploded/site-topics.html 逐字节相同。
+- 验证 shots/withdraw-exploded/：1440×900、390×844 五张卡片、0 张坏图、0 个 exploded 链接、控制台干净（390 宽目录 26 像素滚动与原来相同）。
+- 发布：topics.html（132c16d）；删除 exploded.html（d12db05）、exploded.js（433fc7b）、shared/thumb-exploded.jpg（594e1b6）、shared/loop-exploded.mp4（be020d5）、shared/loop-exploded.webm（a77087c）、shots/topic-exploded.png（3deecf1）。约 75 秒后加缓存参数：线上 topics.html sha1 = 本地 9697f701…；六个文件均 404；index / wide / forces / ground / power 线上 sha1 未变。仓库里只有 loop-log.md 的历史记录提到 exploded。issue #21 已评论（issuecomment-6164109516）。
