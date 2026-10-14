@@ -285,3 +285,11 @@
 - 像素对比（关声音，1440×900 / 390×844，两个定帧 + 聚焦）：差异只在控制条（新按钮 + 1440 下进度条因此变短）；说明展开多一段文字；无滚动；控制台干净。shots/sound/parity/。
 - 离线预览：OfflineAudioContext 按时间线渲染 0–25 秒（跟拍缩放），shots/sound/preview.mp3（128 kbps，25.05 秒）；分层单独渲染 solo-*.wav，频谱图 shots/sound/spectrogram.png：风扇音 0.85 s 后升至约 410 Hz，10.44 s 后滑落（12 s 约 205、15 s 约 54 Hz），17.94 s 后约 1.5 s 回到 410 Hz；喷管扫频出现在 0.9–2 s（0→10°）、5.5–7 s（10→50°，中心 635→1066 Hz）、7.8–9.5 s（50→28°）、18–21.5 s（72→90°，约 1.5–1.75 kHz）；滚转喷口嘶声在 1–10.6 s 与 18 s 后；常规飞行段核心声降约 12 dB、高频变暗。
 - 发布：works/f35b-stovl/lab/sound.html（a2d6fdf）、shared/sound.js（1667bf8）、shots/sound-preview.mp3（431bb89）、loop-log.md。
+
+## 声音并入跟拍版 index · 2026-10-14（北京时间，约 13:20）· 已发布
+- 用户批准。备份 backup/sound-merge/（build-followcam.mjs、sound-ui.js、sound.js、旧 index html、lab-sound.html、loop-log.md）。只改 build-followcam.mjs 与 sound-ui.js 的注释；wide.html、topics.html、专题页未动。
+- 做法：声音按钮、S 键、说明里的声音段、操作行「S 声音」、舞台 aria-label、draw() 一行钩子、内联 sound-ui.js 和 .snd-btn 样式改为每次构建都有。--lab 保留：仍输出 site/lab/sound.html，与 index 只差三处——标题前缀「声音试验 · 」、目录链接 ../topics.html、懒加载路径 ../shared/sound.js（index 为 topics.html 与 shared/sound.js，构建时替换 sound-ui.js 里的路径字符串）。--lab 重建后 lab/sound.html 逐字节不变（sha1 3df14da8…）。两种构建都把 sound.js 复制到 site/shared/sound.js（与线上 shared/sound.js 同为 bc352bec…）。
+- 体积 raw / gzip -9：index 683,813 / 173,657 → 685,779 / 174,292（+1,966 / +635）。sound.js 仍 11,419 B，仅在打开声音时加载。
+- 像素对比（关声音，降低动效，t=7.35 与 t=22.7+3、说明展开、Tab 聚焦；shots/sound-merge/）：1440×900 差异框 (468,855)–(1161,890)，只在控制条（新按钮 + 进度条变短）；390×844 差异框 (111–125,637–643)–(373,671–677)，只在控制条第二行（新按钮排在说明后）；说明展开时 1440 多一段文字导致面板内容变化（149,846 px，框 (315,275)–(1161,890)）。无滚动（scroll 尺寸 = 视口）；控制台干净。拼图 shots/sound-merge/controls_before_after.png。
+- 行为（本地 http 复制站点结构 index.html + shared/sound.js）：打开前 0 次请求 sound.js；按 S 后请求 /shared/sound.js 200，电平约 0.18–0.20；空格暂停后约 0.0005，恢复后 0.18–0.19；再按 S 关为 0.0002；点击按钮同样有效且不重复加载。X、L、V、1–3、空格、←→ 与旧版逐项结果相同。shots/sound-merge/behaviour*.txt。
+- 发布：works/f35b-stovl/index.html（d2d00f9），线上 sha1 = 本地 104b13d5abddac44b35006999831d081cab0f9a4；lab/sound.html 保留在线上；loop-log.md。
