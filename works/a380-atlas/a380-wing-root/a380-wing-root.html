@@ -121,14 +121,14 @@ body{margin:0;background:var(--anatomy-page);color:var(--anatomy-text);font:14px
   --anatomy-shade-0:#171717;--anatomy-shade-1:#1c1c1c;--anatomy-shade-2:#212121;--anatomy-shade-3:#262626;
   --anatomy-lit-top:#3d3d3d;--anatomy-lit-shade:#323232;--anatomy-lo:#575757;--anatomy-mid:#7c7c7c;--anatomy-faint:#383838}
 /* FX (2026-10-14): atlas functional colours, shared by every figure: CFRP slate, hydraulics orange, electrics yellow (fuel stays --anatomy-blue) */
-.iso[data-theme="light"] .iso-plate{--fx-cfrp-top:#a9bcc2;--fx-cfrp-shade:#647f89;--fx-hyd-top:#f4b882;--fx-hyd-shade:#d97a30;--fx-elec-top:#f1da82;--fx-elec-shade:#c9a227}
+.iso[data-theme="light"] .iso-plate{--fx-cfrp-top:#a9bcc2;--fx-cfrp-shade:#7a929b;--fx-hyd-top:#f4b882;--fx-hyd-shade:#d97a30;--fx-elec-top:#f1da82;--fx-elec-shade:#c9a227}
 .iso[data-theme="dark"] .iso-plate,.iso:not([data-theme="light"]) .iso-plate{--fx-cfrp-top:#566c74;--fx-cfrp-shade:#37494f;--fx-hyd-top:#b9703a;--fx-hyd-shade:#8a4f22;--fx-elec-top:#a88c2e;--fx-elec-shade:#7a6522}
-main.iso-page [data-fx="cfrp"] .iso-solid>.iso-top{fill:var(--fx-cfrp-top)}main.iso-page [data-fx="cfrp"] .iso-solid>.iso-shade,main.iso-page [data-fx="cfrp"] .iso-solid>.iso-fill{fill:var(--fx-cfrp-shade)}
-main.iso-page [data-fx="hyd"] .iso-solid>.iso-top{fill:var(--fx-hyd-top)}main.iso-page [data-fx="hyd"] .iso-solid>.iso-shade,main.iso-page [data-fx="hyd"] .iso-solid>.iso-fill{fill:var(--fx-hyd-shade)}
-main.iso-page [data-fx="elec"] .iso-solid>.iso-top{fill:var(--fx-elec-top)}main.iso-page [data-fx="elec"] .iso-solid>.iso-shade,main.iso-page [data-fx="elec"] .iso-solid>.iso-fill{fill:var(--fx-elec-shade)}
-main.iso-page [data-fx] .iso-solid[data-lit]>.iso-top{fill:color-mix(in srgb,var(--anatomy-lit-top) 45%,var(--fx-cfrp-top))}
-main.iso-page [data-fx="hyd"] .iso-solid[data-lit]>.iso-top{fill:color-mix(in srgb,var(--anatomy-lit-top) 45%,var(--fx-hyd-top))}
-main.iso-page [data-fx="elec"] .iso-solid[data-lit]>.iso-top{fill:color-mix(in srgb,var(--anatomy-lit-top) 45%,var(--fx-elec-top))}
+main.iso-page [data-fx="cfrp"] .iso-solid:not(#fx):not([class*="-cut"])>.iso-top{fill:var(--fx-cfrp-top)}main.iso-page [data-fx="cfrp"] .iso-solid:not(#fx):not([class*="-cut"])>.iso-shade,main.iso-page [data-fx="cfrp"] .iso-solid:not(#fx):not([class*="-cut"])>.iso-fill{fill:var(--fx-cfrp-shade)}
+main.iso-page [data-fx="hyd"] .iso-solid:not(#fx):not([class*="-cut"])>.iso-top{fill:var(--fx-hyd-top)}main.iso-page [data-fx="hyd"] .iso-solid:not(#fx):not([class*="-cut"])>.iso-shade,main.iso-page [data-fx="hyd"] .iso-solid:not(#fx):not([class*="-cut"])>.iso-fill{fill:var(--fx-hyd-shade)}
+main.iso-page [data-fx="elec"] .iso-solid:not(#fx):not([class*="-cut"])>.iso-top{fill:var(--fx-elec-top)}main.iso-page [data-fx="elec"] .iso-solid:not(#fx):not([class*="-cut"])>.iso-shade,main.iso-page [data-fx="elec"] .iso-solid:not(#fx):not([class*="-cut"])>.iso-fill{fill:var(--fx-elec-shade)}
+main.iso-page [data-fx] .iso-solid[data-lit]:not(#fx):not([class*="-cut"])>.iso-top{fill:color-mix(in srgb,var(--anatomy-lit-top) 45%,var(--fx-cfrp-top))}
+main.iso-page [data-fx="hyd"] .iso-solid[data-lit]:not(#fx):not([class*="-cut"])>.iso-top{fill:color-mix(in srgb,var(--anatomy-lit-top) 45%,var(--fx-hyd-top))}
+main.iso-page [data-fx="elec"] .iso-solid[data-lit]:not(#fx):not([class*="-cut"])>.iso-top{fill:color-mix(in srgb,var(--anatomy-lit-top) 45%,var(--fx-elec-top))}
 .iso-swatch[data-mark="cfrp"] path{stroke:var(--fx-cfrp-shade);stroke-width:3}.iso-swatch[data-mark="hyd"] path{stroke:var(--fx-hyd-shade);stroke-width:3}.iso-swatch[data-mark="elec"] path{stroke:var(--fx-elec-shade);stroke-width:3}
 /* P3 (2026-10-14): long readouts wrap inside the plate on narrow screens instead of running off its left edge */
 @media (max-width:640px){main.iso-page .iso-plate-corner[data-corner="readout"]{left:0;white-space:normal;text-align:right;line-height:1.3}
