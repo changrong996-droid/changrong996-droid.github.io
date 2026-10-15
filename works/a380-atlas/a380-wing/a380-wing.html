@@ -1056,7 +1056,7 @@ function draw() {
   move(G_.fence, [EX.fence * p("fence") * U, 0, 0]);
   move(G_.pylon, [0, 0, -EX.pylon * p("pylon") * U]);
   const any = Math.min(1, STAGGER.reduce((a, id) => a + piece[id].x, 0));
-  for (const g of labelEls) { const o = Math.max(0, 1 - any * 4) * Math.max(0, 1 - fuel.x * 2) * (/flap|slat|droop/.test(g.dataset.wgLabel) ? Math.max(0, 1 - hl.u * 3) : 1); const t = o.toFixed(2); if (g.style.opacity !== t) g.style.opacity = t; g.style.visibility = o > 0 ? "" : "hidden"; }
+  for (const g of labelEls) { const o = Math.max(0, 1 - any * 4) * Math.max(0, 1 - fuel.x * 2) * (/^(flap|slat|droop|rs)$/.test(g.dataset.wgLabel) ? Math.max(0, 1 - hl.u * 3) : 1); const t = o.toFixed(2); if (g.style.opacity !== t) g.style.opacity = t; g.style.visibility = o > 0 ? "" : "hidden"; }
   for (const g of fuelEls) { const t = fuel.x.toFixed(2); if (g.style.opacity !== t) g.style.opacity = t; g.style.visibility = fuel.x > 0 ? "visible" : "hidden"; }
   const f = frameView();
   if (f.s === 1 && f.tx === 0 && f.ty === 0) viewEl.removeAttribute("transform");
