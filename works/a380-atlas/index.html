@@ -32,6 +32,8 @@ a.card.feature{grid-column:1/-1;flex-direction:row}
 @media (max-width:560px){main{padding:28px 14px 40px}.grid{grid-template-columns:1fr}a.card.feature{flex-direction:column}.feature img{width:100%;border-right:0;border-bottom:1px solid var(--line)}.feature .txt{padding:14px}}
 </style>
 <!--fit:start--><style>
+header{position:relative}header p{max-width:calc(100% - 320px)}header details.about{position:absolute;right:0;bottom:0;width:300px;z-index:3;background:var(--bg,#f6f5f1)}
+@media (max-width:860px){header p{max-width:none}header details.about{position:static;width:auto;margin-top:10px}}
 html,body{min-height:100%}
 main{max-width:1280px;padding:18px 28px 20px}
 header{margin-bottom:14px}
@@ -39,7 +41,7 @@ header .eyebrow{margin:0 0 6px}
 h1{font-size:24px;margin:0 0 2px}
 header p{font-size:13px}
 .grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
-a.card.feature{grid-column:1/-1;flex-direction:row;height:min(280px,30vh);min-height:200px}
+a.card.feature{grid-column:1/-1;flex-direction:row;height:min(250px,27vh);min-height:190px}
 .feature img{width:66%;height:100%;object-fit:contain;aspect-ratio:auto}
 .feature .txt{padding:20px 24px}
 .card img{aspect-ratio:8/5;object-fit:contain}
@@ -85,7 +87,8 @@ details.about p{margin:0 0 6px}
 <header>
 <p class="eyebrow">AIRBUS A380-800 · 等轴测解剖</p>
 <h1>A380 解剖图集</h1>
-<p>十张可交互的示意图：一张整机总图，九张分区详图。悬停查看部件，点击或按键拆解、收放机构。</p>
+<p>十一张可交互的示意图：一张整机总图，九张分区详图，一段三维起降动画。悬停查看部件，点击或按键拆解、收放机构。</p>
+<!--fit:about:start--><details class="about"><summary>关于这套图集</summary><div class="about-body"><p>均为示意图：外廓尺寸取自空客 Aircraft Characteristics 与 Facts &amp; Figures，截面形状、翼型、内饰排布等细节为示意。</p><p>每张图都有浅色与深色两版；各图的资料来源与示意说明见对应目录的 README。</p></div></details><!--fit:about:end-->
 </header>
 <div class="grid">
 <a class="card feature" href="a380-full/a380-full-light.html"><img src="a380-full/shots/v2-flaps-gear-door-light.png" alt="A380 整机示意图，起落架收起、襟翼放下、货舱门开启"><div class="txt"><span class="no">图 8</span><h2>整机</h2><p>按实机外廓尺寸绘制的整架 A380，带双层客舱剖视窗；可收放起落架、放下襟翼、打开货舱门，并拆解为五段机身，八个区域链接到各详图。</p></div></a>
@@ -98,7 +101,8 @@ details.about p{margin:0 0 6px}
 <a class="card" href="a380-flaps/a380-flaps-light.html"><img src="a380-flaps/shots/v2-rest-light.png" alt="后缘襟翼示意图" loading="lazy"><div class="txt"><span class="no">图 7</span><h2>后缘襟翼</h2><p>富勒襟翼的后移下偏与扰流板升起。</p></div></a>
 <a class="card" href="a380-cabin/a380-cabin-light.html"><img src="a380-cabin/shots/v1-rest-light.png" alt="客舱内部示意图" loading="lazy"><div class="txt"><span class="no">图 9</span><h2>客舱内部</h2><p>主舱 3-4-3 经济舱、前楼梯与上层 2-2-2 平躺商务舱。</p></div></a>
 <a class="card" href="a380-wing/a380-wing-light.html"><img src="a380-wing/shots/v1-rest-light.png" alt="机翼结构示意图" loading="lazy"><div class="txt"><span class="no">图 10</span><h2>机翼结构</h2><p>三梁翼盒、翼肋、油箱分区与前后缘增升装置。</p></div></a>
-<!--fit:about:start--><details class="about"><summary>关于这套图集</summary><div class="about-body"><p>均为示意图：外廓尺寸取自空客 Aircraft Characteristics 与 Facts &amp; Figures，截面形状、翼型、内饰排布等细节为示意。</p><p>每张图都有浅色与深色两版；各图的资料来源与示意说明见对应目录的 README。</p></div></details><!--fit:about:end-->
+<a class="card" href="a380-flight/"><img src="a380-flight/card.png" alt="A380 三维起降动画" loading="lazy"><div class="txt"><span class="no">图 11</span><h2>起飞与降落 3D</h2><p>可旋转视角的三维动画：起落架收放、缝翼襟翼构型、扰流板与反推。</p></div></a>
+
 </div>
 </main>
 </body>
