@@ -133,7 +133,10 @@ main.iso-page [data-fx="elec"] .iso-solid[data-lit]:not(#fx):not([class*="-cut"]
 /* P3 (2026-10-14): long readouts wrap inside the plate on narrow screens instead of running off its left edge */
 @media (max-width:640px){main.iso-page .iso-plate-corner[data-corner="readout"]{left:0;white-space:normal;text-align:right;line-height:1.3}
   main.iso-page .iso-plate-corner[data-corner="hint"]{bottom:30px}
-  main.iso-page .iso-plate{padding-bottom:62px}}
+  main.iso-page .iso-plate{padding-bottom:62px}
+  main.iso-page .iso-plate-corner[data-corner="readout"]{text-wrap:balance}}
+/* VM pilot (2026-10-25): readout segments split at " · " only, so a value like "顶宽 2.01 m" never breaks mid-phrase */
+main.iso-page .fit-seg{white-space:nowrap}
 main.iso-page .iso-stage:focus{outline:none!important}
 main.iso-page .iso-stage:focus-visible{outline:1px dashed var(--anatomy-mid)!important;outline-offset:-3px!important}
 html,body{height:100%}
@@ -246,6 +249,21 @@ main.iso-page .iso-plate>.iso-stage>svg{flex:none;max-width:100%;max-height:100%
     };
     fit();
     if (window.ResizeObserver) (function(ro){ ro.observe(figure); ro.observe(stage); })(new ResizeObserver(fit)); else addEventListener("resize", fit);
+  }
+  var ro = document.querySelector("[data-readout]");
+  if (ro) {
+    var seg = function(){
+      if (ro.firstElementChild) return;
+      var parts = ro.textContent.split(/(\s*·\s*)/);
+      if (parts.length < 3) return;
+      var f = document.createDocumentFragment();
+      parts.forEach(function(p, i){
+        if (i % 2) { f.appendChild(document.createTextNode(p)); return; }
+        var sp = document.createElement("span"); sp.className = "fit-seg"; sp.textContent = p; f.appendChild(sp);
+      });
+      ro.textContent = ""; ro.appendChild(f);
+    };
+    seg(); new MutationObserver(seg).observe(ro, {childList: true, characterData: true, subtree: true});
   }
   var back = document.querySelector(".fit-back[data-key-back]");
   if (back) window.addEventListener("keydown", function(e){
