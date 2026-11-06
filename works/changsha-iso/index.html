@@ -28,9 +28,9 @@
 </style>
 </head>
 <body>
-<div id="stage"><div id="world"><img id="map" src="iso.png" alt="长沙环境保护职业技术学院周边等轴测像素图" draggable="false"></div></div>
+<div id="stage"><div id="world"><img id="map" src="iso2.png" alt="长沙环境保护职业技术学院周边等轴测像素图" draggable="false"></div></div>
 <div id="hud">
-  <div class="chip"><b>长沙 · 雨花区 · 环保学院</b> <span class="sub">等轴测像素样片 v0.1</span></div>
+  <div class="chip"><b>长沙 · 雨花区 · 环保学院</b> <span class="sub">等轴测像素样片 v0.2</span></div>
   <button class="chip" id="ib" aria-expanded="false">数据</button>
 </div>
 <div id="info" class="chip">
@@ -40,13 +40,15 @@
     <li>建筑轮廓：Overture Maps（源自 Zenodo 中国建筑轮廓数据集）</li>
     <li>楼高：CMAB 中国多属性建筑数据集（2025），缺失的用邻近楼推断</li>
     <li>道路：OpenStreetMap</li>
+    <li>地形：哥白尼 GLO-30 高程（30 m），去除树冠/楼顶后平滑，起伏约 35 m，竖向放大 1.6 倍</li>
+    <li>楼型：按轮廓长宽比、面积、楼高和所在地块分为板楼、点式高层、多层、自建房、教学楼、机关楼、大厅</li>
     <li>地面、树木、屋顶颜色：Esri World Imagery 卫星影像分色</li>
     <li>全部由代码绘制，尚未经过 AI 重绘</li>
   </ul>
 </div>
 <div id="zoom"><button class="chip" id="zi" aria-label="放大">+</button><button class="chip" id="zo" aria-label="缩小">−</button><button class="chip" id="zf" aria-label="复位" style="font-size:14px">⤢</button></div>
 <script>
-const META = {"w": 2379, "h": 1369, "labels": [{"name": "洞井路", "x": 999, "y": 319, "kind": "road"}, {"name": "木莲东路", "x": 1881, "y": 706, "kind": "road"}, {"name": "长沙环境保护职业技术学院", "x": 1204, "y": 671, "kind": "poi"}]};
+const META = {"w": 2379, "h": 1457, "labels": [{"name": "洞井路", "x": 999, "y": 386, "kind": "road"}, {"name": "木莲东路", "x": 1881, "y": 777, "kind": "road"}, {"name": "长沙环境保护职业技术学院", "x": 1204, "y": 690, "kind": "poi"}]};
 const stage=document.getElementById('stage'), world=document.getElementById('world'), img=document.getElementById('map');
 META.labels.forEach(l=>{const e=document.createElement('div');e.className='lbl '+(l.kind==='road'?'road':'');e.textContent=l.name;e.style.left=l.x+'px';e.style.top=l.y+'px';world.appendChild(e);});
 let s=1,tx=0,ty=0;

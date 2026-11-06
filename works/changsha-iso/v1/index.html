@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>长沙 · 环保学院 · 等轴测像素样片</title>
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#efe9de;font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif;touch-action:none}
+  #stage{position:fixed;inset:0;cursor:grab}
+  #stage.drag{cursor:grabbing}
+  #world{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+  #world img{display:block;image-rendering:pixelated;image-rendering:crisp-edges;user-select:none;-webkit-user-drag:none}
+  .lbl{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
+       font-size:12px;font-weight:600;color:#2b2b2b;background:rgba(255,253,246,.88);padding:2px 6px;border:2px solid #2b2b2b;
+       box-shadow:2px 2px 0 #2b2b2b}
+  .lbl.road{font-weight:500;font-size:11px;border-width:1px;box-shadow:1px 1px 0 #2b2b2b;color:#444}
+  #hud{position:fixed;left:12px;top:12px;display:flex;gap:8px;align-items:center;z-index:5}
+  .chip{background:#fffdf6;border:2px solid #2b2b2b;box-shadow:3px 3px 0 #2b2b2b;padding:6px 10px;font-size:13px;color:#2b2b2b}
+  .chip b{font-size:14px}
+  button.chip{cursor:pointer;font:inherit;font-size:13px}
+  #zoom{position:fixed;right:12px;bottom:12px;display:flex;flex-direction:column;gap:8px;z-index:5}
+  #zoom button{width:40px;height:40px;font-size:20px;line-height:1;padding:0}
+  #info{position:fixed;left:12px;top:60px;max-width:min(360px,calc(100vw - 24px));z-index:6;display:none;font-size:12.5px;line-height:1.6}
+  #info.show{display:block}
+  #info h3{margin:0 0 4px;font-size:13px}
+  #info ul{margin:0;padding-left:18px}
+  @media (max-width:520px){ .chip{font-size:12px;padding:5px 8px} .chip b{font-size:13px} .sub{display:none} }
+</style>
+</head>
+<body>
+<div id="stage"><div id="world"><img id="map" src="iso.png" alt="长沙环境保护职业技术学院周边等轴测像素图" draggable="false"></div></div>
+<div id="hud">
+  <div class="chip"><b>长沙 · 雨花区 · 环保学院</b> <span class="sub">等轴测像素样片 v0.1</span></div>
+  <button class="chip" id="ib" aria-expanded="false">数据</button>
+</div>
+<div id="info" class="chip">
+  <h3>这张图怎么来的</h3>
+  <ul>
+    <li>范围：约 780 × 780 m，以学院为中心</li>
+    <li>建筑轮廓：Overture Maps（源自 Zenodo 中国建筑轮廓数据集）</li>
+    <li>楼高：CMAB 中国多属性建筑数据集（2025），缺失的用邻近楼推断</li>
+    <li>道路：OpenStreetMap</li>
+    <li>地面、树木、屋顶颜色：Esri World Imagery 卫星影像分色</li>
+    <li>全部由代码绘制，尚未经过 AI 重绘</li>
+  </ul>
+</div>
+<div id="zoom"><button class="chip" id="zi" aria-label="放大">+</button><button class="chip" id="zo" aria-label="缩小">−</button><button class="chip" id="zf" aria-label="复位" style="font-size:14px">⤢</button></div>
+<script>
+const META = {"w": 2379, "h": 1369, "labels": [{"name": "洞井路", "x": 999, "y": 319, "kind": "road"}, {"name": "木莲东路", "x": 1881, "y": 706, "kind": "road"}, {"name": "长沙环境保护职业技术学院", "x": 1204, "y": 671, "kind": "poi"}]};
+const stage=document.getElementById('stage'), world=document.getElementById('world'), img=document.getElementById('map');
+META.labels.forEach(l=>{const e=document.createElement('div');e.className='lbl '+(l.kind==='road'?'road':'');e.textContent=l.name;e.style.left=l.x+'px';e.style.top=l.y+'px';world.appendChild(e);});
+let s=1,tx=0,ty=0;
+function apply(){world.style.transform=`translate(${tx}px,${ty}px) scale(${s})`;
+  const ls=[...world.querySelectorAll('.lbl')].sort((a,b)=>(a.classList.contains('road')?1:0)-(b.classList.contains('road')?1:0));
+  const kept=[];ls.forEach(e=>{e.style.transform=`translate(-50%,-50%) scale(${1/s})`;e.style.visibility='visible';
+    const r=e.getBoundingClientRect();if(kept.some(k=>!(r.right<k.left||k.right<r.left||r.bottom<k.top||k.bottom<r.top))){e.style.visibility='hidden';return;}kept.push(r);});}
+function fit(){const vw=innerWidth,vh=innerHeight;s=Math.min(vw/META.w,(vh-50)/META.h)*0.98;tx=(vw-META.w*s)/2;ty=(vh-META.h*s)/2+18;apply();}
+function zoomAt(f,cx,cy){const ns=Math.max(0.15,Math.min(8,s*f));f=ns/s;tx=cx-(cx-tx)*f;ty=cy-(cy-ty)*f;s=ns;apply();}
+const pts=new Map();let last=null;
+stage.addEventListener('pointerdown',e=>{stage.setPointerCapture(e.pointerId);pts.set(e.pointerId,[e.clientX,e.clientY]);stage.classList.add('drag');});
+stage.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const p=pts.get(e.pointerId);
+  if(pts.size===1){tx+=e.clientX-p[0];ty+=e.clientY-p[1];apply();}
+  pts.set(e.pointerId,[e.clientX,e.clientY]);
+  if(pts.size===2){const [a,b]=[...pts.values()];const dd=Math.hypot(a[0]-b[0],a[1]-b[1]);const cx=(a[0]+b[0])/2,cy=(a[1]+b[1])/2;
+    if(last){zoomAt(dd/last.d,cx,cy);tx+=cx-last.cx;ty+=cy-last.cy;apply();}last={d:dd,cx,cy};}});
+function up(e){pts.delete(e.pointerId);last=null;if(!pts.size)stage.classList.remove('drag');}
+stage.addEventListener('pointerup',up);stage.addEventListener('pointercancel',up);
+stage.addEventListener('wheel',e=>{e.preventDefault();zoomAt(Math.exp(-e.deltaY*0.0015),e.clientX,e.clientY);},{passive:false});
+document.getElementById('zi').onclick=()=>zoomAt(1.5,innerWidth/2,innerHeight/2);
+document.getElementById('zo').onclick=()=>zoomAt(1/1.5,innerWidth/2,innerHeight/2);
+document.getElementById('zf').onclick=fit;
+const ib=document.getElementById('ib'),info=document.getElementById('info');
+ib.onclick=()=>{const o=info.classList.toggle('show');ib.setAttribute('aria-expanded',o);};
+addEventListener('resize',fit);
+img.complete?fit():img.onload=fit;
+</script>
+</body>
+</html>
