@@ -51,7 +51,9 @@ const stage=document.getElementById('stage'), world=document.getElementById('wor
 META.labels.forEach(l=>{const e=document.createElement('div');e.className='lbl '+(l.kind==='road'?'road':'');e.textContent=l.name;e.style.left=l.x+'px';e.style.top=l.y+'px';world.appendChild(e);});
 let s=1,tx=0,ty=0;
 function apply(){world.style.transform=`translate(${tx}px,${ty}px) scale(${s})`;
-  world.querySelectorAll('.lbl').forEach(e=>e.style.transform=`translate(-50%,-50%) scale(${1/s})`);}
+  const ls=[...world.querySelectorAll('.lbl')].sort((a,b)=>(a.classList.contains('road')?1:0)-(b.classList.contains('road')?1:0));
+  const kept=[];ls.forEach(e=>{e.style.transform=`translate(-50%,-50%) scale(${1/s})`;e.style.visibility='visible';
+    const r=e.getBoundingClientRect();if(kept.some(k=>!(r.right<k.left||k.right<r.left||r.bottom<k.top||k.bottom<r.top))){e.style.visibility='hidden';return;}kept.push(r);});}
 function fit(){const vw=innerWidth,vh=innerHeight;s=Math.min(vw/META.w,(vh-50)/META.h)*0.98;tx=(vw-META.w*s)/2;ty=(vh-META.h*s)/2+18;apply();}
 function zoomAt(f,cx,cy){const ns=Math.max(0.15,Math.min(8,s*f));f=ns/s;tx=cx-(cx-tx)*f;ty=cy-(cy-ty)*f;s=ns;apply();}
 const pts=new Map();let last=null;
