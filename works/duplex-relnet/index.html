@@ -81,7 +81,7 @@ aside{min-height:0}
   <div id="qnav"></div>
   <div><span class="tag" id="rule"></span></div>
   <h2 id="title"></h2>
-  <div id="ctxbox">
+  <div id="ctxbox"><div id="adopted" style="display:none;font-size:13.5px;line-height:1.5;background:#e7f5ec;border-left:3px solid #2e7d4f;padding:5px 8px;margin-bottom:4px"></div>
   <div class="sec">要你看的点（点一下，镜头直接对准）</div><div id="pts"></div>
   <div class="sec">在哪</div><div class="txt" id="where"></div>
   
@@ -104,7 +104,7 @@ const PC=['#e03a2f','#2f6fe0','#1fa37a','#9b4fd0','#8c5a2b'];
 const D=await (await fetch('questions.json')).json();
 const Q=D.questions, KEY='duplex-answers-v2';
 let A=JSON.parse(localStorage.getItem(KEY)||'{}'), cur=0;
-document.getElementById('status').innerHTML=D.status.map(s=>`<span class="chip s${s[1]}" title="${s[2]}">${s[1]==1?'✓':s[1]==2?'△':'○'} ${s[0]}</span>`).join('');
+document.getElementById('status').innerHTML=D.status.map(s=>`<span class="chip s${s[1]}" title="${s[2]}">${s[1]==1?'✓':s[1]==2?'△':'○'} ${s[0]}</span>`).join('')+(D.banner?`<span style="margin-left:10px;font-size:13px;color:#bfe8cc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${D.banner}</span>`:'');
 const view=document.getElementById('view');
 const LD=document.getElementById('loading');
 window.addEventListener('error',e=>{LD.textContent='三维模型出错：'+e.message});
@@ -171,6 +171,7 @@ document.getElementById('play').onclick=()=>{if(timer){stopPlay();paint(Q[cur]);
     for(const [id,b] of Object.entries(D.batches))if(b===k&&M[id])for(const o of M[id]){o.visible=true;o.material=Q[cur].hl.includes(id)?mPart[0]:mB[b-1]}};
   fly([[-2,-1,-2],[18,7,22]]);step();timer=setInterval(step,1400)};
 function show(i){if(typeof stopPlay==='function')stopPlay();cur=i;const q=Q[i];
+  {const ad=document.getElementById('adopted');ad.style.display=q.adopted?'block':'none';ad.textContent=q.adopted?'✓ '+q.adopted:''}
   for(const k of ['rule','title','where','chain','did','why','ask'])document.getElementById(k).textContent=q[k]||'';
   const seen=new Set();let h='<button data-k="-1" class="on">看全部</button>';
   q.parts.forEach((p,k)=>{if(seen.has(p[1]))return;seen.add(p[1]);const c=p[2]===9?'#f0a020':PC[p[2]];h+=`<button data-k="${k}" style="border-color:${c}"><i class="sw" style="background:${c}"></i>${p[1]}</button>`});
