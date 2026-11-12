@@ -43,6 +43,16 @@ textarea{width:100%;height:64px;font:14px inherit;padding:6px 8px;border:1px sol
 #send{background:#1f2a33!important;color:#fff;border-color:#1f2a33!important;margin-left:auto}
 #toast{position:fixed;left:50%;top:70px;transform:translateX(-50%);background:#1f2a33;color:#fff;padding:8px 14px;border-radius:6px;font-size:14px;display:none;z-index:9}
 #credit{position:absolute;right:12px;top:12px;font-size:11px;color:#666;background:#fffc;padding:3px 7px;border-radius:4px}
+.sec{font-size:12px;color:#888;margin:8px 0 2px}
+.txt{font-size:14.5px;line-height:1.55}
+.legend2{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:14px;margin-top:2px}
+.legend2 span{white-space:nowrap}
+.did{font-size:14.5px;line-height:1.55;background:#fff7e6;border-left:3px solid #e0a030;padding:6px 9px;margin-top:2px}
+.lbl{font:600 12px -apple-system,"PingFang SC",sans-serif;color:#fff;padding:2px 7px;border-radius:10px;white-space:nowrap;box-shadow:0 1px 3px #0005;pointer-events:none}
+.jl{background:#f5c400;color:#222}
+#inset{position:absolute;left:12px;bottom:52px;width:220px;height:150px;border:2px solid #fff;border-radius:6px;box-shadow:0 1px 4px #0003;pointer-events:none}
+#insetlbl{position:absolute;left:18px;bottom:182px;font-size:11px;color:#555;background:#fffc;padding:1px 5px;border-radius:3px}
+#ans button{font-size:14px}
 </style>
 <script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/addons/"}}</script>
 </head>
@@ -58,17 +68,20 @@ textarea{width:100%;height:64px;font:14px inherit;padding:6px 8px;border:1px sol
   </div>
   <div id="credit">模型：buildingSMART 社区样例 Duplex（CC BY 4.0）</div>
   <button id="play">▶ 播放 9 批</button><span id="batchlbl"></span>
-  <div id="legend"><span class="sw" style="background:#e03a2f"></span>要你看的<br><span class="sw" style="background:#f0a020"></span>相关的墙、板<br><span class="sw" style="background:#bbb"></span>其余部分</div>
+  <div id="inset"></div><div id="insetlbl">整栋楼里的位置</div><div id="legend" style="display:none"><span class="sw" style="background:#e03a2f"></span>要你看的<br><span class="sw" style="background:#f0a020"></span>相关的墙、板<br><span class="sw" style="background:#bbb"></span>其余部分</div>
 </div>
 <aside>
   <div id="qnav"></div>
   <div><span class="tag" id="rule"></span></div>
   <h2 id="title"></h2>
-  <div class="say" id="say"></div>
-  <div class="judge" id="judge"></div>
-  <div class="ask" id="ask"></div>
-  <div id="ans"><button data-v="yes">对</button><button data-v="no">不对</button><button data-v="idk">看不懂</button></div>
-  <textarea id="note" placeholder="想补一句就写这里（可不写）"></textarea>
+  <div class="sec">在哪</div><div class="txt" id="where"></div>
+  <div class="sec">图上是什么</div><div class="legend2" id="lg"></div>
+  <div class="sec">来龙去脉</div><div class="txt" id="chain"></div>
+  <div class="sec">电脑做了什么</div><div class="did" id="did"></div>
+  <div class="sec">为什么要问你</div><div class="txt" id="why"></div>
+  <div class="ask" id="ask" style="margin-top:10px"></div>
+  <div id="ans"><button data-v="yes"></button><button data-v="no"></button><button data-v="idk">看不懂</button></div>
+  <textarea id="note" style="height:44px" placeholder="想补一句就写这里（可不写）"></textarea>
   <div id="foot"><button id="prev">上一题</button><button id="next">下一题</button><button id="send">把答案发给 Hark</button></div>
 </aside>
 </div>
@@ -77,25 +90,30 @@ textarea{width:100%;height:64px;font:14px inherit;padding:6px 8px;border:1px sol
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {CSS2DRenderer,CSS2DObject} from 'three/addons/renderers/CSS2DRenderer.js';
+const PC=['#e03a2f','#2f6fe0','#1fa37a','#9b4fd0','#8c5a2b'];
 const D=await (await fetch('questions.json')).json();
-const Q=D.questions, KEY='duplex-answers-v1';
+const Q=D.questions, KEY='duplex-answers-v2';
 let A=JSON.parse(localStorage.getItem(KEY)||'{}'), cur=0;
 document.getElementById('status').innerHTML=D.status.map(s=>`<span class="chip s${s[1]}" title="${s[2]}">${s[1]==1?'✓':s[1]==2?'△':'○'} ${s[0]}</span>`).join('');
 const view=document.getElementById('view');
 const LD=document.getElementById('loading');
 window.addEventListener('error',e=>{LD.textContent='三维模型出错：'+e.message});
 let renderer;try{renderer=new THREE.WebGLRenderer({antialias:true})}catch(e){LD.textContent='这个浏览器打不开三维（WebGL 不可用），换 Chrome 或 Safari 试试。题目照样能答。';}
-let scene,cam,ctl,mGrey,mBase,mHl,mCtx;const M={}, groups={};
+let lr,locCam,marker,labels,mPart=[],scene,cam,ctl,mGrey,mBase,mHl,mCtx;const M={}, groups={};
 function init3D(){renderer.setPixelRatio(Math.min(devicePixelRatio,2));view.prepend(renderer.domElement);
 scene=new THREE.Scene();scene.background=new THREE.Color(0xe9e6df);
 cam=new THREE.PerspectiveCamera(40,1,0.05,500);
 scene.add(new THREE.HemisphereLight(0xffffff,0x888877,1.2));const dl=new THREE.DirectionalLight(0xffffff,1.4);dl.position.set(10,20,8);scene.add(dl);
+lr=new CSS2DRenderer();lr.domElement.style.cssText='position:absolute;inset:0;pointer-events:none';view.appendChild(lr.domElement);
+locCam=new THREE.PerspectiveCamera(35,220/150,0.1,500);locCam.position.set(30,26,4);locCam.lookAt(9,2,10);locCam.layers.enable(1);
+marker=new THREE.Mesh(new THREE.SphereGeometry(0.7,16,12),new THREE.MeshBasicMaterial({color:0xe03a2f}));marker.layers.set(1);scene.add(marker);labels=new THREE.Group();scene.add(labels);
 ctl=new OrbitControls(cam,renderer.domElement);ctl.enableDamping=true;
-function resize(){if(!renderer)return;const w=view.clientWidth,h=view.clientHeight;renderer.setSize(w,h);cam.aspect=w/h;cam.updateProjectionMatrix()}
+function resize(){if(!renderer)return;const w=view.clientWidth,h=view.clientHeight;renderer.setSize(w,h);lr.setSize(w,h);cam.aspect=w/h;cam.updateProjectionMatrix()}
 addEventListener('resize',resize);resize();
-mGrey=new THREE.MeshLambertMaterial({color:0xbbbbbb,transparent:true,opacity:0.18,depthWrite:false});
+mGrey=new THREE.MeshLambertMaterial({color:0xbbbbbb,transparent:true,opacity:0.08,depthWrite:false});
 mBase={A:new THREE.MeshLambertMaterial({color:0xd9d4c7,transparent:true,opacity:0.35,depthWrite:false}),PLB:new THREE.MeshLambertMaterial({color:0x5b8fc7}),MEP:new THREE.MeshLambertMaterial({color:0x8a6fb0})};
-mHl=new THREE.MeshLambertMaterial({color:0xe03a2f,emissive:0x601010});
+mHl=new THREE.MeshLambertMaterial({color:0xe03a2f,emissive:0x601010});mPart=PC.map(c=>new THREE.MeshLambertMaterial({color:c,emissive:new THREE.Color(c).multiplyScalar(0.25)}));
 mCtx=new THREE.MeshLambertMaterial({color:0xf0a020,transparent:true,opacity:0.6,depthWrite:false});
 const loader=new GLTFLoader();const prog={A:0,PLB:0,MEP:0},TOT={A:0.14,PLB:4.5,MEP:6.0};let done=0;
 const upd=()=>{if(LD.isConnected)LD.textContent=`正在载入小楼模型 ${Object.values(prog).reduce((a,b)=>a+b,0).toFixed(1)} / 10.6 MB…（题目可以先看）`};
@@ -103,13 +121,21 @@ const upd=()=>{if(LD.isConnected)LD.textContent=`正在载入小楼模型 ${Obje
   g.scene.traverse(o=>{if(o.isMesh){if(!o.geometry.attributes.normal)o.geometry.computeVertexNormals();const id=o.userData.name||o.name;o.userData.gid=id;o.userData.m=m;(M[id]=M[id]||[]).push(o)}});
   if(++done===3)LD.remove();else upd();paint(Q[cur]);if(m==='A')fly(Q[cur].box)},
   x=>{prog[m]=x.loaded/1048576;upd()},err=>{LD.textContent=m+' 模型载入失败，请刷新'}));
-(function loop(){requestAnimationFrame(loop);ctl.update();renderer.render(scene,cam)})();
+(function loop(){requestAnimationFrame(loop);ctl.update();const w=view.clientWidth,h=view.clientHeight;
+  renderer.setScissorTest(false);renderer.setViewport(0,0,w,h);renderer.render(scene,cam);lr.render(scene,cam);
+  if(!timer){labels.visible=false;renderer.setScissorTest(true);renderer.setScissor(14,54,220,150);renderer.setViewport(14,54,220,150);renderer.render(scene,locCam);labels.visible=true;renderer.setScissorTest(false)}})();
 }
 document.querySelectorAll('#layers input').forEach(c=>c.onchange=()=>{if(groups[c.dataset.m])groups[c.dataset.m].visible=c.checked});
-function paint(q){const hl=new Set(q.hl),cx=new Set(q.ctx);
-  for(const [id,ms] of Object.entries(M))for(const o of ms){o.visible=true;o.material=hl.has(id)?mHl:cx.has(id)?mCtx:(hl.size?mGrey:mBase[o.userData.m]);o.renderOrder=hl.has(id)?2:cx.has(id)?1:0}}
+function paint(q){const pi={};for(const p of q.parts)pi[p[0]]=p[2];
+  for(const [id,ms] of Object.entries(M))for(const o of ms){o.visible=true;const k=pi[id];
+    o.material=k===undefined?mGrey:k===9?mCtx:mPart[k];o.renderOrder=k===undefined?0:k===9?1:2}
+  labels.clear();const seen=new Set();
+  let li=0;for(const p of q.parts){if(seen.has(p[1]))continue;seen.add(p[1]);const d=document.createElement('div');const sp=document.createElement('span');sp.className='lbl';sp.textContent=p[1];sp.style.cssText=`position:relative;top:${-26*li++}px;display:inline-block`;d.appendChild(sp);sp.style.background=p[2]===9?'#d08a10':PC[p[2]];const o=new CSS2DObject(d);o.position.set(...p[3]);labels.add(o)}
+  for(const j of q.joints||[]){const r=new THREE.Mesh(new THREE.TorusGeometry(0.09,0.018,8,24),new THREE.MeshBasicMaterial({color:0xf5c400,depthTest:false}));r.position.set(...j[0]);r.renderOrder=5;labels.add(r);
+    const d=document.createElement('div');d.className='lbl jl';d.textContent=j[1];const o=new CSS2DObject(d);o.position.set(j[0][0],j[0][1]-0.1,j[0][2]);o.center.set(0.5,-0.4);labels.add(o)}
+  const b=q.box;marker.position.set((b[0][0]+b[1][0])/2,(b[0][1]+b[1][1])/2,(b[0][2]+b[1][2])/2)}
 function fly(b){const c=new THREE.Vector3((b[0][0]+b[1][0])/2,(b[0][1]+b[1][1])/2,(b[0][2]+b[1][2])/2);
-  const r=1.6*Math.max(3,Math.hypot(b[1][0]-b[0][0],b[1][1]-b[0][1],b[1][2]-b[0][2]));
+  const r=1.3*Math.max(0.9,Math.hypot(b[1][0]-b[0][0],b[1][1]-b[0][1],b[1][2]-b[0][2]));
   ctl.target.copy(c);cam.position.set(c.x+r*1.1,c.y+r*0.8,c.z+r*1.3);ctl.update()}
 let timer=null;
 function stopPlay(){clearInterval(timer);timer=null;document.getElementById('batchlbl').textContent='';document.getElementById('play').textContent='▶ 播放 9 批'}
@@ -117,12 +143,14 @@ const pal=[0x6b4f3a,0x8c6b4a,0x3f7f8c,0x4f8fbf,0x5aa06a,0x8fb04a,0xc9a03a,0xd07a
 let mB=null;
 document.getElementById('play').onclick=()=>{if(timer){stopPlay();paint(Q[cur]);return}
   if(!ctl)return;mB=mB||pal.map(c=>new THREE.MeshLambertMaterial({color:c}));let k=0;document.getElementById('play').textContent='■ 停';
-  for(const ms of Object.values(M))for(const o of ms)o.visible=false;
+  for(const ms of Object.values(M))for(const o of ms)o.visible=false;labels.clear();
   const step=()=>{k++;if(k>9){stopPlay();return}document.getElementById('batchlbl').textContent=`第 ${k} 批`;
-    for(const [id,b] of Object.entries(D.batches))if(b===k&&M[id])for(const o of M[id]){o.visible=true;o.material=Q[cur].hl.includes(id)?mHl:mB[b-1]}};
+    for(const [id,b] of Object.entries(D.batches))if(b===k&&M[id])for(const o of M[id]){o.visible=true;o.material=Q[cur].hl.includes(id)?mPart[0]:mB[b-1]}};
   fly([[-2,-1,-2],[18,7,22]]);step();timer=setInterval(step,1400)};
 function show(i){if(typeof stopPlay==='function')stopPlay();cur=i;const q=Q[i];
-  for(const k of ['rule','title','say','judge','ask'])document.getElementById(k).textContent=q[k];
+  for(const k of ['rule','title','where','chain','did','why','ask'])document.getElementById(k).textContent=q[k]||'';
+  const seen=new Set();document.getElementById('lg').innerHTML=q.parts.filter(p=>!seen.has(p[1])&&seen.add(p[1])).map(p=>`<span><i class="sw" style="background:${p[2]===9?'#f0a020':PC[p[2]]}"></i>${p[1]}</span>`).join('')+((q.joints||[]).length?'<span><i class="sw" style="background:#f5c400;border-radius:50%"></i>黄圈＝电脑补的连接</span>':'');
+  document.querySelector('#ans [data-v=yes]').textContent=q.yes||'对';document.querySelector('#ans [data-v=no]').textContent=q.no||'不对';
   document.getElementById('play').style.display=q.batches?'block':'none';
   const a=A[q.id]||{};document.querySelectorAll('#ans button').forEach(b=>b.classList.toggle('on',b.dataset.v===a.v));
   document.getElementById('note').value=a.note||'';
@@ -136,7 +164,7 @@ document.getElementById('prev').onclick=()=>show((cur+Q.length-1)%Q.length);
 document.getElementById('next').onclick=()=>show((cur+1)%Q.length);
 const W={yes:'对',no:'不对',idk:'看不懂'};
 document.getElementById('send').onclick=async()=>{
-  const t='小楼判断（第 1 批）\n'+Q.map((q,j)=>`${j+1}. ${q.title}：${A[q.id]?W[A[q.id].v]||'未答':'未答'}${A[q.id]&&A[q.id].note?'｜'+A[q.id].note:''}`).join('\n');
+  const t='小楼判断（第 1 批）\n'+Q.map((q,j)=>`${j+1}. ${q.title}：${A[q.id]?(A[q.id].v==='yes'?q.yes:A[q.id].v==='no'?q.no:'看不懂')||'未答':'未答'}${A[q.id]&&A[q.id].note?'｜'+A[q.id].note:''}`).join('\n');
   try{await navigator.clipboard.writeText(t);toast('已复制，粘贴到和 Hark 的对话里就行')}catch(e){prompt('复制下面这段发给 Hark：',t)}};
 function toast(s){const e=document.getElementById('toast');e.textContent=s;e.style.display='block';setTimeout(()=>e.style.display='none',2500)}
 show(0);
