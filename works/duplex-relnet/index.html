@@ -53,6 +53,13 @@ textarea{width:100%;height:64px;font:14px inherit;padding:6px 8px;border:1px sol
 #inset{position:absolute;left:12px;bottom:52px;width:220px;height:150px;border:2px solid #fff;border-radius:6px;box-shadow:0 1px 4px #0003;pointer-events:none}
 #insetlbl{position:absolute;left:18px;bottom:182px;font-size:11px;color:#555;background:#fffc;padding:1px 5px;border-radius:3px}
 #ans button{font-size:14px}
+aside{min-height:0}
+#ctxbox{flex:1 1 auto;min-height:0;overflow:auto;padding-right:4px}
+#pts{display:flex;flex-wrap:wrap;gap:5px;margin-top:3px}
+#pts button{font-size:13px;padding:3px 9px;border-radius:12px;border:2px solid #ccc;background:#fff;cursor:pointer;white-space:nowrap}
+#pts button.on{box-shadow:0 0 0 2px #1f2a33}
+.hint{font-size:12px;color:#888;margin-top:2px}
+#notebtn{display:none}@media (max-height:700px){#app{grid-template-rows:38px 1fr}header h1{font-size:15px}#status{transform:scale(.85);transform-origin:left}#notebtn{display:inline}#note{display:none}#note.open{display:block}#ans{margin-bottom:4px}h2{font-size:16px;margin:2px 0}.sec{margin:5px 0 1px}.txt,.did{font-size:13px;line-height:1.45}#qnav{margin-bottom:6px}.ask{font-size:14px;margin:6px 0}#ans button{height:34px}#foot{padding-top:6px}#foot button{height:30px}textarea{height:30px!important}}
 </style>
 <script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/addons/"}}</script>
 </head>
@@ -74,14 +81,16 @@ textarea{width:100%;height:64px;font:14px inherit;padding:6px 8px;border:1px sol
   <div id="qnav"></div>
   <div><span class="tag" id="rule"></span></div>
   <h2 id="title"></h2>
+  <div id="ctxbox">
+  <div class="sec">要你看的点（点一下，镜头直接对准）</div><div id="pts"></div>
   <div class="sec">在哪</div><div class="txt" id="where"></div>
-  <div class="sec">图上是什么</div><div class="legend2" id="lg"></div>
+  
   <div class="sec">来龙去脉</div><div class="txt" id="chain"></div>
   <div class="sec">电脑做了什么</div><div class="did" id="did"></div>
-  <div class="sec">为什么要问你</div><div class="txt" id="why"></div>
+  <div class="sec">为什么要问你</div><div class="txt" id="why"></div></div>
   <div class="ask" id="ask" style="margin-top:10px"></div>
   <div id="ans"><button data-v="yes"></button><button data-v="no"></button><button data-v="idk">看不懂</button></div>
-  <textarea id="note" style="height:44px" placeholder="想补一句就写这里（可不写）"></textarea>
+  <a id="notebtn" href="#" style="font-size:13px;color:#2f6fe0">＋ 想补一句</a><textarea id="note" style="height:44px" placeholder="想补一句就写这里（可不写）"></textarea>
   <div id="foot"><button id="prev">上一题</button><button id="next">下一题</button><button id="send">把答案发给 Hark</button></div>
 </aside>
 </div>
@@ -123,7 +132,7 @@ const upd=()=>{if(LD.isConnected)LD.textContent=`正在载入小楼模型 ${Obje
   x=>{prog[m]=x.loaded/1048576;upd()},err=>{LD.textContent=m+' 模型载入失败，请刷新'}));
 (function loop(){requestAnimationFrame(loop);ctl.update();const w=view.clientWidth,h=view.clientHeight;
   renderer.setScissorTest(false);renderer.setViewport(0,0,w,h);renderer.render(scene,cam);lr.render(scene,cam);
-  if(!timer){labels.visible=false;renderer.setScissorTest(true);renderer.setScissor(14,54,220,150);renderer.setViewport(14,54,220,150);renderer.render(scene,locCam);labels.visible=true;renderer.setScissorTest(false)}})();
+  if(!timer){labels.visible=false;renderer.setScissorTest(true);const iw=h<600?130:220,ih=h<600?90:150;document.getElementById('inset').style.cssText=`width:${iw}px;height:${ih}px`;document.getElementById('insetlbl').style.bottom=(52+ih+4)+'px';locCam.aspect=iw/ih;locCam.updateProjectionMatrix();renderer.setScissor(14,54,iw,ih);renderer.setViewport(14,54,iw,ih);renderer.render(scene,locCam);labels.visible=true;renderer.setScissorTest(false)}})();
 }
 document.querySelectorAll('#layers input').forEach(c=>c.onchange=()=>{if(groups[c.dataset.m])groups[c.dataset.m].visible=c.checked});
 function paint(q){const pi={};for(const p of q.parts)pi[p[0]]=p[2];
@@ -135,8 +144,22 @@ function paint(q){const pi={};for(const p of q.parts)pi[p[0]]=p[2];
     const d=document.createElement('div');d.className='lbl jl';d.textContent=j[1];const o=new CSS2DObject(d);o.position.set(j[0][0],j[0][1]-0.1,j[0][2]);o.center.set(0.5,-0.4);labels.add(o)}
   const b=q.box;marker.position.set((b[0][0]+b[1][0])/2,(b[0][1]+b[1][1])/2,(b[0][2]+b[1][2])/2)}
 function fly(b){const c=new THREE.Vector3((b[0][0]+b[1][0])/2,(b[0][1]+b[1][1])/2,(b[0][2]+b[1][2])/2);
-  const r=1.3*Math.max(0.9,Math.hypot(b[1][0]-b[0][0],b[1][1]-b[0][1],b[1][2]-b[0][2]));
+  const r=1.4*Math.max(0.35,Math.hypot(b[1][0]-b[0][0],b[1][1]-b[0][1],b[1][2]-b[0][2]));
   ctl.target.copy(c);cam.position.set(c.x+r*1.1,c.y+r*0.8,c.z+r*1.3);ctl.update()}
+let foc=-1;document.getElementById('notebtn').onclick=e=>{e.preventDefault();document.getElementById('note').classList.add('open')};
+function focusPt(k){const q=Q[cur];foc=k;labels.clear();
+  document.querySelectorAll('#pts button').forEach(b=>b.classList.toggle('on',+b.dataset.k===k));
+  if(k<0){paint(q);fly(q.box);return}
+  const keep=new Set();let box,lab=[];const N=q.parts.length;
+  if(k<N){const p=q.parts[k];keep.add(p[0]);box=p[4];lab=[p]}
+  else{const j=q.joints[k-N];const g=j[2]||[];g.forEach(x=>keep.add(x));lab=q.parts.filter(p=>keep.has(p[0]));const c=j[0];box=[[c[0]-0.12,c[1]-0.12,c[2]-0.12],[c[0]+0.12,c[1]+0.12,c[2]+0.12]];
+    const r=new THREE.Mesh(new THREE.TorusGeometry(0.09,0.018,8,24),new THREE.MeshBasicMaterial({color:0xf5c400,depthTest:false}));r.position.set(...c);r.renderOrder=5;labels.add(r);
+    const d=document.createElement('div');d.className='lbl jl';d.textContent=j[1];const o=new CSS2DObject(d);o.position.set(...c);o.center.set(0.5,-0.6);labels.add(o)}
+  const pi={};for(const p of q.parts)pi[p[0]]=p[2];
+  for(const [id,ms] of Object.entries(M))for(const o of ms){const k2=pi[id];
+    o.material=keep.has(id)?(k2===9?mCtx:mPart[k2]):mGrey;o.renderOrder=keep.has(id)?2:0}
+  let li=0;for(const p of lab){const d=document.createElement('div');const sp=document.createElement('span');sp.className='lbl';sp.textContent=p[1];sp.style.cssText=`position:relative;top:${-26*li++}px;display:inline-block;background:${p[2]===9?'#d08a10':PC[p[2]]}`;d.appendChild(sp);const o=new CSS2DObject(d);o.position.set(...p[3]);labels.add(o)}
+  fly(box)}
 let timer=null;
 function stopPlay(){clearInterval(timer);timer=null;document.getElementById('batchlbl').textContent='';document.getElementById('play').textContent='▶ 播放 9 批'}
 const pal=[0x6b4f3a,0x8c6b4a,0x3f7f8c,0x4f8fbf,0x5aa06a,0x8fb04a,0xc9a03a,0xd07a40,0xb05050];
@@ -149,7 +172,10 @@ document.getElementById('play').onclick=()=>{if(timer){stopPlay();paint(Q[cur]);
   fly([[-2,-1,-2],[18,7,22]]);step();timer=setInterval(step,1400)};
 function show(i){if(typeof stopPlay==='function')stopPlay();cur=i;const q=Q[i];
   for(const k of ['rule','title','where','chain','did','why','ask'])document.getElementById(k).textContent=q[k]||'';
-  const seen=new Set();document.getElementById('lg').innerHTML=q.parts.filter(p=>!seen.has(p[1])&&seen.add(p[1])).map(p=>`<span><i class="sw" style="background:${p[2]===9?'#f0a020':PC[p[2]]}"></i>${p[1]}</span>`).join('')+((q.joints||[]).length?'<span><i class="sw" style="background:#f5c400;border-radius:50%"></i>黄圈＝电脑补的连接</span>':'');
+  const seen=new Set();let h='<button data-k="-1" class="on">看全部</button>';
+  q.parts.forEach((p,k)=>{if(seen.has(p[1]))return;seen.add(p[1]);const c=p[2]===9?'#f0a020':PC[p[2]];h+=`<button data-k="${k}" style="border-color:${c}"><i class="sw" style="background:${c}"></i>${p[1]}</button>`});
+  (q.joints||[]).forEach((j,i)=>{h+=`<button data-k="${q.parts.length+i}" style="border-color:#f5c400"><i class="sw" style="background:#f5c400;border-radius:50%"></i>${j[1]}</button>`});
+  const pe=document.getElementById('pts');pe.innerHTML=h;pe.querySelectorAll('button').forEach(b=>b.onclick=()=>focusPt(+b.dataset.k));
   document.querySelector('#ans [data-v=yes]').textContent=q.yes||'对';document.querySelector('#ans [data-v=no]').textContent=q.no||'不对';
   document.getElementById('play').style.display=q.batches?'block':'none';
   const a=A[q.id]||{};document.querySelectorAll('#ans button').forEach(b=>b.classList.toggle('on',b.dataset.v===a.v));
